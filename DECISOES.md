@@ -222,3 +222,20 @@ em `--ds-hairline`, gradiente curto entre `surface` e `surface-elevated`, e
 sombra interna. As definições de `.brilho-marca`, `.brilho-suave` e as variantes
 por `filter` continuam no `globals.css` sem ninguém chamando: elas não pintam
 nada, e apagar CSS do andaime não era o pedido.
+
+---
+
+## Um conserto no tour de boas-vindas
+
+A primeira parada convida a pessoa a clicar no botão de entrar destacado ("clica
+em entrar, que eu continuo lá"), mas o invólucro só guardava onde a jornada
+parou quando alguém apertava o botão de próximo. Quem seguia o convite navegava
+e o tour sumia: a página seguinte procurava pela parada do site, não achava ela
+ali, e encerrava calada.
+
+A limpeza do efeito em `src/components/onboarding/tour.tsx` agora guarda a
+parada atual antes de desmontar, quando a jornada ainda não acabou. São seis
+linhas, no lugar onde o overlay já era destruído, e nada mais do tour mudou: a
+travessia entre páginas, o contador da jornada inteira, a marca de "já viu" e o
+gancho que separa fechar de terminar continuam como estavam. As cinco paradas
+foram conferidas no navegador, uma por uma, do site até a tela do desafio.
