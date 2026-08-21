@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite"
-import { sistema } from "@/content/site"
+import { palavras, sistema } from "@/content/site"
 import { Badge } from "./badge"
 import { Button } from "./button"
 import {
@@ -34,26 +34,26 @@ export const Padrao: Story = {
     <div className="w-full max-w-md">
       <Card {...args}>
         <CardCabecalho>
-          <CardTitulo>{sistema.clientes.detalhe.dados}</CardTitulo>
-          <CardDescricao>{sistema.clientes.descricao}</CardDescricao>
+          <CardTitulo>{sistema.conteudos.titulo}</CardTitulo>
+          <CardDescricao>{sistema.conteudos.descricao}</CardDescricao>
         </CardCabecalho>
         <CardConteudo>
           <dl className="grid gap-3 text-sm sm:grid-cols-2">
             <div>
-              <dt className="text-muted">{sistema.clientes.formulario.campos.nome}</dt>
-              <dd className="text-ink">Marina Alvarenga</dd>
+              <dt className="text-muted">{sistema.conteudos.formulario.campos.titulo}</dt>
+              <dd className="text-ink">Revolução Francesa: as três fases</dd>
             </div>
             <div>
-              <dt className="text-muted">{sistema.clientes.formulario.campos.empresa}</dt>
-              <dd className="text-ink">Estúdio Clara</dd>
+              <dt className="text-muted">{sistema.conteudos.formulario.campos.disciplina}</dt>
+              <dd className="text-ink">História</dd>
             </div>
             <div>
-              <dt className="text-muted">{sistema.clientes.formulario.campos.email}</dt>
-              <dd className="text-ink">marina@estudioclara.com.br</dd>
+              <dt className="text-muted">{sistema.conteudos.formulario.campos.tema}</dt>
+              <dd className="text-ink">Idade Contemporânea</dd>
             </div>
             <div>
-              <dt className="text-muted">{sistema.clientes.formulario.campos.telefone}</dt>
-              <dd className="text-ink">(11) 98877-1200</dd>
+              <dt className="text-muted">{sistema.conteudos.formulario.campos.texto}</dt>
+              <dd className="text-ink">A Revolução Francesa começa em 1789…</dd>
             </div>
           </dl>
         </CardConteudo>
@@ -97,15 +97,15 @@ export const Interativo: Story = {
       <Card {...args}>
         <CardCabecalho>
           <div className="flex items-start justify-between gap-3">
-            <CardTitulo>Rafael Nogueira</CardTitulo>
+            <CardTitulo>Fotossíntese e respiração celular</CardTitulo>
             <Badge variante="sucesso" ponto>
-              {sistema.clientes.status.ativo}
+              {sistema.perguntas.resultados.acertei}
             </Badge>
           </div>
-          <CardDescricao>Nogueira Logística</CardDescricao>
+          <CardDescricao>Biologia · Metabolismo energético</CardDescricao>
         </CardCabecalho>
         <CardConteudo className="pt-3 text-sm text-muted">
-          3 {sistema.entidades.pedido.plural} · 1 {sistema.entidades.agendamento.singular}
+          3 {palavras.pergunta.plural} · 1 {palavras.baralho.singular}
         </CardConteudo>
       </Card>
     </div>
@@ -116,7 +116,7 @@ export const Interativo: Story = {
 export const EmGrade: Story = {
   render: (args) => (
     <div className="grid w-full max-w-3xl gap-4 sm:grid-cols-2">
-      {[sistema.clientes, sistema.pedidos].map((secao) => (
+      {[sistema.conteudos, sistema.baralhos].map((secao) => (
         <Card key={secao.titulo} {...args}>
           <CardCabecalho>
             <CardTitulo>{secao.titulo}</CardTitulo>

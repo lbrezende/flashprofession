@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from "@storybook/nextjs-vite"
 import { useEffect, useState } from "react"
 import { fn } from "storybook/test"
 import { sistema } from "@/content/site"
+import { SEED } from "@/lib/seed"
 import { CampoBusca, type CampoBuscaProps } from "./campo-busca"
 import { EstadoVazio } from "./estado-vazio"
 
@@ -26,7 +27,7 @@ function BuscaComEstado({ valor, aoMudar, ...props }: CampoBuscaProps) {
   )
 }
 
-const CLIENTES = ["Marina Alvarenga", "Rafael Nogueira", "Camila Ishikawa", "Bruno Sato"]
+const CONTEUDOS = SEED.conteudos.map((conteudo) => conteudo.titulo)
 
 const meta = {
   title: "Primitivos/CampoBusca",
@@ -41,8 +42,8 @@ const meta = {
   },
   args: {
     valor: "",
-    rotulo: sistema.clientes.filtros.buscar,
-    placeholder: sistema.clientes.filtros.buscar,
+    rotulo: sistema.acoes.buscar,
+    placeholder: sistema.acoes.buscar,
     ocultarRotulo: true,
     // `aoMudar` é obrigatório no componente. Sem um valor aqui, toda story
     // precisaria repeti-lo; com `fn()` o Storybook ainda registra as chamadas.
@@ -65,7 +66,7 @@ export const Padrao: Story = {}
 
 /** Com texto aparece o botão de limpar, que devolve o foco ao campo. */
 export const ComTexto: Story = {
-  args: { valor: "marina" },
+  args: { valor: "fotossíntese" },
 }
 
 /** O rótulo pode aparecer quando a busca tem peso de campo, não de filtro rápido. */
@@ -81,7 +82,7 @@ export const ComRotuloVisivel: Story = {
 export const FiltrandoUmaLista: Story = {
   render: function ListaFiltrada(args) {
     const [texto, setTexto] = useState(args.valor)
-    const encontrados = CLIENTES.filter((nome) =>
+    const encontrados = CONTEUDOS.filter((nome) =>
       nome.toLowerCase().includes(texto.trim().toLowerCase())
     )
 
@@ -101,8 +102,8 @@ export const FiltrandoUmaLista: Story = {
           <div className="rounded-ds border border-hairline bg-surface">
             <EstadoVazio
               tamanho="sm"
-              titulo={sistema.clientes.semResultado.titulo}
-              texto={sistema.clientes.semResultado.texto}
+              titulo={sistema.perguntas.semResultado.titulo}
+              texto={sistema.perguntas.semResultado.texto}
             />
           </div>
         )}

@@ -6,11 +6,11 @@ const VARIANTES: VarianteBadge[] = ["neutra", "sucesso", "aviso", "perigo", "des
 
 /** O que cada variante quer dizer no produto, com uma amostra real de cada. */
 const NO_PRODUTO: { variante: VarianteBadge; rotulo: string }[] = [
-  { variante: "sucesso", rotulo: sistema.clientes.status.ativo },
-  { variante: "aviso", rotulo: sistema.clientes.status.pendente },
-  { variante: "neutra", rotulo: sistema.clientes.status.inativo },
-  { variante: "perigo", rotulo: sistema.pedidos.atrasado },
-  { variante: "destaque", rotulo: sistema.pedidos.prioridades.alta },
+  { variante: "sucesso", rotulo: sistema.perguntas.resultados.acertei },
+  { variante: "aviso", rotulo: sistema.perguntas.resultados.pendente },
+  { variante: "neutra", rotulo: sistema.perguntas.resultados.errei },
+  { variante: "perigo", rotulo: sistema.perguntas.resultados.errei },
+  { variante: "destaque", rotulo: sistema.baralhos.revisao.frente },
 ]
 
 const meta = {
@@ -23,7 +23,7 @@ const meta = {
     children: { control: "text" },
   },
   args: {
-    children: sistema.clientes.status.ativo,
+    children: sistema.perguntas.resultados.acertei,
     variante: "neutra",
     ponto: false,
   },
@@ -82,9 +82,9 @@ export const EmLista: Story = {
   render: () => (
     <ul className="w-full max-w-md divide-y divide-hairline rounded-ds border border-hairline bg-surface">
       {[
-        { nome: "Marina Alvarenga", variante: "sucesso" as const, status: sistema.clientes.status.ativo },
-        { nome: "Rafael Nogueira", variante: "aviso" as const, status: sistema.clientes.status.pendente },
-        { nome: "Camila Ishikawa", variante: "neutra" as const, status: sistema.clientes.status.inativo },
+        { nome: "Revolução Francesa", variante: "sucesso" as const, status: sistema.perguntas.resultados.acertei },
+        { nome: "Função do segundo grau", variante: "aviso" as const, status: sistema.perguntas.resultados.pendente },
+        { nome: "Climas do Brasil", variante: "neutra" as const, status: sistema.perguntas.resultados.errei },
       ].map((linha) => (
         <li key={linha.nome} className="flex items-center justify-between gap-3 px-4 py-3">
           <span className="text-sm text-ink">{linha.nome}</span>

@@ -83,11 +83,9 @@ export function Modal({
           tabIndex={-1}
           className={cn(
             "superficie-elevada fio-luz relative flex max-h-[92dvh] w-full flex-col overflow-hidden",
-            "rounded-t-ds border border-hairline outline-none sm:max-h-[85dvh] sm:rounded-ds",
-            // A sombra grande sai por `filter` e não por `box-shadow`: o
-            // `box-shadow` do painel já carrega o fio de 1px da superfície, e a
-            // segunda declaração apagaria a primeira.
-            "drop-shadow-[0_24px_56px_var(--sombra-difusa)]",
+            // Raio de SUPERFÍCIE: um raio de peça pequena num painel largo
+            // vira meia-lua e joga o título pra fora da própria forma.
+            "rounded-t-ds-surface border border-hairline outline-none sm:max-h-[85dvh] sm:rounded-ds-surface",
             "transition-[opacity,transform] duration-200 ease-out",
             visivel
               ? "translate-y-0 opacity-100 sm:scale-100"

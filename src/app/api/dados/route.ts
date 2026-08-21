@@ -52,7 +52,7 @@ export async function POST(requisicao: Request) {
   if (!bancoConfigurado()) return desligado()
   const corpo = (await requisicao.json()) as { colecao?: unknown; item?: { id?: string } }
   if (!ehColecao(corpo.colecao) || !corpo.item?.id) {
-    return NextResponse.json({ erro: "pedido inválido" }, { status: 400 })
+    return NextResponse.json({ erro: "requisição inválida" }, { status: 400 })
   }
   await inserir(corpo.colecao, corpo.item as { id: string })
   return NextResponse.json({ ok: true })
@@ -66,7 +66,7 @@ export async function PATCH(requisicao: Request) {
     patch?: Record<string, unknown>
   }
   if (!ehColecao(corpo.colecao) || typeof corpo.id !== "string" || !corpo.patch) {
-    return NextResponse.json({ erro: "pedido inválido" }, { status: 400 })
+    return NextResponse.json({ erro: "requisição inválida" }, { status: 400 })
   }
   await atualizar(corpo.colecao, corpo.id, corpo.patch)
   return NextResponse.json({ ok: true })
@@ -76,7 +76,7 @@ export async function DELETE(requisicao: Request) {
   if (!bancoConfigurado()) return desligado()
   const corpo = (await requisicao.json()) as { colecao?: unknown; id?: unknown }
   if (!ehColecao(corpo.colecao) || typeof corpo.id !== "string") {
-    return NextResponse.json({ erro: "pedido inválido" }, { status: 400 })
+    return NextResponse.json({ erro: "requisição inválida" }, { status: 400 })
   }
   await remover(corpo.colecao, corpo.id)
   return NextResponse.json({ ok: true })
@@ -88,11 +88,11 @@ export async function PUT(requisicao: Request) {
   const dados = corpo.dados
   if (
     !dados ||
-    !Array.isArray(dados.clientes) ||
-    !Array.isArray(dados.pedidos) ||
-    !Array.isArray(dados.agendamentos)
+    !Array.isArray(dados.conteudos) ||
+    !Array.isArray(dados.perguntas) ||
+    !Array.isArray(dados.baralhos)
   ) {
-    return NextResponse.json({ erro: "pedido inválido" }, { status: 400 })
+    return NextResponse.json({ erro: "requisição inválida" }, { status: 400 })
   }
   await substituirTudo(dados)
   return NextResponse.json({ ok: true })

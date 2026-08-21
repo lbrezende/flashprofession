@@ -11,7 +11,7 @@ import {
   CardTitulo,
   Confirmar,
 } from "@/components/ui"
-import { sistema as textos } from "@/content/site"
+import { palavras, sistema as textos } from "@/content/site"
 import { useDados } from "@/lib/store"
 
 const copy = textos.configuracoes.dados
@@ -23,9 +23,9 @@ export function DadosExemplo() {
   const [pendente, setPendente] = useState<Pendente>(null)
 
   const contagens = [
-    { rotulo: textos.entidades.cliente.plural, valor: dados.clientes.length },
-    { rotulo: textos.entidades.pedido.plural, valor: dados.pedidos.length },
-    { rotulo: textos.entidades.agendamento.plural, valor: dados.agendamentos.length },
+    { rotulo: palavras.conteudo.plural, valor: dados.conteudos.length },
+    { rotulo: palavras.pergunta.plural, valor: dados.perguntas.length },
+    { rotulo: palavras.baralho.plural, valor: dados.baralhos.length },
   ]
 
   function confirmar() {

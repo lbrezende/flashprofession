@@ -16,6 +16,7 @@ export type DesignTokens = {
   primary: string
   primaryInk: string
   primaryHover: string
+  primaryAccent: string
   hairline: string
   success: string
   danger: string
@@ -34,6 +35,13 @@ export type DesignSystem = {
     tracking: string
   }
   radius: string
+  radiusSurface: string
+  radiusFine: string
+  layout?: {
+    density: string
+    space: string
+    lineHeight: number
+  }
 }
 
 export const designSystem = config as DesignSystem
@@ -49,6 +57,7 @@ export function toCssVars(ds: DesignSystem): Record<string, string> {
     "--ds-primary": ds.tokens.primary,
     "--ds-primary-ink": ds.tokens.primaryInk,
     "--ds-primary-hover": ds.tokens.primaryHover,
+    "--ds-primary-accent": ds.tokens.primaryAccent,
     "--ds-hairline": ds.tokens.hairline,
     "--ds-success": ds.tokens.success,
     "--ds-danger": ds.tokens.danger,
@@ -58,5 +67,9 @@ export function toCssVars(ds: DesignSystem): Record<string, string> {
     "--ds-display-weight": String(ds.type.displayWeight),
     "--ds-tracking": ds.type.tracking,
     "--ds-radius": ds.radius,
+    "--ds-radius-surface": ds.radiusSurface,
+    "--ds-radius-fine": ds.radiusFine,
+    "--ds-space": ds.layout?.space ?? "14px",
+    "--ds-line-height": String(ds.layout?.lineHeight ?? 1.6),
   }
 }

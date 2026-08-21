@@ -1,21 +1,23 @@
+import { Amostra } from "@/components/marketing/amostra"
 import { Beneficios } from "@/components/marketing/beneficios"
 import { CabecalhoMarketing } from "@/components/marketing/cabecalho-marketing"
 import { ComoFunciona } from "@/components/marketing/como-funciona"
 import { Divisor } from "@/components/marketing/divisor"
 import { Heroi } from "@/components/marketing/heroi"
-import { Tour } from "@/components/onboarding/tour"
-import { Planos } from "@/components/marketing/planos"
 import { RodapeMarketing } from "@/components/marketing/rodape-marketing"
-import { Time } from "@/components/marketing/time"
+import { Tour } from "@/components/onboarding/tour"
 
 /**
- * A landing é 100% servidor: nenhuma dobra tem estado, então nada aqui carrega
+ * O site do Vira Pergunta, na raiz.
+ *
+ * Ele é 100% servidor: nenhuma dobra tem estado, então nada aqui carrega
  * JavaScript para o navegador além do que o Next já manda. As âncoras do
  * cabeçalho e o link "Ver como funciona" são navegação nativa. Sem hook, sem
- * listener, sem piscar.
+ * listener, sem piscar. Até o cenário da dobra de abertura é CSS.
  *
  * Cada dobra vive em `src/components/marketing/`, uma por arquivo: para mexer
- * nos planos você abre `planos.tsx` e não precisa entender o resto da página.
+ * nas cartas de amostra você abre `amostra.tsx` e não precisa entender o resto
+ * da página.
  *
  * A separação entre dobras é o `Divisor`, e não uma borda na própria seção: o
  * fio some nas duas pontas em vez de riscar a página de lado a lado. Ele fica
@@ -36,13 +38,11 @@ export default function PaginaInicial() {
       <main id="conteudo" tabIndex={-1} className="flex-1">
         <Heroi />
         <Divisor />
-        <Beneficios />
-        <Divisor />
         <ComoFunciona />
         <Divisor />
-        <Planos />
+        <Amostra />
         <Divisor />
-        <Time />
+        <Beneficios />
       </main>
 
       <RodapeMarketing />

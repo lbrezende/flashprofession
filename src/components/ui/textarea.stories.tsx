@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/nextjs-vite"
 import { sistema } from "@/content/site"
 import { Textarea } from "./textarea"
 
-const campos = sistema.clientes.formulario
+const campos = sistema.conteudos.formulario
 
 const meta = {
   title: "Primitivos/Textarea",
@@ -18,8 +18,8 @@ const meta = {
     rows: { control: { type: "number", min: 2, max: 12 } },
   },
   args: {
-    rotulo: campos.campos.observacoes,
-    placeholder: campos.exemploObservacoes,
+    rotulo: campos.campos.texto,
+    placeholder: campos.exemploTexto,
     rows: 4,
     obrigatorio: false,
     disabled: false,
@@ -40,16 +40,16 @@ export const Padrao: Story = {}
 
 export const ComAjuda: Story = {
   args: {
-    rotulo: sistema.pedidos.campos.descricao,
-    ajuda: sistema.pedidos.ajudas.descricao,
+    rotulo: sistema.conteudos.formulario.campos.texto,
+    ajuda: sistema.conteudos.formulario.ajudaDisciplina,
     placeholder: undefined,
   },
 }
 
 export const ComErro: Story = {
   args: {
-    rotulo: sistema.pedidos.campos.descricao,
-    erro: sistema.pedidos.erros.titulo,
+    rotulo: sistema.conteudos.formulario.campos.texto,
+    erro: sistema.conteudos.formulario.erros.titulo,
     obrigatorio: true,
   },
 }

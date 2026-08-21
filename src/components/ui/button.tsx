@@ -38,19 +38,20 @@ const BASE =
 /**
  * As receitas de acabamento moram no `globals.css` e valem nos 71 temas.
  *
- * `.preenchimento-acao` é o gradiente da cor de ação com o fio de luz no topo,
- * `.brilho-suave` é a sombra colorida embaixo e `.superficie` é o mesmo fundo
- * com profundidade do cartão. O hover acende com `brightness`, sem trocar de
- * tinta: mudar de cor no hover é o que faz botão parecer barato.
+ * `.preenchimento-acao` é o gradiente da cor de ação com o fio de luz no topo e
+ * `.superficie` é o mesmo fundo com profundidade do cartão. Neste projeto nada
+ * projeta sombra pra fora: o relevo é borda, gradiente e realce por dentro. O
+ * hover acende com `brightness`, sem trocar de tinta: mudar de cor no hover é o
+ * que faz botão parecer barato.
  */
 const VARIANTES: Record<VarianteBotao, string> = {
-  primaria: "preenchimento-acao brilho-suave text-primary-ink hover:brightness-[1.08]",
+  primaria: "preenchimento-acao text-primary-ink hover:brightness-[1.08]",
   secundaria: "superficie border border-hairline text-ink hover:bg-elevated",
   fantasma: "text-muted hover:bg-elevated hover:text-ink",
   // `text-canvas` em vez de uma cor fixa: o contraste sobre o vermelho fica
   // igual ao do texto vermelho sobre o fundo. Logo, funciona nos 71 temas.
-  // Fica com o fio de luz, mas sem brilho: destruir não se celebra.
-  perigo: "realce-topo bg-danger text-canvas shadow-sm hover:brightness-[1.08]",
+  // Fica com o fio de luz, e nada além dele: destruir não se celebra.
+  perigo: "realce-topo bg-danger text-canvas hover:brightness-[1.08]",
 }
 
 const TAMANHOS: Record<TamanhoBotao, string> = {

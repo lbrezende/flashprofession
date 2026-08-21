@@ -279,7 +279,7 @@ export function emailValido(email: string) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email.trim())
 }
 
-/** "Marina Alvarenga" → "MA". Primeiro e último nome, para o avatar. */
+/** "Ana Prado" → "AP". Primeiro e último nome, para o avatar. */
 export function iniciais(nome: string) {
   const partes = nome.trim().split(/\s+/).filter(Boolean)
   if (partes.length === 0) return ""
@@ -292,7 +292,7 @@ export function iniciais(nome: string) {
 /**
  * Normaliza para comparar em busca: minúsculas e sem acento.
  *
- * Quem digita "otavio" com pressa espera achar "Otávio". Obrigar o acento
+ * Quem digita "historia" com pressa espera achar "História". Obrigar o acento
  * transforma a busca num teste de ortografia.
  */
 export function chaveDeBusca(texto: string) {

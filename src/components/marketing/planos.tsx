@@ -10,9 +10,10 @@ import { BotaoLink } from "./botao-link"
  * embaixo. É assim porque sombra sozinha quase não aparece em tema claro, e
  * borda sozinha some em tema escuro.
  *
- * O brilho mora no `<li>`, e não no cartão: `.brilho-marca` e `.superficie` são
- * as duas `box-shadow`, então declarar as duas no mesmo elemento apagaria o fio
- * de 1px que o cartão tem por dentro. O `<li>` tem exatamente a forma do cartão.
+ * DOBRA GUARDADA: este app não é vendido, então ela não entra no site hoje. O
+ * arquivo fica no projeto, sem ninguém importar, pronto pra voltar no dia em
+ * que houver preço e plano pra anunciar. O conteúdo vem de `landing.precos`,
+ * que está vazio de propósito.
  */
 export function Planos() {
   const { precos } = landing
@@ -36,7 +37,7 @@ export function Planos() {
               key={plano.nome}
               className={cn(
                 "h-full",
-                plano.destaque && "brilho-marca rounded-ds lg:-translate-y-4"
+                plano.destaque && "rounded-ds-surface lg:-translate-y-4"
               )}
             >
               <Card className={cn("relative flex h-full flex-col", plano.destaque && "border-primary")}>

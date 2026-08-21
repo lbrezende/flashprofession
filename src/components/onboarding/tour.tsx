@@ -46,10 +46,10 @@ import { tour } from "@/content/tour"
  */
 
 /** Onde fica registrado que este navegador já viu o tour. Não expira. */
-const CHAVE_VISTO = "ebu:tour:v1"
+const CHAVE_VISTO = "colo-o-conteudo-que-preciso:tour:v1"
 
 /** Em que parada a jornada está. Vale só enquanto a aba estiver aberta. */
-const CHAVE_PASSO = "ebu:tour:passo"
+const CHAVE_PASSO = "colo-o-conteudo-que-preciso:tour:passo"
 
 function jaViu() {
   try {
@@ -91,7 +91,7 @@ function guardarPasso(indice: number) {
  * A parada acontece nesta página?
  *
  * O endereço da parada vale pra ela E pra tudo que mora dentro dela, então uma
- * parada de "/app" também acontece em "/app/clientes". É de propósito: as
+ * parada de "/app" também acontece em "/app/perguntas". É de propósito: as
  * paradas do app apontam pra peças da casca (o menu, o topo), que existem em
  * todas as telas de dentro, e exigir o endereço exato faria o tour sumir só
  * porque a pessoa estava numa subtela. A raiz é a exceção, senão ela casaria
@@ -203,11 +203,16 @@ async function conduzir(
 export function Tour() {
   const caminho = usePathname()
   const instancia = useRef<Driver | null>(null)
+  /** O trecho que está rodando agora. A limpeza precisa dele pra saber onde parou. */
+  const trechoAtual = useRef<ReturnType<typeof trechoDaPagina>>([])
+  /** A jornada já foi encerrada (a pessoa fechou, ou chegou no fim). */
+  const encerrado = useRef(false)
 
   useEffect(() => {
     if (jaViu()) return
 
     let cancelado = false
+    encerrado.current = false
 
     // Um respiro pra página terminar de montar. Sem isso, o alvo da parada pode
     // ainda não estar no DOM quando o tour procura por ele.
@@ -218,14 +223,22 @@ export function Tour() {
 
       const ultima = trecho[trecho.length - 1].indice
       const acabaAqui = ultima >= tour.paradas.length - 1
+      trechoAtual.current = trecho
 
       void conduzir(
         trecho,
         (proximo) => {
-          if (acabaAqui) marcarVisto()
-          else guardarPasso(proximo)
+          if (acabaAqui) {
+            encerrado.current = true
+            marcarVisto()
+          } else {
+            guardarPasso(proximo)
+          }
         },
-        marcarVisto
+        () => {
+          encerrado.current = true
+          marcarVisto()
+        }
       ).then((criada) => {
         // Saiu da página enquanto a biblioteca carregava: fecha o que abriu, e
         // sem marcar como visto, porque ninguém viu nada.
@@ -240,8 +253,22 @@ export function Tour() {
     return () => {
       cancelado = true
       window.clearTimeout(relogio)
+
+      /*
+        A pessoa clicou no elemento destacado e navegou, sem passar pelo botão
+        de próximo. É o caminho que a primeira parada convida a fazer ("clica em
+        entrar, que eu continuo lá"), então ele precisa guardar onde a jornada
+        continua: sem isto, a página seguinte procuraria pela parada atual, não
+        acharia ela ali, e o tour sumiria no meio.
+      */
+      const viva = instancia.current
+      if (viva && !encerrado.current) {
+        const parada = trechoAtual.current[viva.getActiveIndex() ?? 0]
+        if (parada) guardarPasso(parada.indice + 1)
+      }
+
       // Navegar no meio do tour não pode deixar overlay órfão na tela seguinte.
-      instancia.current?.destroy()
+      viva?.destroy()
       instancia.current = null
     }
   }, [caminho])

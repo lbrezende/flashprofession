@@ -1,3 +1,4 @@
+import Link from "next/link"
 import { Logo } from "@/components/app/logo"
 import { landing, marca } from "@/content/site"
 
@@ -22,12 +23,12 @@ export function RodapeMarketing() {
           <ul className="-mx-3 flex flex-wrap items-center gap-x-2">
             {rodape.links.map((link) => (
               <li key={link.rotulo}>
-                <a
+                <Link
                   href={link.href}
                   className="inline-flex items-center rounded-ds px-3 py-2 text-sm text-muted transition-colors hover:text-ink pointer-coarse:min-h-11"
                 >
                   {link.rotulo}
-                </a>
+                </Link>
               </li>
             ))}
           </ul>

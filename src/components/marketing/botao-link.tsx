@@ -18,8 +18,6 @@ import { cn } from "@/lib/cn"
 
 export type VarianteBotaoLink = "primaria" | "secundaria"
 export type TamanhoBotaoLink = "sm" | "md" | "lg"
-/** Tamanho da poça de luz colorida sob o botão. Só a primária acende. */
-export type BrilhoBotaoLink = "suave" | "marca"
 
 export type BotaoLinkProps = ComponentPropsWithRef<typeof Link> & {
   variante?: VarianteBotaoLink
@@ -32,8 +30,6 @@ export type BotaoLinkProps = ComponentPropsWithRef<typeof Link> & {
    * de referência, e serve ao botão que abre o app, não a um link de rodapé.
    */
   comChip?: boolean
-  /** `marca` é o brilho grande do herói. O resto da página fica no `suave`. */
-  brilho?: BrilhoBotaoLink
 }
 
 const BASE =
@@ -45,16 +41,6 @@ const BASE =
 const VARIANTES: Record<VarianteBotaoLink, string> = {
   primaria: "preenchimento-acao text-primary-ink hover:brightness-[1.08]",
   secundaria: "superficie border border-hairline text-ink hover:bg-elevated",
-}
-
-/**
- * Os dois brilhos são `box-shadow`, e `box-shadow` é uma propriedade só. Por
- * isso o brilho entra por prop e nunca por `className`: assim só uma das duas
- * classes chega ao HTML, e não é a ordem do CSS que decide qual vence.
- */
-const BRILHOS: Record<BrilhoBotaoLink, string> = {
-  suave: "brilho-suave",
-  marca: "brilho-marca",
 }
 
 const TAMANHOS: Record<TamanhoBotaoLink, string> = {
@@ -77,7 +63,6 @@ export function BotaoLink({
   iconeDireita,
   larguraTotal = false,
   comChip = false,
-  brilho = "suave",
   className,
   children,
   ...props
@@ -89,7 +74,6 @@ export function BotaoLink({
       className={cn(
         BASE,
         VARIANTES[variante],
-        variante === "primaria" && BRILHOS[brilho],
         TAMANHOS[tamanho],
         chip && RECUO_DO_CHIP[tamanho],
         larguraTotal && "w-full",

@@ -8,7 +8,7 @@ export type EstadoVazioProps = {
   texto?: string
   /** Normalmente um `<Button>` que cria o primeiro item. */
   acao?: ReactNode
-  /** `sm` para vazios dentro de card ou coluna de kanban. */
+  /** `sm` para vazios dentro de um card ou de um painel lateral. */
   tamanho?: "sm" | "md"
   className?: string
 }

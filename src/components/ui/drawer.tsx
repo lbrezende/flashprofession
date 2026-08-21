@@ -79,9 +79,6 @@ export function Drawer({
           tabIndex={-1}
           className={cn(
             "superficie-elevada fio-luz relative flex h-dvh w-full flex-col border-l border-hairline outline-none",
-            // Mesma razão do modal: o `box-shadow` do painel já é o fio da
-            // superfície, então a sombra grande vem por `filter`.
-            "drop-shadow-[0_0_56px_var(--sombra-difusa)]",
             "transition-transform duration-200 ease-out",
             visivel ? "translate-x-0" : "translate-x-full",
             LARGURAS[largura],

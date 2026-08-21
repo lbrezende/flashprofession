@@ -2,10 +2,15 @@ import { Card, CardConteudo } from "@/components/ui"
 import { landing } from "@/content/site"
 
 /**
- * Dobra 5. Time sem foto: o projeto não hospeda imagem nenhuma, então as
- * iniciais em círculo cheio fazem o papel do avatar, e continuam legíveis nos
- * 71 design systems, porque `primary-ink` é justamente a tinta que o tema
- * escolheu para escrever sobre a cor de ação.
+ * DOBRA GUARDADA: este app é ferramenta interna da equipe, e apresentar sócios
+ * não faz sentido aqui. O arquivo fica no projeto, sem ninguém importar, pronto
+ * pra voltar no dia em que houver gente pra apresentar. O conteúdo vem de
+ * `landing.time`, que está vazio de propósito.
+ *
+ * Time sem foto: o projeto não hospeda imagem nenhuma, então as iniciais em
+ * círculo cheio fazem o papel do avatar, e continuam legíveis nos 71 design
+ * systems, porque `primary-ink` é justamente a tinta que o tema escolheu para
+ * escrever sobre a cor de ação.
  */
 export function Time() {
   const { time } = landing

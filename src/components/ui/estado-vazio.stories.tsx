@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite"
-import { CalendarDays, Kanban, Plus, SearchX, Users } from "lucide-react"
+import { FileText, Layers, MessageCircleQuestionMark, Plus, SearchX } from "lucide-react"
 import { sistema } from "@/content/site"
 import { cn } from "@/lib/cn"
 import { Button } from "./button"
@@ -17,14 +17,14 @@ const meta = {
     acao: { control: false },
   },
   args: {
-    titulo: sistema.vazios.clientes.titulo,
-    texto: sistema.vazios.clientes.texto,
+    titulo: sistema.vazios.conteudos.titulo,
+    texto: sistema.vazios.conteudos.texto,
     tamanho: "md",
   },
   decorators: [
     // O vazio nunca aparece solto na página: ele mora dentro de uma superfície.
     // A largura acompanha o tamanho, porque `sm` existe justamente para caber
-    // numa coluna estreita do quadro de pedidos.
+    // numa coluna estreita, dentro de um cartão.
     (Story, contexto) => (
       <div
         className={cn(
@@ -42,28 +42,28 @@ export default meta
 type Story = StoryObj<typeof meta>
 
 /** Vazio sem saída é beco: todo estado vazio de lista carrega a ação que o resolve. */
-export const Clientes: Story = {
+export const Conteudos: Story = {
   args: {
-    icone: <Users />,
-    acao: <Button iconeEsquerda={<Plus />}>{sistema.vazios.clientes.acao}</Button>,
+    icone: <FileText />,
+    acao: <Button iconeEsquerda={<Plus />}>{sistema.vazios.conteudos.acao}</Button>,
   },
 }
 
-export const Pedidos: Story = {
+export const Perguntas: Story = {
   args: {
-    titulo: sistema.vazios.pedidos.titulo,
-    texto: sistema.vazios.pedidos.texto,
-    icone: <Kanban />,
-    acao: <Button iconeEsquerda={<Plus />}>{sistema.vazios.pedidos.acao}</Button>,
+    titulo: sistema.vazios.perguntas.titulo,
+    texto: sistema.vazios.perguntas.texto,
+    icone: <MessageCircleQuestionMark />,
+    acao: <Button iconeEsquerda={<Plus />}>{sistema.vazios.perguntas.acao}</Button>,
   },
 }
 
-export const Agenda: Story = {
+export const Baralhos: Story = {
   args: {
-    titulo: sistema.vazios.agenda.titulo,
-    texto: sistema.vazios.agenda.texto,
-    icone: <CalendarDays />,
-    acao: <Button iconeEsquerda={<Plus />}>{sistema.vazios.agenda.acao}</Button>,
+    titulo: sistema.vazios.baralhos.titulo,
+    texto: sistema.vazios.baralhos.texto,
+    icone: <Layers />,
+    acao: <Button iconeEsquerda={<Plus />}>{sistema.vazios.baralhos.acao}</Button>,
   },
 }
 
@@ -73,26 +73,26 @@ export const Agenda: Story = {
  */
 export const SemResultado: Story = {
   args: {
-    titulo: sistema.clientes.semResultado.titulo,
-    texto: sistema.clientes.semResultado.texto,
+    titulo: sistema.perguntas.semResultado.titulo,
+    texto: sistema.perguntas.semResultado.texto,
     icone: <SearchX />,
-    acao: <Button variante="secundaria">{sistema.clientes.filtros.limpar}</Button>,
+    acao: <Button variante="secundaria">{sistema.acoes.limpar}</Button>,
   },
 }
 
-/** `sm` para vazios apertados: dentro de card ou de coluna do quadro. */
+/** `sm` para vazios apertados: dentro de um cartão ou de um painel lateral. */
 export const Pequeno: Story = {
   args: {
     tamanho: "sm",
-    titulo: sistema.pedidos.colunaVazia,
+    titulo: sistema.conteudos.semPerguntas,
     texto: undefined,
-    icone: <Kanban />,
+    icone: <MessageCircleQuestionMark />,
   },
 }
 
 export const SemAcao: Story = {
   args: {
-    titulo: sistema.clientes.detalhe.semPedidos,
+    titulo: sistema.conteudos.detalhe.semPerguntas,
     texto: undefined,
     tamanho: "sm",
   },

@@ -11,14 +11,15 @@ import { extendTailwindMerge } from "tailwind-merge"
 const mesclar = extendTailwindMerge({
   extend: {
     classGroups: {
-      // `ds` é o raio do nosso design system e não existe na escala padrão do
-      // Tailwind. Sem registrar aqui, `rounded-ds` nunca conflitaria com
-      // `rounded-full` e os dois sobreviveriam à mesclagem.
-      rounded: [{ rounded: ["ds"] }],
-      "rounded-t": [{ "rounded-t": ["ds"] }],
-      "rounded-b": [{ "rounded-b": ["ds"] }],
-      "rounded-l": [{ "rounded-l": ["ds"] }],
-      "rounded-r": [{ "rounded-r": ["ds"] }],
+      // `ds`, `ds-surface` e `ds-fine` são os três raios do nosso design system
+      // e não existem na escala padrão do Tailwind. Sem registrar aqui,
+      // `rounded-ds` nunca conflitaria com `rounded-full` nem com os irmãos, e
+      // dois cantos diferentes sobreviveriam no mesmo elemento.
+      rounded: [{ rounded: ["ds", "ds-surface", "ds-fine"] }],
+      "rounded-t": [{ "rounded-t": ["ds", "ds-surface", "ds-fine"] }],
+      "rounded-b": [{ "rounded-b": ["ds", "ds-surface", "ds-fine"] }],
+      "rounded-l": [{ "rounded-l": ["ds", "ds-surface", "ds-fine"] }],
+      "rounded-r": [{ "rounded-r": ["ds", "ds-surface", "ds-fine"] }],
     },
   },
 })

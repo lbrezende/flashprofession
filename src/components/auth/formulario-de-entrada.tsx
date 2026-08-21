@@ -11,12 +11,6 @@ import { Button, Input } from "@/components/ui"
 import { entrada, landing, marca } from "@/content/site"
 import { entrar } from "@/lib/store"
 
-/**
- * Frouxa de propósito: a intenção é pegar erro de digitação (`ana@`, `ana.com`),
- * não bancar o juiz de qual endereço existe. O campo é opcional, afinal.
- */
-const PARECE_EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-
 export type FormularioDeEntradaProps = {
   /**
    * O login com Google está ligado NESTE ambiente: as duas chaves do Google e o
@@ -30,30 +24,48 @@ export type FormularioDeEntradaProps = {
 
 export function FormularioDeEntrada({ googleLigado, aviso }: FormularioDeEntradaProps) {
   const router = useRouter()
-  const [nome, setNome] = useState("")
-  const [email, setEmail] = useState("")
-  const [erroEmail, setErroEmail] = useState("")
+  const [usuario, setUsuario] = useState("")
+  /*
+    A SENHA MORA SÓ AQUI, e é de propósito.
+
+    Ela não é validada contra nada, não vai pro `entrar()`, não vai pro
+    localStorage e não sai do navegador: some junto com este componente quando
+    a tela troca. Guardar senha em texto puro no armazenamento do navegador
+    seria ensinar o contrário do certo dentro de um projeto que existe pra
+    ensinar, e não protegeria nada, já que qualquer pessoa lê o localStorage
+    pelo inspetor. A autenticação de verdade deste app é o botão do Google
+    logo acima, que já está escrito e só espera as chaves.
+  */
+  const [senha, setSenha] = useState("")
+  const [erroUsuario, setErroUsuario] = useState("")
+  const [erroSenha, setErroSenha] = useState("")
   const [modalAberto, setModalAberto] = useState(false)
   const [entrando, setEntrando] = useState(false)
   const [indoParaOGoogle, setIndoParaOGoogle] = useState(false)
 
-  const seguirParaOApp = useCallback(() => {
-    setEntrando(true)
-    // Campo em branco vira `undefined` para cair no padrão de `entrar()`.
-    // String vazia deixaria o topo do painel sem nome nenhum.
-    entrar(nome.trim() || undefined, email.trim() || undefined)
-    // `replace` porque voltar depois de entrar cairia de novo nesta tela.
-    router.replace("/app")
-  }, [nome, email, router])
+  const seguirParaOApp = useCallback(
+    (nome?: string) => {
+      setEntrando(true)
+      // Campo em branco vira `undefined` para cair no padrão de `entrar()`.
+      // String vazia deixaria o topo do app sem nome nenhum.
+      const limpo = (nome ?? usuario).trim()
+      entrar(limpo || undefined, limpo.includes("@") ? limpo : undefined)
+      // `replace` porque voltar depois de entrar cairia de novo nesta tela.
+      router.replace("/app")
+    },
+    [usuario, router]
+  )
 
   function aoEnviar(evento: FormEvent<HTMLFormElement>) {
     evento.preventDefault()
 
-    const emailLimpo = email.trim()
-    if (emailLimpo && !PARECE_EMAIL.test(emailLimpo)) {
-      setErroEmail(entrada.campos.email.erro)
-      return
-    }
+    const semUsuario = usuario.trim().length === 0
+    const semSenha = senha.length === 0
+
+    setErroUsuario(semUsuario ? entrada.campos.usuario.erro : "")
+    setErroSenha(semSenha ? entrada.campos.senha.erro : "")
+
+    if (semUsuario || semSenha) return
 
     seguirParaOApp()
   }
@@ -63,7 +75,7 @@ export function FormularioDeEntrada({ googleLigado, aviso }: FormularioDeEntrada
       <div className="grid min-h-dvh lg:grid-cols-[minmax(0,1fr)_minmax(0,1.05fr)]">
         <div className="flex min-w-0 flex-col px-5 py-6 sm:px-8 lg:px-12 xl:px-20">
           <header className="flex items-center justify-between gap-4">
-            <Logo className="realce-marca" />
+            <Logo />
 
             <Link
               href="/"
@@ -78,7 +90,7 @@ export function FormularioDeEntrada({ googleLigado, aviso }: FormularioDeEntrada
             {/* O formulário vira um painel apoiado na página: `.superficie-elevada`
                 dá o gradiente e o fio de 1px por dentro, `.fio-luz` acende a aresta
                 de cima. O `overflow-hidden` é o que segura esse fio dentro do raio. */}
-            <div className="superficie-elevada fio-luz overflow-hidden rounded-ds border border-hairline p-6 sm:p-8">
+            <div className="superficie-elevada fio-luz overflow-hidden rounded-ds-surface border border-hairline p-6 sm:p-8">
               <h1 className="font-display text-2xl text-ink sm:text-[28px] sm:leading-tight">
                 {entrada.titulo}
               </h1>
@@ -129,32 +141,35 @@ export function FormularioDeEntrada({ googleLigado, aviso }: FormularioDeEntrada
                 <span className="h-px flex-1 bg-hairline" />
               </div>
 
-              {/* `noValidate`: a validação do e-mail é nossa, em português e opcional. */}
+              {/* `noValidate`: a validação é nossa, em português e por campo. */}
               <form onSubmit={aoEnviar} noValidate className="flex flex-col gap-4">
                 <Input
-                  rotulo={entrada.campos.nome.rotulo}
-                  placeholder={entrada.campos.nome.placeholder}
-                  ajuda={entrada.campos.nome.ajuda}
-                  value={nome}
-                  onChange={(evento) => setNome(evento.target.value)}
-                  autoComplete="name"
+                  rotulo={entrada.campos.usuario.rotulo}
+                  placeholder={entrada.campos.usuario.placeholder}
+                  ajuda={entrada.campos.usuario.ajuda}
+                  erro={erroUsuario || undefined}
+                  value={usuario}
+                  onChange={(evento) => {
+                    setUsuario(evento.target.value)
+                    // O erro sai assim que a pessoa mexe: manter reclamação na
+                    // tela enquanto ela corrige é ruído, não ajuda.
+                    if (erroUsuario) setErroUsuario("")
+                  }}
+                  autoComplete="username"
                 />
 
                 <Input
-                  rotulo={entrada.campos.email.rotulo}
-                  placeholder={entrada.campos.email.placeholder}
-                  ajuda={entrada.campos.email.ajuda}
-                  erro={erroEmail || undefined}
-                  value={email}
+                  rotulo={entrada.campos.senha.rotulo}
+                  placeholder={entrada.campos.senha.placeholder}
+                  ajuda={entrada.campos.senha.ajuda}
+                  erro={erroSenha || undefined}
+                  value={senha}
                   onChange={(evento) => {
-                    setEmail(evento.target.value)
-                    // O erro sai assim que a pessoa mexe: manter reclamação na
-                    // tela enquanto ela corrige é ruído, não ajuda.
-                    if (erroEmail) setErroEmail("")
+                    setSenha(evento.target.value)
+                    if (erroSenha) setErroSenha("")
                   }}
-                  type="email"
-                  inputMode="email"
-                  autoComplete="email"
+                  type="password"
+                  autoComplete="current-password"
                 />
 
                 <Button
@@ -180,7 +195,10 @@ export function FormularioDeEntrada({ googleLigado, aviso }: FormularioDeEntrada
       <ModalGoogle
         aberto={modalAberto}
         aoFechar={() => setModalAberto(false)}
-        aoEntrarDireto={seguirParaOApp}
+        aoEntrarDireto={() => {
+          setModalAberto(false)
+          seguirParaOApp(usuario)
+        }}
       />
     </>
   )
@@ -188,9 +206,9 @@ export function FormularioDeEntrada({ googleLigado, aviso }: FormularioDeEntrada
 
 /**
  * Vitrine da marca, só no desktop. No celular ela viraria uma rolagem antes do
- * formulário. Quem abriu `/entrar` veio entrar, não ler a landing.
+ * formulário. Quem abriu `/entrar` veio entrar, não ler o site.
  *
- * O conteúdo é reaproveitado da landing de propósito: personalizar o app é
+ * O conteúdo é reaproveitado do site de propósito: personalizar o app é
  * reescrever um arquivo, e esta coluna acompanha sem virar cópia divergente.
  */
 function PainelDaMarca() {
@@ -223,7 +241,7 @@ function PainelDaMarca() {
         <ul className="flex max-w-[46ch] flex-col gap-6">
           {landing.beneficios.itens.map((item) => (
             <li key={item.titulo} className="flex gap-3.5">
-              <span className="superficie-elevada mt-0.5 flex size-9 shrink-0 items-center justify-center rounded-ds text-primary">
+              <span className="superficie-elevada mt-0.5 flex size-9 shrink-0 items-center justify-center rounded-ds text-primary-accent">
                 <Icone nome={item.icone} className="size-[18px]" />
               </span>
               <div>
@@ -233,8 +251,6 @@ function PainelDaMarca() {
             </li>
           ))}
         </ul>
-
-        <p className="text-[13px] text-muted">{landing.hero.provaSocial}</p>
       </div>
     </aside>
   )

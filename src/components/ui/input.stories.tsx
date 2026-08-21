@@ -1,9 +1,9 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite"
-import { AtSign, Phone } from "lucide-react"
+import { FileText, Tag } from "lucide-react"
 import { sistema } from "@/content/site"
 import { Input } from "./input"
 
-const campos = sistema.clientes.formulario
+const campos = sistema.conteudos.formulario
 
 const meta = {
   title: "Primitivos/Input",
@@ -20,8 +20,8 @@ const meta = {
     iconeDireita: { control: false },
   },
   args: {
-    rotulo: campos.campos.nome,
-    placeholder: campos.exemploNome,
+    rotulo: campos.campos.titulo,
+    placeholder: campos.exemploTitulo,
     obrigatorio: false,
     ocultarRotulo: false,
     disabled: false,
@@ -47,36 +47,35 @@ export const Obrigatorio: Story = {
 /** A ajuda some quando aparece um erro. Duas mensagens ao mesmo tempo viram ruído. */
 export const ComAjuda: Story = {
   args: {
-    rotulo: campos.campos.telefone,
-    placeholder: campos.exemploTelefone,
-    ajuda: campos.ajudaTelefone,
-    iconeEsquerda: <Phone />,
+    rotulo: campos.campos.texto,
+    placeholder: campos.exemploTexto,
+    ajuda: campos.ajudaDisciplina,
+    iconeEsquerda: <FileText />,
   },
 }
 
 export const ComErro: Story = {
   args: {
-    rotulo: campos.campos.email,
-    placeholder: campos.exemploEmail,
-    erro: campos.erros.emailInvalido,
-    defaultValue: "marina@",
-    iconeEsquerda: <AtSign />,
+    rotulo: campos.campos.tema,
+    placeholder: campos.exemploTema,
+    erro: campos.erros.disciplina,
+    defaultValue: "Histó",
+    iconeEsquerda: <Tag />,
   },
 }
 
 export const ComIcone: Story = {
   args: {
-    rotulo: campos.campos.email,
-    placeholder: campos.exemploEmail,
-    type: "email",
-    iconeEsquerda: <AtSign />,
+    rotulo: campos.campos.tema,
+    placeholder: campos.exemploTema,
+    iconeEsquerda: <Tag />,
   },
 }
 
 export const Desabilitado: Story = {
   args: {
     disabled: true,
-    defaultValue: "Marina Alvarenga",
+    defaultValue: "Revolução Francesa: as três fases",
   },
 }
 
@@ -84,23 +83,23 @@ export const Desabilitado: Story = {
 export const Estados: Story = {
   render: (args) => (
     <div className="flex flex-col gap-5">
-      <Input {...args} rotulo={campos.campos.nome} placeholder={campos.exemploNome} />
+      <Input {...args} rotulo={campos.campos.titulo} placeholder={campos.exemploTitulo} />
       <Input
         {...args}
-        rotulo={campos.campos.telefone}
-        placeholder={campos.exemploTelefone}
-        ajuda={campos.ajudaTelefone}
+        rotulo={campos.campos.texto}
+        placeholder={campos.exemploTexto}
+        ajuda={campos.ajudaDisciplina}
       />
       <Input
         {...args}
-        rotulo={campos.campos.email}
-        defaultValue="marina@"
-        erro={campos.erros.emailInvalido}
+        rotulo={campos.campos.tema}
+        defaultValue="Histó"
+        erro={campos.erros.disciplina}
       />
       <Input
         {...args}
-        rotulo={campos.campos.empresa}
-        defaultValue="Estúdio Clara"
+        rotulo={campos.campos.disciplina}
+        defaultValue="História"
         disabled
       />
     </div>

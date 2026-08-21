@@ -24,10 +24,18 @@ export type PropsMiniatura = {
 function acabamentoDe(modo: DesignSystem["mode"]) {
   const escuro = modo === "dark"
   return {
-    realce: escuro ? "rgba(255,255,255,0.25)" : "rgba(255,255,255,0.9)",
-    realceSuave: escuro ? "rgba(255,255,255,0.10)" : "rgba(255,255,255,0.55)",
-    realceFio: escuro ? "rgba(255,255,255,0.12)" : "rgba(0,0,0,0.08)",
-    sombra: escuro ? "rgba(0,0,0,0.5)" : "rgba(15,23,42,0.12)",
+    realce: escuro
+      ? "color-mix(in srgb, white 25%, transparent)"
+      : "color-mix(in srgb, white 90%, transparent)",
+    realceSuave: escuro
+      ? "color-mix(in srgb, white 10%, transparent)"
+      : "color-mix(in srgb, white 55%, transparent)",
+    realceFio: escuro
+      ? "color-mix(in srgb, white 12%, transparent)"
+      : "color-mix(in srgb, black 8%, transparent)",
+    sombra: escuro
+      ? "color-mix(in srgb, black 50%, transparent)"
+      : "color-mix(in srgb, black 12%, transparent)",
   }
 }
 
@@ -60,7 +68,7 @@ export function MiniaturaDesignSystem({ ds, accent, className }: PropsMiniatura)
         borderRadius: raioMoldura,
         // Fio de 1px por dentro e sombra curta por fora: a miniatura deixa de ser
         // um adesivo e passa a ser uma telinha apoiada na grade.
-        boxShadow: `inset 0 0 0 1px ${realceFio}, 0 2px 8px -3px ${sombra}`,
+        boxShadow: `inset 0 0 0 1px ${realceFio}`,
       }}
     >
       <div
@@ -113,7 +121,7 @@ export function MiniaturaDesignSystem({ ds, accent, className }: PropsMiniatura)
               // O mesmo desenho do `.preenchimento-acao`: fio de luz no topo e um
               // brilho curto na própria cor de ação embaixo.
               backgroundImage: `linear-gradient(to bottom, ${realceSuave} 0 1px, transparent 1px)`,
-              boxShadow: `0 2px 6px -2px color-mix(in srgb, ${primary} 55%, transparent)`,
+              boxShadow: `inset 0 1px 0 0 ${realce}`,
             }}
           >
             {/* O "rótulo" do botão prova que primary e primaryInk convivem. */}

@@ -2,7 +2,7 @@
 
 import { useCallback, useSyncExternalStore } from "react"
 import { SEED } from "./seed"
-import type { Agendamento, Cliente, Dados, Pedido, Sessao } from "./types"
+import type { Baralho, Conteudo, Dados, Pergunta, Sessao } from "./types"
 
 /**
  * A ÚNICA porta de dados do app. Nenhuma tela lê ou grava por fora daqui.
@@ -27,10 +27,10 @@ import type { Agendamento, Cliente, Dados, Pedido, Sessao } from "./types"
  * numa linha de configuração em vez de uma reforma em vinte telas.
  */
 
-const CHAVE_DADOS = "ebu:dados:v1"
-const CHAVE_SESSAO = "ebu:sessao:v1"
+const CHAVE_DADOS = "colo-o-conteudo-que-preciso:dados:v1"
+const CHAVE_SESSAO = "colo-o-conteudo-que-preciso:sessao:v1"
 
-const VAZIO: Dados = { clientes: [], pedidos: [], agendamentos: [] }
+const VAZIO: Dados = { conteudos: [], perguntas: [], baralhos: [] }
 
 type Modo = "descobrindo" | "navegador" | "banco"
 
@@ -72,9 +72,9 @@ function lerDoNavegador(): Dados {
     const salvo = JSON.parse(bruto) as Partial<Dados>
     // Tolerante a dados antigos ou corrompidos: cada coleção cai no seed.
     return {
-      clientes: Array.isArray(salvo.clientes) ? salvo.clientes : SEED.clientes,
-      pedidos: Array.isArray(salvo.pedidos) ? salvo.pedidos : SEED.pedidos,
-      agendamentos: Array.isArray(salvo.agendamentos) ? salvo.agendamentos : SEED.agendamentos,
+      conteudos: Array.isArray(salvo.conteudos) ? salvo.conteudos : SEED.conteudos,
+      perguntas: Array.isArray(salvo.perguntas) ? salvo.perguntas : SEED.perguntas,
+      baralhos: Array.isArray(salvo.baralhos) ? salvo.baralhos : SEED.baralhos,
     }
   } catch {
     return SEED
@@ -103,7 +103,7 @@ async function pedir(metodo: string, corpo: unknown) {
 /**
  * Manda a mudança pro banco depois de a tela já ter mudado.
  *
- * A tela não espera a rede: quem arrastou um cartão vê ele no lugar novo na
+ * A tela não espera a rede: quem marcou uma carta como sabida vê o resultado na
  * hora. Se o banco recusar, a gente recarrega de lá e a tela volta pra verdade,
  * em vez de ficar mostrando uma mudança que não aconteceu.
  */
@@ -193,81 +193,119 @@ export function useDados() {
     () => NO_SERVIDOR
   )
 
-  const criarCliente = useCallback((c: Omit<Cliente, "id" | "criadoEm">) => {
-    const novo: Cliente = { ...c, id: novoId("cli"), criadoEm: new Date().toISOString() }
+  const criarConteudo = useCallback((c: Omit<Conteudo, "id" | "criadoEm">) => {
+    const novo: Conteudo = { ...c, id: novoId("con"), criadoEm: new Date().toISOString() }
     aplicar(
-      (d) => ({ ...d, clientes: [novo, ...d.clientes] }),
-      () => enviar("POST", { colecao: "clientes", item: novo })
+      (d) => ({ ...d, conteudos: [novo, ...d.conteudos] }),
+      () => enviar("POST", { colecao: "conteudos", item: novo })
     )
     return novo
   }, [])
 
-  const atualizarCliente = useCallback((id: string, patch: Partial<Cliente>) => {
+  const atualizarConteudo = useCallback((id: string, patch: Partial<Conteudo>) => {
     aplicar(
-      (d) => ({ ...d, clientes: d.clientes.map((c) => (c.id === id ? { ...c, ...patch } : c)) }),
-      () => enviar("PATCH", { colecao: "clientes", id, patch })
+      (d) => ({ ...d, conteudos: d.conteudos.map((c) => (c.id === id ? { ...c, ...patch } : c)) }),
+      () => enviar("PATCH", { colecao: "conteudos", id, patch })
     )
   }, [])
 
-  /** Remove o cliente e tudo que dependia dele, sem deixar órfão na tela. */
-  const removerCliente = useCallback((id: string) => {
+  /**
+   * Tira o conteúdo e tudo que só existia por causa dele.
+   *
+   * As perguntas daquele conteúdo vão junto, porque pergunta sem o material de
+   * origem não dá pra corrigir nem pra estudar. E as cartas que essas perguntas
+   * ocupavam saem dos baralhos: um baralho com carta fantasma travaria a
+   * revisão bem no dia da prova, que é o pior momento possível.
+   */
+  const removerConteudo = useCallback((id: string) => {
     aplicar(
-      (d) => ({
-        clientes: d.clientes.filter((c) => c.id !== id),
-        pedidos: d.pedidos.filter((p) => p.clienteId !== id),
-        agendamentos: d.agendamentos.filter((a) => a.clienteId !== id),
-      }),
+      (d) => {
+        const orfas = new Set(
+          d.perguntas.filter((p) => p.conteudoId === id).map((p) => p.id)
+        )
+        return {
+          conteudos: d.conteudos.filter((c) => c.id !== id),
+          perguntas: d.perguntas.filter((p) => p.conteudoId !== id),
+          baralhos: d.baralhos.map((b) => ({
+            ...b,
+            perguntaIds: b.perguntaIds.filter((pid) => !orfas.has(pid)),
+          })),
+        }
+      },
       // O banco faz a mesma limpeza do lado de lá, numa chamada só.
-      () => enviar("DELETE", { colecao: "clientes", id })
+      () => enviar("DELETE", { colecao: "conteudos", id })
     )
   }, [])
 
-  const criarPedido = useCallback((p: Omit<Pedido, "id" | "criadoEm">) => {
-    const novo: Pedido = { ...p, id: novoId("ped"), criadoEm: new Date().toISOString() }
+  const criarPergunta = useCallback((p: Omit<Pergunta, "id" | "criadoEm">) => {
+    const nova: Pergunta = { ...p, id: novoId("per"), criadoEm: new Date().toISOString() }
     aplicar(
-      (d) => ({ ...d, pedidos: [novo, ...d.pedidos] }),
-      () => enviar("POST", { colecao: "pedidos", item: novo })
+      (d) => ({ ...d, perguntas: [nova, ...d.perguntas] }),
+      () => enviar("POST", { colecao: "perguntas", item: nova })
     )
-    return novo
+    return nova
   }, [])
 
-  const atualizarPedido = useCallback((id: string, patch: Partial<Pedido>) => {
+  /** Várias de uma vez: é o que sai de um conteúdo colado, em um movimento só. */
+  const criarPerguntas = useCallback((novas: Array<Omit<Pergunta, "id" | "criadoEm">>) => {
+    const agora = new Date().toISOString()
+    const criadas: Pergunta[] = novas.map((p) => ({
+      ...p,
+      id: novoId("per"),
+      criadoEm: agora,
+    }))
     aplicar(
-      (d) => ({ ...d, pedidos: d.pedidos.map((p) => (p.id === id ? { ...p, ...patch } : p)) }),
-      () => enviar("PATCH", { colecao: "pedidos", id, patch })
+      (d) => ({ ...d, perguntas: [...criadas, ...d.perguntas] }),
+      () => {
+        for (const item of criadas) enviar("POST", { colecao: "perguntas", item })
+      }
     )
+    return criadas
   }, [])
 
-  const removerPedido = useCallback((id: string) => {
+  const atualizarPergunta = useCallback((id: string, patch: Partial<Pergunta>) => {
     aplicar(
-      (d) => ({ ...d, pedidos: d.pedidos.filter((p) => p.id !== id) }),
-      () => enviar("DELETE", { colecao: "pedidos", id })
+      (d) => ({ ...d, perguntas: d.perguntas.map((p) => (p.id === id ? { ...p, ...patch } : p)) }),
+      () => enviar("PATCH", { colecao: "perguntas", id, patch })
     )
   }, [])
 
-  const criarAgendamento = useCallback((a: Omit<Agendamento, "id">) => {
-    const novo: Agendamento = { ...a, id: novoId("age") }
-    aplicar(
-      (d) => ({ ...d, agendamentos: [novo, ...d.agendamentos] }),
-      () => enviar("POST", { colecao: "agendamentos", item: novo })
-    )
-    return novo
-  }, [])
-
-  const atualizarAgendamento = useCallback((id: string, patch: Partial<Agendamento>) => {
+  /** A carta sai dos baralhos junto, pelo mesmo motivo da remoção do conteúdo. */
+  const removerPergunta = useCallback((id: string) => {
     aplicar(
       (d) => ({
         ...d,
-        agendamentos: d.agendamentos.map((a) => (a.id === id ? { ...a, ...patch } : a)),
+        perguntas: d.perguntas.filter((p) => p.id !== id),
+        baralhos: d.baralhos.map((b) => ({
+          ...b,
+          perguntaIds: b.perguntaIds.filter((pid) => pid !== id),
+        })),
       }),
-      () => enviar("PATCH", { colecao: "agendamentos", id, patch })
+      () => enviar("DELETE", { colecao: "perguntas", id })
     )
   }, [])
 
-  const removerAgendamento = useCallback((id: string) => {
+  const criarBaralho = useCallback((b: Omit<Baralho, "id" | "criadoEm">) => {
+    const novo: Baralho = { ...b, id: novoId("bar"), criadoEm: new Date().toISOString() }
     aplicar(
-      (d) => ({ ...d, agendamentos: d.agendamentos.filter((a) => a.id !== id) }),
-      () => enviar("DELETE", { colecao: "agendamentos", id })
+      (d) => ({ ...d, baralhos: [novo, ...d.baralhos] }),
+      () => enviar("POST", { colecao: "baralhos", item: novo })
+    )
+    return novo
+  }, [])
+
+  const atualizarBaralho = useCallback((id: string, patch: Partial<Baralho>) => {
+    aplicar(
+      (d) => ({ ...d, baralhos: d.baralhos.map((b) => (b.id === id ? { ...b, ...patch } : b)) }),
+      () => enviar("PATCH", { colecao: "baralhos", id, patch })
+    )
+  }, [])
+
+  /** O baralho é só uma seleção: desfazer ele não apaga pergunta nenhuma. */
+  const removerBaralho = useCallback((id: string) => {
+    aplicar(
+      (d) => ({ ...d, baralhos: d.baralhos.filter((b) => b.id !== id) }),
+      () => enviar("DELETE", { colecao: "baralhos", id })
     )
   }, [])
 
@@ -285,15 +323,16 @@ export function useDados() {
     dados,
     /** Ligado até saber onde os dados moram. A casca do app espera nele. */
     carregando,
-    criarCliente,
-    atualizarCliente,
-    removerCliente,
-    criarPedido,
-    atualizarPedido,
-    removerPedido,
-    criarAgendamento,
-    atualizarAgendamento,
-    removerAgendamento,
+    criarConteudo,
+    atualizarConteudo,
+    removerConteudo,
+    criarPergunta,
+    criarPerguntas,
+    atualizarPergunta,
+    removerPergunta,
+    criarBaralho,
+    atualizarBaralho,
+    removerBaralho,
     restaurarExemplos,
     limparTudo,
   }
@@ -377,7 +416,17 @@ export function lerSessao(): Sessao | null {
   }
 }
 
-/** A entrada sem senha, que continua existindo enquanto o Google não estiver ligado. */
+/**
+ * A entrada sem senha, que continua existindo enquanto o Google não estiver
+ * ligado.
+ *
+ * Repare no que NÃO entra aqui: a senha. Ela é digitada na tela de entrar e
+ * morre lá, no estado do componente. Não chega nesta função, não vai pro
+ * localStorage e não sai do navegador. Guardar senha em texto puro no
+ * armazenamento do navegador seria ensinar errado dentro de um projeto que
+ * existe pra ensinar, e a autenticação de verdade é o login do Google, que já
+ * está escrito e só espera as chaves.
+ */
 export function entrar(nome = "Visitante", email = "voce@exemplo.com"): Sessao {
   const s: Sessao = { nome, email, entrouEm: new Date().toISOString() }
   if (typeof window !== "undefined") gravarSessaoLocal(s)

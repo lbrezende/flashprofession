@@ -51,15 +51,21 @@ export function CabecalhoMarketing() {
           </ul>
         </nav>
 
-        {/* O tour de boas-vindas começa aqui. Ver src/content/tour.ts. */}
-        <BotaoLink
-          href="/entrar"
-          tamanho="sm"
-          data-tour="entrar"
-          className="ml-auto shrink-0 md:ml-3"
-        >
-          {landing.cabecalho.entrar}
-        </BotaoLink>
+        <div className="ml-auto flex shrink-0 items-center gap-1 md:ml-3">
+          {/* A página Como usar fica ao lado do botão de entrar, no canto de
+              cima. É o segundo lugar mais procurado por quem chega. */}
+          <Link
+            href="/como-usar"
+            className="flex items-center rounded-ds px-3 py-2 text-sm text-muted transition-colors hover:bg-elevated hover:text-ink pointer-coarse:min-h-11"
+          >
+            {landing.cabecalho.comoUsar}
+          </Link>
+
+          {/* O tour de boas-vindas começa aqui. Ver src/content/tour.ts. */}
+          <BotaoLink href="/entrar" tamanho="sm" data-tour="entrar">
+            {landing.cabecalho.entrar}
+          </BotaoLink>
+        </div>
       </div>
     </header>
   )

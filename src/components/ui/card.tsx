@@ -11,7 +11,7 @@ import { cn } from "@/lib/cn"
  */
 
 export type CardProps = ComponentPropsWithRef<"div"> & {
-  /** Sinaliza que o card inteiro é clicável (lista de clientes, card do kanban). */
+  /** Sinaliza que o card inteiro leva para algum lugar (o cartão de um conteúdo, o de um baralho). */
   interativo?: boolean
 }
 
@@ -19,7 +19,10 @@ export function Card({ interativo = false, className, ...props }: CardProps) {
   return (
     <div
       className={cn(
-        "superficie rounded-ds border border-hairline text-ink",
+        // `rounded-ds-surface`, e não `rounded-ds`: o navegador corta o raio na
+        // metade do lado menor, então um raio de botão num cartão largo vira
+        // meia-lua. A escala de três raios mora no design-system.json.
+        "superficie rounded-ds-surface border border-hairline text-ink",
         interativo &&
           "cursor-pointer transition-colors duration-150 hover:border-primary/40 hover:bg-elevated",
         className

@@ -1,6 +1,6 @@
 import catalogo from "./design-systems.json"
 import { designSystem, toCssVars, type DesignSystem, type DesignTokens } from "./design-system"
-import { sanitizarTema } from "./contraste"
+import { ajustarParaContraste, sanitizarTema, type TokensTema } from "./contraste"
 
 /**
  * Prévia de design system em tempo de execução.
@@ -41,7 +41,7 @@ export type SistemaDoCatalogo = {
 
 export const CATALOGO = (catalogo as unknown as { systems: SistemaDoCatalogo[] }).systems
 
-export const CHAVE_TEMA = "ebu:tema:v1"
+export const CHAVE_TEMA = "colo-o-conteudo-que-preciso:tema:v1"
 
 /** Empilhada depois de fontes de marca que ninguém tem instalada (SoDoSans, LamboType…). */
 const PILHA_FALLBACK = "var(--font-inter), -apple-system, BlinkMacSystemFont, sans-serif"
@@ -182,6 +182,38 @@ function derivarPrimaryHover(primary: string, ink: string, canvas: string) {
 }
 
 /**
+ * A cor de marca quando ela é TINTA, e não fundo.
+ *
+ * O `primary` foi feito pra ser fundo de botão, com o `primaryInk` por cima
+ * garantindo a leitura. Como texto, ícone ou marcador ele vira o contrário: a
+ * marca é que precisa enxergar o fundo. Este token é o mesmo tom quando ele já
+ * passa em 3:1 contra a página E contra o cartão, e o mesmo tom puxado até
+ * passar quando não passa.
+ */
+function derivarPrimaryAccent(primary: string, canvas: string, surface: string) {
+  const contraCanvas = ajustarParaContraste(primary, canvas, 3)
+  return ajustarParaContraste(contraCanvas, surface, 3)
+}
+
+/**
+ * Os três raios a partir do único que o catálogo traz.
+ *
+ * O navegador corta o raio na metade do lado menor, então um raio de pílula num
+ * cartão largo vira meia-lua e joga o título pra fora da forma. A peça pequena
+ * fica com o raio cheio, a superfície larga ganha um teto e a peça miúda de
+ * dentro ganha um teto menor. Quando o raio original já é pequeno, os três saem
+ * iguais e nada muda um pixel.
+ */
+function escalaDeRaio(raio: string) {
+  const numero = Number.parseFloat(raio)
+  if (!Number.isFinite(numero)) return { radiusSurface: raio, radiusFine: raio }
+  return {
+    radiusSurface: `${Math.min(numero, 22)}px`,
+    radiusFine: `${Math.min(numero, 10)}px`,
+  }
+}
+
+/**
  * As semânticas não existem no catálogo: escolhemos o par que enxerga melhor
  * o canvas daquele sistema, em vez de assumir "claro = escuro sobre branco".
  */
@@ -205,7 +237,7 @@ export function derivarTokens(sistema: SistemaDoCatalogo): DesignTokens {
   const surface = sistema.tokens.surface ?? misturar(canvas, ink, 0.05)
   const surfaceElevated = misturar(surface, ink, 0.06)
 
-  const derivados: DesignTokens = {
+  const derivados: TokensTema = {
     canvas,
     surface,
     surfaceElevated,
@@ -226,7 +258,15 @@ export function derivarTokens(sistema: SistemaDoCatalogo): DesignTokens {
   // entregavam preto no preto: NVIDIA (página branca, painel #1a1a1a),
   // Lamborghini (página preta, painel branco), Sentry (ink igual ao surface),
   // Hashicorp (primária preta sobre fundo preto).
-  return sanitizarTema(derivados).tokens
+  const seguros = sanitizarTema(derivados).tokens
+
+  // O accent sai DEPOIS da sanitização: ela pode ter puxado a primária pra
+  // outro tom, e derivar antes deixaria o accent apontando pra uma cor que não
+  // existe mais no tema.
+  return {
+    ...seguros,
+    primaryAccent: derivarPrimaryAccent(seguros.primary, seguros.canvas, seguros.surface),
+  }
 }
 
 /** Igual a `derivarTokens`, mas conta o que precisou ser reparado. Serve ao teste. */
@@ -264,6 +304,8 @@ function familiaSegura(familia: string | null) {
  * exatamente a tela que ela acabou de ver.
  */
 export function paraDesignSystem(sistema: SistemaDoCatalogo): DesignSystem {
+  const raio = sistema.radius ?? "8px"
+
   return {
     id: sistema.id,
     name: sistema.name,
@@ -278,7 +320,8 @@ export function paraDesignSystem(sistema: SistemaDoCatalogo): DesignSystem {
       // letras umas sobre as outras.
       tracking: `${(sistema.type.tracking ?? 0) / 100}em`,
     },
-    radius: sistema.radius ?? "8px",
+    radius: raio,
+    ...escalaDeRaio(raio),
   }
 }
 

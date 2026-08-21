@@ -9,10 +9,10 @@ import { sessaoConfigurada } from "@/lib/sessao-servidor"
  * As chaves do Google e o `AUTH_SECRET` moram em variável de ambiente, e
  * variável de ambiente não chega no navegador. Então quem confere se o login
  * está ligado é esta página, no servidor, e ela passa a resposta como uma
- * única palavra (`ligado` ou não) pro formulário, que é de cliente. Nenhuma
+ * única palavra (`ligado` ou não) pro formulário, que roda no navegador. Nenhuma
  * chave atravessa: só o `sim` ou o `não`.
  *
- * O componente de cliente inteiro está em `src/components/auth`.
+ * O componente de navegador inteiro está em `src/components/auth`.
  */
 
 // O que decide a tela vem do ambiente, então nada de página estática de build.

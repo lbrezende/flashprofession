@@ -1,18 +1,18 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite"
 import { sistema } from "@/content/site"
+import { SEED } from "@/lib/seed"
 import { Select, type OpcaoSelect } from "./select"
 
 const situacoes: OpcaoSelect[] = [
-  { valor: "ativo", rotulo: sistema.clientes.status.ativo },
-  { valor: "pendente", rotulo: sistema.clientes.status.pendente },
-  { valor: "inativo", rotulo: sistema.clientes.status.inativo },
+  { valor: "ativo", rotulo: sistema.perguntas.resultados.acertei },
+  { valor: "pendente", rotulo: sistema.perguntas.resultados.pendente },
+  { valor: "inativo", rotulo: sistema.perguntas.resultados.errei },
 ]
 
-const prioridades: OpcaoSelect[] = [
-  { valor: "baixa", rotulo: sistema.pedidos.prioridades.baixa },
-  { valor: "media", rotulo: sistema.pedidos.prioridades.media },
-  { valor: "alta", rotulo: sistema.pedidos.prioridades.alta },
-]
+/** Os conteúdos de exemplo do próprio app: opção de verdade, não texto inventado. */
+const conteudos: OpcaoSelect[] = SEED.conteudos
+  .slice(0, 3)
+  .map((conteudo) => ({ valor: conteudo.id, rotulo: conteudo.titulo }))
 
 const meta = {
   title: "Primitivos/Select",
@@ -28,7 +28,7 @@ const meta = {
     opcoes: { control: false },
   },
   args: {
-    rotulo: sistema.clientes.formulario.campos.status,
+    rotulo: sistema.perguntas.seletor,
     opcoes: situacoes,
     defaultValue: "",
     obrigatorio: false,
@@ -55,28 +55,28 @@ export const ComValor: Story = {
 
 export const ComErro: Story = {
   args: {
-    rotulo: sistema.pedidos.campos.cliente,
-    erro: sistema.pedidos.erros.cliente,
+    rotulo: sistema.perguntas.seletor,
+    erro: sistema.baralhos.formulario.erros.perguntas,
     obrigatorio: true,
   },
 }
 
 export const ComAjuda: Story = {
   args: {
-    rotulo: sistema.pedidos.campos.prioridade,
-    opcoes: prioridades,
+    rotulo: sistema.conteudos.formulario.campos.disciplina,
+    opcoes: conteudos,
     defaultValue: "media",
-    ajuda: sistema.pedidos.ajudas.descricao,
+    ajuda: sistema.conteudos.formulario.ajudaDisciplina,
   },
 }
 
 /** Sem placeholder quando toda escolha é válida e uma já vem marcada. */
 export const SemPlaceholder: Story = {
   args: {
-    rotulo: sistema.agenda.formulario.campos.duracao,
-    opcoes: sistema.agenda.formulario.duracoes,
+    rotulo: sistema.perguntas.seletor,
+    opcoes: situacoes,
     placeholder: null,
-    defaultValue: "60",
+    defaultValue: "pendente",
   },
 }
 

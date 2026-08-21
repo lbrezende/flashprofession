@@ -4,6 +4,7 @@ import { useCallback, useEffect, useRef, useState } from "react"
 import { useRouter } from "next/navigation"
 import { BarraLateral } from "@/components/app/barra-lateral"
 import { BarraSuperior } from "@/components/app/barra-superior"
+import { ModalDeSaida } from "@/components/app/desafio/modal-de-saida"
 import { Logo } from "@/components/app/logo"
 import { Tour } from "@/components/onboarding/tour"
 import { sistema } from "@/content/site"
@@ -85,9 +86,13 @@ export default function LayoutSistema({ children }: { children: React.ReactNode 
       </div>
 
       {/* Roda uma vez, na primeira visita, e não desenha nada fora disso. Fica
-          aqui na casca porque as paradas apontam pro menu e pro topo, que só
-          existem depois que a sessão confirma. */}
+          aqui na casca porque as paradas apontam pro menu e pro conteúdo, que
+          só existem depois que a sessão confirma. */}
       <Tour />
+
+      {/* O convite do desafio, que aparece quando o ponteiro sai da janela pela
+          borda de cima. Uma vez por sessão, e só no computador. */}
+      <ModalDeSaida />
     </div>
   )
 }
@@ -101,7 +106,7 @@ function EsqueletoSistema() {
     <div className="min-h-dvh bg-canvas" role="status" aria-label={sistema.casca.carregando}>
       <div className="painel-lateral fixed inset-y-0 left-0 hidden w-[248px] flex-col border-r border-hairline lg:flex">
         <div className="flex h-16 items-center border-b border-hairline px-4">
-          <Logo className="realce-marca" />
+          <Logo />
         </div>
       </div>
 

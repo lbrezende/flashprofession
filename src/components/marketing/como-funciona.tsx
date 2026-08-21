@@ -1,26 +1,24 @@
 import { landing } from "@/content/site"
 
 /**
- * Dobra 3. Um `<ol>` de verdade, porque a ordem dos passos é conteúdo, não decoração,
- * e quem usa leitor de tela precisa ouvir que são três em sequência.
+ * Dobra 2. Um `<ol>` de verdade, porque a ordem dos passos é conteúdo, não
+ * decoração, e quem usa leitor de tela precisa ouvir que são três em sequência.
  *
  * O fio que liga os passos nasce colado na pílula e morre no transparente antes
- * de chegar na próxima: ele mostra a sequência sem virar uma grade. É um por
+ * de chegar no próximo: ele mostra a sequência sem virar uma grade. É um por
  * item, vertical no celular (a lista empilha) e horizontal no desktop (a lista
  * vira três colunas). O último passo não recebe fio, senão apontaria para o nada.
  *
  * São dois elementos e não um com classes responsivas porque o gradiente muda de
  * direção junto com o eixo, e direção de gradiente não cabe numa classe.
+ *
+ * Zero JavaScript: nada aqui espera rolagem pra aparecer.
  */
 export function ComoFunciona() {
   const { comoFunciona } = landing
 
   return (
-    <section
-      id="como-funciona"
-      aria-labelledby="como-funciona-titulo"
-      className="scroll-mt-20"
-    >
+    <section id="como-funciona" aria-labelledby="como-funciona-titulo" className="scroll-mt-20">
       <div className="mx-auto max-w-[1200px] px-4 py-16 sm:px-6 sm:py-20 lg:px-8 lg:py-24">
         <div className="max-w-2xl">
           <h2
@@ -65,9 +63,7 @@ export function ComoFunciona() {
                     o mesmo desenho em `tabular-nums`: assim o fio sabe onde a
                     peça termina sem depender do texto. O `self-start` é
                     obrigatório: no celular o item é uma linha flex, e sem ele a
-                    pílula estica até a altura do parágrafo ao lado. O número
-                    fica em `ink` porque `primary` como TEXTO em 13px não alcança
-                    4.5:1 na maioria dos temas — a cor da marca já está no herói. */}
+                    pílula estica até a altura do parágrafo ao lado. */}
                 <span className="pilula w-14 shrink-0 justify-center self-start font-display text-[13px] font-semibold tabular-nums text-ink">
                   {passo.numero}
                 </span>

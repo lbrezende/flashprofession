@@ -41,7 +41,7 @@ function ModalComGatilho({ aberto, aoFechar, ...props }: ModalProps) {
 
 const TAMANHOS: TamanhoModal[] = ["sm", "md", "lg"]
 
-const formulario = sistema.clientes.formulario
+const formulario = sistema.conteudos.formulario
 
 const meta = {
   title: "Primitivos/Modal",
@@ -81,7 +81,7 @@ type Story = StoryObj<typeof meta>
 export const Padrao: Story = {
   args: {
     children: (
-      <p className="text-sm leading-relaxed text-muted">{sistema.clientes.descricao}</p>
+      <p className="text-sm leading-relaxed text-muted">{sistema.conteudos.descricao}</p>
     ),
     rodape: (
       <>
@@ -105,25 +105,25 @@ export const ComFormulario: Story = {
     icone: <UserPlus className="text-primary" />,
     children: (
       <div className="flex flex-col gap-4">
-        <Input rotulo={formulario.campos.nome} placeholder={formulario.exemploNome} obrigatorio />
+        <Input rotulo={formulario.campos.titulo} placeholder={formulario.exemploTitulo} obrigatorio />
         <Input
-          rotulo={formulario.campos.email}
-          placeholder={formulario.exemploEmail}
+          rotulo={formulario.campos.tema}
+          placeholder={formulario.exemploTema}
           type="email"
           obrigatorio
         />
         <Select
-          rotulo={formulario.campos.status}
+          rotulo={formulario.campos.disciplina}
           opcoes={[
-            { valor: "ativo", rotulo: sistema.clientes.status.ativo },
-            { valor: "pendente", rotulo: sistema.clientes.status.pendente },
-            { valor: "inativo", rotulo: sistema.clientes.status.inativo },
+            { valor: "ativo", rotulo: sistema.perguntas.resultados.acertei },
+            { valor: "pendente", rotulo: sistema.perguntas.resultados.pendente },
+            { valor: "inativo", rotulo: sistema.perguntas.resultados.errei },
           ]}
           defaultValue="ativo"
         />
         <Textarea
-          rotulo={formulario.campos.observacoes}
-          placeholder={formulario.exemploObservacoes}
+          rotulo={formulario.campos.texto}
+          placeholder={formulario.exemploTexto}
           rows={3}
         />
       </div>
@@ -188,13 +188,13 @@ export const Alerta: Story = {
     papel: "alertdialog",
     tamanho: "sm",
     mostrarFechar: false,
-    titulo: sistema.clientes.remocao.confirmarTitulo,
-    descricao: sistema.clientes.remocao.confirmarTexto,
+    titulo: sistema.conteudos.remocao.confirmarTitulo,
+    descricao: sistema.conteudos.remocao.confirmarTexto,
     icone: <TriangleAlert className="text-danger" />,
     rodape: (
       <>
         <Button variante="secundaria">{sistema.acoes.cancelar}</Button>
-        <Button variante="perigo">{sistema.clientes.remocao.confirmar}</Button>
+        <Button variante="perigo">{sistema.conteudos.remocao.confirmar}</Button>
       </>
     ),
   },

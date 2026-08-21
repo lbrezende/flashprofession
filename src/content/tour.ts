@@ -2,14 +2,15 @@
  * O texto do tour de boas-vindas.
  *
  * Ele roda uma vez, na primeira visita, e ATRAVESSA PÁGINAS: começa no site,
- * continua dentro do app e termina lá. A última parada é de propósito: ela
- * conta que o tour inteiro é código do projeto e pode ser mudado ou removido a
- * pedido, porque quem abriu este app tem que sair sabendo que manda nele.
+ * continua dentro do app e termina na tela do desafio. A última parada é de
+ * propósito: ela conta que o tour inteiro é código do projeto e pode ser mudado
+ * ou removido a pedido, porque quem abriu este app tem que sair sabendo que
+ * manda nele.
  *
  * `pagina` é o endereço onde a parada acontece, e ele vale também pras telas de
- * dentro dele: "/app" acontece em "/app/clientes" também. Vazio significa "onde
- * a pessoa estiver". As paradas seguem a ordem desta lista, então elas são
- * também o roteiro da jornada: site, depois app.
+ * dentro dele: "/app" acontece em "/app/perguntas" também. Vazio significa
+ * "onde a pessoa estiver". As paradas seguem a ordem desta lista, então elas
+ * são também o roteiro da jornada: site, depois app, depois o desafio.
  *
  * `alvo` é um seletor de CSS. Parada sem alvo aparece no centro da tela. Se o
  * alvo não existir na página (você renomeou a tela, tirou o menu), a parada é
@@ -21,7 +22,8 @@ export const tour = {
   proximo: "Próximo",
   anterior: "Voltar",
   fechar: "Fechar",
-  concluir: "Entendi, quero explorar",
+  /** Aparece no fim de cada trecho, então serve tanto pra continuar quanto pra fechar. */
+  concluir: "Entendi",
 
   /** Botão que existe na tela de configurações pra rodar o tour de novo. */
   rever: {
@@ -34,37 +36,36 @@ export const tour = {
     {
       pagina: "/",
       alvo: "[data-tour='entrar']",
-      titulo: "Esta página é sua, e ela já está de pé",
-      texto:
-        "O que você está vendo não é maquete: é um site funcionando, com o sistema inteiro atrás dele. Quer ver por dentro? Clica em entrar, que eu continuo lá.",
+      titulo: "Essa é a sua página",
+      texto: "Quer ver o sistema por dentro? Clica em entrar, que eu continuo lá.",
     },
     {
       pagina: "/app",
-      alvo: "[data-tour='menu']",
-      titulo: "Aqui ficam as áreas do sistema",
+      alvo: "[data-tour='desafio']",
+      titulo: "Esse é o seu sistema",
       texto:
-        "Cada item leva pra uma tela completa, com listagem, cadastro, busca e os estados de quando não tem nada ainda. Clique à vontade depois: não tem como quebrar nada.",
+        "Clicando aqui você abre um desafio de design que eu preparei pra você refinar este app.",
     },
     {
-      pagina: "/app",
+      pagina: "/app/desafio",
       alvo: "[data-tour='conteudo']",
-      titulo: "E aqui é onde o trabalho acontece",
+      titulo: "Esse é o seu desafio",
       texto:
-        "Os dados que aparecem são exemplos, pra você ver o sistema cheio em vez de vazio. Cadastre, edite e apague sem medo. Na tela de configurações tem um botão que devolve tudo ao estado original.",
+        "Agora você pode pedir o que quiser pro seu assistente, do mesmo jeito que criou o app inteiro, e pedir as melhorias pra treinar.",
     },
     {
-      pagina: "/app",
-      alvo: "[data-tour='perfil']",
-      titulo: "Sua conta fica no topo",
+      pagina: "/app/desafio",
+      alvo: "[data-tour='desafio-fecho']",
+      titulo: "Depois de melhorar, publique de novo",
       texto:
-        "Se o login com Google estiver ligado, é a sua conta de verdade que aparece aqui. Se não estiver, é a entrada sem senha, e a tela de entrar ensina o que falta pra ligar.",
+        "O próximo passo é pedir pro seu assistente atualizar o seu link público, pra melhoria aparecer pra quem abrir.",
     },
     {
-      pagina: "/app",
+      pagina: "/app/desafio",
       alvo: null,
-      titulo: "Uma última coisa, que é a mais importante",
+      titulo: "E este passo a passo também é seu",
       texto:
-        "Este passo a passo é código dentro do seu projeto, igual ao resto. Você pode pedir pra sua IA mudar o texto, incluir uma parada nova ou tirar o tour inteiro. É assim com qualquer coisa daqui: o sistema inteiro é seu pra mexer.",
+        "Você pode inclusive pedir pra ele remover este onboarding, e o seu sistema fica mais limpo.",
     },
   ],
 }

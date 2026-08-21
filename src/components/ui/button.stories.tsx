@@ -29,7 +29,7 @@ const meta = {
     iconeDireita: { control: false },
   },
   args: {
-    children: sistema.clientes.formulario.salvar,
+    children: sistema.conteudos.formulario.salvar,
     variante: "primaria",
     tamanho: "md",
     carregando: false,
@@ -72,7 +72,7 @@ export const Tamanhos: Story = {
 
 export const ComIcone: Story = {
   args: {
-    children: sistema.clientes.novo,
+    children: sistema.conteudos.novo,
     iconeEsquerda: <Plus />,
   },
 }
@@ -118,7 +118,7 @@ export const SoIcone: Story = {
           key={tamanho}
           {...args}
           tamanho={tamanho}
-          aria-label={sistema.clientes.remocao.acao}
+          aria-label={sistema.conteudos.remocao.acao}
           iconeEsquerda={<Trash2 />}
         />
       ))}
@@ -147,7 +147,7 @@ export const Desabilitado: Story = {
 
 export const LarguraTotal: Story = {
   parameters: { layout: "padded" },
-  args: { larguraTotal: true, children: sistema.clientes.formulario.criar },
+  args: { larguraTotal: true, children: sistema.conteudos.formulario.criar },
   render: (args) => (
     <div className="w-full max-w-sm">
       <Button {...args} />

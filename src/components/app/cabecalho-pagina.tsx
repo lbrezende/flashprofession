@@ -3,13 +3,13 @@ import type { ReactNode } from "react"
 type PropsCabecalhoPagina = {
   titulo: string
   descricao?: string
-  /** Botões da página (criar, filtrar, exportar…). Alinham à direita no desktop. */
+  /** Botões da página (colar, montar, ajustar…). Alinham à direita no desktop. */
   acoes?: ReactNode
 }
 
 /**
  * O topo de toda página interna. Existe para que o `h1`, o espaçamento e a
- * linha divisória sejam idênticos em Painel, Clientes, Pedidos e Agenda. É
+ * linha divisória sejam idênticos em Início, Perguntas, Conteúdos e Baralhos. É
  * consistência que ninguém precisa lembrar de reproduzir.
  */
 export function CabecalhoPagina({ titulo, descricao, acoes }: PropsCabecalhoPagina) {

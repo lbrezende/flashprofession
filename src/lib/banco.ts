@@ -1,5 +1,5 @@
 import { neon } from "@neondatabase/serverless"
-import type { Agendamento, Cliente, Dados, Pedido } from "./types"
+import type { Baralho, Conteudo, Dados, Pergunta } from "./types"
 
 /**
  * O banco no Neon, montado e desligado.
@@ -12,8 +12,8 @@ import type { Agendamento, Cliente, Dados, Pedido } from "./types"
  *
  * SOBRE O FORMATO DA TABELA. É uma tabela só, com a coleção, o id e o registro
  * em `jsonb`. Não é preguiça, é a escolha que sobrevive ao que este projeto
- * existe pra fazer: você vai renomear "cliente" pra "paciente" ou pra
- * "destinatário", trocar os campos e inventar entidade nova, e nada disso pede
+ * existe pra fazer: você vai trocar os campos de uma
+ * coleção e inventar coleção nova, e nada disso pede
  * migração aqui. Numa coluna por campo, cada mudança de ideia no produto viraria
  * `ALTER TABLE`. Trocar isso por tabelas com colunas de verdade, com índice e
  * chave estrangeira, é justamente o assunto do workshop, e o `banco/schema.sql`
@@ -26,7 +26,7 @@ import type { Agendamento, Cliente, Dados, Pedido } from "./types"
 const TABELA = "registros"
 
 /** As coleções que o app guarda hoje. Serve de porteiro do que vem da rede. */
-export const COLECOES = ["clientes", "pedidos", "agendamentos"] as const
+export const COLECOES = ["conteudos", "perguntas", "baralhos"] as const
 export type Colecao = (typeof COLECOES)[number]
 
 export function ehColecao(valor: unknown): valor is Colecao {
@@ -91,11 +91,11 @@ async function pronto() {
 type Linha = { colecao: string; id: string; dados: unknown }
 
 function montar(linhas: Linha[]): Dados {
-  const dados: Dados = { clientes: [], pedidos: [], agendamentos: [] }
+  const dados: Dados = { conteudos: [], perguntas: [], baralhos: [] }
   for (const linha of linhas) {
-    if (linha.colecao === "clientes") dados.clientes.push(linha.dados as Cliente)
-    else if (linha.colecao === "pedidos") dados.pedidos.push(linha.dados as Pedido)
-    else if (linha.colecao === "agendamentos") dados.agendamentos.push(linha.dados as Agendamento)
+    if (linha.colecao === "conteudos") dados.conteudos.push(linha.dados as Conteudo)
+    else if (linha.colecao === "perguntas") dados.perguntas.push(linha.dados as Pergunta)
+    else if (linha.colecao === "baralhos") dados.baralhos.push(linha.dados as Baralho)
   }
   return dados
 }
@@ -145,15 +145,20 @@ export async function remover(colecao: Colecao, id: string): Promise<void> {
   if (!sql) return
   await sql`DELETE FROM registros WHERE colecao = ${colecao} AND id = ${id}`
 
-  // Apagar um cliente apaga o que dependia dele. A regra é a mesma do
-  // `removerCliente` do store, e ela mora nos dois lugares porque cada um pode
+  // Apagar um conteúdo apaga as perguntas que saíram dele. A regra é a mesma do
+  // `removerConteudo` do store, e ela mora nos dois lugares porque cada um pode
   // ser o único ligado. Um dia isso vira chave estrangeira com ON DELETE
   // CASCADE, e aí o banco passa a garantir sozinho.
-  if (colecao === "clientes") {
+  //
+  // A carta que some de um baralho não precisa de limpeza aqui: a revisão lê o
+  // baralho procurando cada pergunta e pula a que não existe mais. Um id órfão
+  // dentro da lista é ruído, não é defeito, e limpar array de jsonb no meio de
+  // um DELETE custaria bem mais que ignorar ele na leitura.
+  if (colecao === "conteudos") {
     await sql`
       DELETE FROM registros
-      WHERE colecao IN ('pedidos', 'agendamentos')
-        AND dados ->> 'clienteId' = ${id}
+      WHERE colecao = 'perguntas'
+        AND dados ->> 'conteudoId' = ${id}
     `
   }
 }

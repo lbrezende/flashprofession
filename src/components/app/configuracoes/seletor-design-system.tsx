@@ -166,11 +166,11 @@ export function SeletorDesignSystem() {
                     aria-pressed={escolhido}
                     className={cn(
                       "group flex flex-col gap-2 rounded-ds border p-2 text-left transition-colors duration-150",
-                      // O sistema escolhido É o tema aplicado, então o
-                      // `.brilho-marca` sai exatamente na cor dele. Só ele
-                      // levanta da grade.
+                      // O sistema escolhido É o tema aplicado, então a borda e o
+                      // fundo tingido saem exatamente na cor dele. Só ele
+                      // se destaca da grade.
                       escolhido
-                        ? "brilho-marca border-primary bg-primary/8"
+                        ? "border-primary bg-primary/8"
                         : "superficie border-hairline hover:border-muted/50 hover:bg-elevated"
                     )}
                   >

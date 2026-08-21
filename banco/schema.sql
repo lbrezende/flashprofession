@@ -12,8 +12,8 @@
 -- =============================================================================
 
 CREATE TABLE IF NOT EXISTS registros (
-  colecao    text        NOT NULL,   -- 'clientes', 'pedidos', 'agendamentos'
-  id         text        NOT NULL,   -- o mesmo id que o app já usa (cli-a1b2c3)
+  colecao    text        NOT NULL,   -- 'conteudos', 'perguntas', 'baralhos'
+  id         text        NOT NULL,   -- o mesmo id que o app já usa (con-a1b2c3)
   dados      jsonb       NOT NULL,   -- o registro inteiro, do jeito que a tela lê
   criado_em  timestamptz NOT NULL DEFAULT now(),
   PRIMARY KEY (colecao, id)
@@ -27,46 +27,45 @@ CREATE INDEX IF NOT EXISTS registros_colecao_criado_em
 -- O PRÓXIMO DESENHO, QUANDO VOCÊ QUISER IR ALÉM
 -- =============================================================================
 --
--- Uma tabela com jsonb aguenta o app inteiro e sobrevive a você renomear as
--- entidades. O que ela não te dá é o banco conferindo as suas regras: hoje nada
--- impede um pedido apontar pra um cliente que não existe, e "somar o valor de
--- todos os pedidos atrasados" vira uma consulta feia.
+-- Uma tabela com jsonb aguenta o app inteiro e sobrevive a você trocar os
+-- campos de ideia. O que ela não te dá é o banco conferindo as suas regras:
+-- hoje nada impede uma pergunta apontar pra um conteúdo que não existe, e
+-- "quantas perguntas de Biologia continuam erradas" vira uma consulta feia.
 --
 -- Quando fizer sentido trocar, o desenho é este. Repare no que ele ganha: o
--- REFERENCES não deixa pedido órfão existir, o ON DELETE CASCADE apaga os
--- filhos sozinho (hoje isso é código nosso, em dois lugares), e cada campo
--- ganha tipo de verdade, então valor vira número e prazo vira data.
+-- REFERENCES não deixa pergunta órfã existir, o ON DELETE CASCADE apaga as
+-- filhas sozinho (hoje isso é código nosso, em dois lugares), e cada campo
+-- ganha tipo de verdade.
 --
--- CREATE TABLE clientes (
---   id          text PRIMARY KEY,
---   nome        text NOT NULL,
---   email       text NOT NULL,
---   telefone    text NOT NULL DEFAULT '',
---   empresa     text NOT NULL DEFAULT '',
---   status      text NOT NULL DEFAULT 'ativo',
---   observacoes text NOT NULL DEFAULT '',
---   criado_em   timestamptz NOT NULL DEFAULT now()
--- );
---
--- CREATE TABLE pedidos (
+-- CREATE TABLE conteudos (
 --   id         text PRIMARY KEY,
 --   titulo     text NOT NULL,
---   cliente_id text NOT NULL REFERENCES clientes(id) ON DELETE CASCADE,
---   etapa      text NOT NULL DEFAULT 'novo',
---   valor      numeric(12,2) NOT NULL DEFAULT 0,
---   prioridade text NOT NULL DEFAULT 'media',
---   prazo      date,
---   descricao  text NOT NULL DEFAULT '',
+--   disciplina text NOT NULL DEFAULT '',
+--   tema       text NOT NULL DEFAULT '',
+--   texto      text NOT NULL DEFAULT '',
 --   criado_em  timestamptz NOT NULL DEFAULT now()
 -- );
 --
--- CREATE TABLE agendamentos (
+-- CREATE TABLE perguntas (
 --   id          text PRIMARY KEY,
---   titulo      text NOT NULL,
---   cliente_id  text NOT NULL REFERENCES clientes(id) ON DELETE CASCADE,
---   data        date NOT NULL,
---   hora        time NOT NULL,
---   duracao_min integer NOT NULL DEFAULT 60,
---   status      text NOT NULL DEFAULT 'ativo',
---   local       text NOT NULL DEFAULT ''
+--   conteudo_id text NOT NULL REFERENCES conteudos(id) ON DELETE CASCADE,
+--   enunciado   text NOT NULL,
+--   resposta    text NOT NULL DEFAULT '',
+--   resultado   text,                 -- 'acertei', 'errei' ou nulo (não revisada)
+--   criado_em   timestamptz NOT NULL DEFAULT now()
+-- );
+--
+-- CREATE TABLE baralhos (
+--   id        text PRIMARY KEY,
+--   nome      text NOT NULL,
+--   criado_em timestamptz NOT NULL DEFAULT now()
+-- );
+--
+-- -- A carta é a ligação entre um baralho e uma pergunta, com a ordem dentro do
+-- -- baralho. Hoje isso é o array `perguntaIds` dentro do próprio baralho.
+-- CREATE TABLE cartas (
+--   baralho_id  text NOT NULL REFERENCES baralhos(id)  ON DELETE CASCADE,
+--   pergunta_id text NOT NULL REFERENCES perguntas(id) ON DELETE CASCADE,
+--   posicao     integer NOT NULL DEFAULT 0,
+--   PRIMARY KEY (baralho_id, pergunta_id)
 -- );

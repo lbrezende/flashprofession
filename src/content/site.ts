@@ -1,208 +1,180 @@
 /**
  * TODA a copy do produto mora aqui.
  *
- * É o arquivo que a IA reescreve quando você personaliza o app pro seu
- * segmento. Nenhum texto fica solto dentro de componente. Assim a
- * personalização custa 1 arquivo em vez de uma varredura no projeto inteiro
- * (isso economiza tokens de verdade).
- *
- * Junto com o `design-system.json`, estes são os dois únicos arquivos que
- * precisam mudar para o app virar outra coisa.
+ * Nenhum texto visível fica solto dentro de componente. Trocar uma palavra do
+ * app inteiro é editar este arquivo, e não varrer quarenta arquivos atrás de
+ * uma string. Junto com o `design-system.json`, é aqui que o app muda de cara
+ * sem ninguém mexer em lógica.
  */
 
 export const marca = {
-  nome: "Órbita",
-  tagline: "O painel que mantém sua operação girando",
-  descricaoCurta: "Clientes, pedidos e agenda num lugar só.",
+  nome: "Vira Pergunta",
+  tagline: "O conteúdo que você precisa estudar, em forma de pergunta",
+  descricaoCurta:
+    "Cole o material da matéria e receba as perguntas que a prova vai fazer.",
 }
 
+/**
+ * O nome de cada coleção com o artigo junto.
+ *
+ * Não é camada de tradução: a pasta, a rota e o rótulo já falam esta mesma
+ * palavra. O que mora aqui é gramática, pra frase montada em tempo de execução
+ * sair em português correto ("3 perguntas", "o baralho", "a pergunta").
+ */
+export const palavras = {
+  conteudo: { singular: "conteúdo", plural: "conteúdos", artigo: "o" },
+  pergunta: { singular: "pergunta", plural: "perguntas", artigo: "a" },
+  baralho: { singular: "baralho", plural: "baralhos", artigo: "o" },
+  carta: { singular: "carta", plural: "cartas", artigo: "a" },
+} as const
+
 export const landing = {
-  /** Barra fixa do topo da landing. Os `href` com `#` apontam para as dobras. */
+  /** Barra fixa do topo do site. Os `href` com `#` apontam para as dobras. */
   cabecalho: {
     navegacao: "Navegação da página",
     irParaInicio: "Ir para o início",
     entrar: "Entrar",
+    comoUsar: "Como usar",
     links: [
-      { rotulo: "Benefícios", href: "#beneficios" },
       { rotulo: "Como funciona", href: "#como-funciona" },
-      { rotulo: "Planos", href: "#planos" },
+      { rotulo: "As cartas", href: "#amostra" },
+      { rotulo: "O que muda", href: "#beneficios" },
     ],
   },
 
-  /** Dobra 1: herói */
+  /** Dobra 1: a promessa. */
   hero: {
-    eyebrow: "Pra pequenas operações de serviço",
-    titulo: "Sua operação inteira em uma tela só",
+    eyebrow: "Ferramenta interna da equipe",
+    titulo: "Chegar na prova sabendo o que você já sabe",
     subtitulo:
-      "Pare de perder pedido em conversa de WhatsApp e cliente em planilha. O Órbita junta quem você atende, o que está em andamento e o que vem pela frente. Tudo num painel que cabe na cabeça.",
-    ctaPrimario: "Começar agora",
+      "Você cola o conteúdo da matéria e ele volta em perguntas, do jeito que a prova vai cobrar. Estudar deixa de ser reler e passa a ser responder.",
+    ctaPrimario: "Começar a estudar",
     ctaSecundario: "Ver como funciona",
-    provaSocial: "Usado por mais de 400 pequenos negócios no Brasil",
   },
 
   /**
-   * A "foto do produto" do herói. É um painel falso montado em HTML e CSS, sem
-   * nenhum arquivo de imagem. Os rótulos vivem aqui porque personalizar o app
-   * pra outro segmento tem que mudar também o que aparece na prévia.
+   * A "foto do produto" do topo. É um app falso montado em HTML e CSS, sem
+   * nenhum arquivo de imagem. Os rótulos vivem aqui porque mudar o produto tem
+   * que mudar também o que aparece na prévia.
    *
    * A `descricao` é o texto alternativo: a prévia inteira é anunciada como uma
    * imagem só, então é a única frase que o leitor de tela vai ouvir dela.
    */
   mockup: {
     descricao:
-      "Prévia do painel do Órbita: indicadores do mês, pedidos por semana e os próximos compromissos.",
-    endereco: "app.orbita.com.br",
-    titulo: "Painel",
-    periodo: "Últimos 7 dias",
-    metricas: [
-      { rotulo: "Clientes ativos", valor: "38", variacao: "+12%" },
-      { rotulo: "Pedidos abertos", valor: "14", variacao: "+3" },
-      { rotulo: "A receber", valor: "R$ 47,9 mil", variacao: "+18%" },
-    ],
-    grafico: {
-      titulo: "Pedidos por semana",
-      variacao: "+18%",
-    },
+      "Prévia do app: uma carta de estudo aberta, com a pergunta de História na frente e os botões de acertei e errei embaixo.",
+    endereco: "vira-pergunta.app",
+    titulo: "Prova de Humanas de sexta",
+    contador: "Carta 2 de 5",
+    pergunta: "O que foi o Terror, e quem conduziu esse período?",
+    dica: "Responda de cabeça antes de virar",
+    virar: "Ver a resposta",
+    acertei: "Acertei",
+    errei: "Ainda não",
     lista: {
-      titulo: "Próximos compromissos",
+      titulo: "Conteúdos da semana",
       itens: [
-        { titulo: "Apresentação das rotas", pessoa: "Marina Alvarenga", quando: "Hoje, 10:00" },
-        { titulo: "Alinhamento trimestral", pessoa: "Rafael Nogueira", quando: "Amanhã, 14:30" },
-        { titulo: "Kickoff do site", pessoa: "Camila Ishikawa", quando: "Qui, 09:00" },
+        { titulo: "Revolução Francesa: as três fases", disciplina: "História" },
+        { titulo: "Fotossíntese e respiração celular", disciplina: "Biologia" },
+        { titulo: "Função do segundo grau", disciplina: "Matemática" },
       ],
     },
   },
 
-  /** Dobra 2: os três maiores benefícios */
-  beneficios: {
-    titulo: "Três problemas a menos na sua semana",
-    itens: [
-      {
-        icone: "users",
-        titulo: "Nada mais se perde",
-        texto:
-          "Cada cliente com histórico, contato e observação no mesmo lugar. Você para de procurar aquela mensagem de três semanas atrás.",
-      },
-      {
-        icone: "kanban",
-        titulo: "Você enxerga o andamento",
-        texto:
-          "Todo pedido numa coluna. Bate o olho e sabe o que está travado, o que está atrasado e o que já pode faturar.",
-      },
-      {
-        icone: "calendar",
-        titulo: "A semana já montada",
-        texto:
-          "Os compromissos aparecem junto com o cliente e o pedido relacionado. Chega de descobrir a reunião quinze minutos antes.",
-      },
-    ],
-  },
-
-  /** Dobra 3: como funciona */
+  /** Dobra 2: os três passos do uso. */
   comoFunciona: {
-    titulo: "Três passos e você tá rodando",
-    subtitulo: "Sem migração complicada, sem treinamento de duas semanas.",
+    titulo: "Do texto colado até a carta virada",
+    subtitulo: "São três passos, e o primeiro leva menos de um minuto.",
     passos: [
       {
         numero: "01",
-        titulo: "Seus clientes entram em dez minutos",
-        texto: "Importe de uma planilha ou cadastre na mão. Não tem migração, não precisa de ajuda.",
+        titulo: "Cole o conteúdo da matéria",
+        texto:
+          "O resumo da aula, o trecho do livro, o material que o professor mandou. Você cola, diz de que disciplina é, e pronto.",
       },
       {
         numero: "02",
-        titulo: "O quadro vira o seu processo",
-        texto: "Arraste os pedidos entre as colunas conforme o trabalho anda. É o seu jeito, não o nosso.",
+        titulo: "Ele volta em perguntas",
+        texto:
+          "Cada ponto importante do texto sai como uma pergunta, com a resposta guardada atrás dela.",
       },
       {
         numero: "03",
-        titulo: "De manhã você já sabe onde pisar",
-        texto: "Os números se atualizam sozinhos. Você abre o painel e vê o que travou e o que já pode faturar.",
+        titulo: "No dia da prova, o baralho pergunta",
+        texto:
+          "Uma carta por vez. Você responde de cabeça, vira, e marca se acertou. O que ficou errado continua aparecendo.",
       },
     ],
   },
 
-  /** Dobra 4: planos */
+  /** Dobra 3: a prova viva. Três cartas de verdade, do material de exemplo. */
+  amostra: {
+    titulo: "Três cartas que já estão lá dentro",
+    subtitulo:
+      "Elas saíram dos conteúdos que a equipe colou nesta semana. É assim que o baralho chega até você.",
+    frente: "Pergunta",
+    verso: "Resposta",
+  },
+
+  /** Dobra 4: o que cada pessoa ganha. */
+  beneficios: {
+    titulo: "O que muda pra quem estuda e pra quem ensina",
+    itens: [
+      {
+        icone: "pergunta",
+        titulo: "O conteúdo já chega perguntando",
+        texto:
+          "Colar o texto é o único trabalho. O que volta é a lista do que você precisa saber responder, e revisar deixa de começar do zero.",
+      },
+      {
+        icone: "estudar",
+        titulo: "Pouco tempo e ainda assim rende",
+        texto:
+          "Uma pergunta de cada vez, com a resposta atrás. Em minutos você descobre o que já sabe e o que ainda precisa olhar de novo.",
+      },
+      {
+        icone: "conteudo",
+        titulo: "O material da semana pronto sem virar noite",
+        texto:
+          "Quem prepara a aula deixa tudo separado por disciplina e por tema, e depois da prova ajusta o que não funcionou.",
+      },
+    ],
+  },
+
+  /**
+   * DOBRA GUARDADA. Este app não é vendido: é ferramenta interna da equipe,
+   * então não existe preço nem plano pra anunciar. O bloco continua no
+   * projeto, vazio, esperando o dia em que houver o que dizer. Vazio aqui é
+   * reserva, não é peça faltando.
+   */
   precos: {
-    titulo: "Preço que cabe em quem está começando",
-    subtitulo: "Sem fidelidade. Cancele quando quiser.",
-    /** Selo do plano com `destaque: true`. Só um plano deveria usá-lo. */
-    selo: "Mais escolhido",
-    planos: [
-      {
-        nome: "Começo",
-        preco: "R$ 0",
-        periodo: "para sempre",
-        descricao: "Pra quem está organizando a casa.",
-        recursos: ["Até 20 clientes", "Pedidos ilimitados", "Agenda simples", "1 usuário"],
-        cta: "Começar de graça",
-        destaque: false,
-      },
-      {
-        nome: "Operação",
-        preco: "R$ 89",
-        periodo: "por mês",
-        descricao: "Pra quem já tem time e volume.",
-        recursos: [
-          "Clientes ilimitados",
-          "Quadro personalizável",
-          "Relatórios mensais",
-          "Até 5 usuários",
-          "Suporte por WhatsApp",
-        ],
-        cta: "Começar teste de 14 dias",
-        destaque: true,
-      },
-      {
-        nome: "Escala",
-        preco: "R$ 249",
-        periodo: "por mês",
-        descricao: "Pra operações com vários times.",
-        recursos: [
-          "Tudo do Operação",
-          "Usuários ilimitados",
-          "Integrações via API",
-          "Gerente de conta",
-          "SLA de 4 horas",
-        ],
-        cta: "Falar com vendas",
-        destaque: false,
-      },
-    ],
+    titulo: "",
+    subtitulo: "",
+    selo: "",
+    planos: [] as Array<{
+      nome: string
+      preco: string
+      periodo: string
+      descricao: string
+      recursos: string[]
+      cta: string
+      destaque: boolean
+    }>,
   },
 
-  /** Dobra 5: time */
+  /** DOBRA GUARDADA, pelo mesmo motivo do bloco acima. */
   time: {
-    titulo: "Quem está por trás",
-    subtitulo: "Um time pequeno que já operou o problema que resolve.",
-    pessoas: [
-      {
-        nome: "Ana Ribeiro",
-        cargo: "Produto",
-        bio: "Passou seis anos gerenciando operação de agência antes de decidir construir a ferramenta que faltava.",
-        iniciais: "AR",
-      },
-      {
-        nome: "Bruno Salles",
-        cargo: "Engenharia",
-        bio: "Construiu sistemas internos para logística e saúde. Gosta de software que some na frente do usuário.",
-        iniciais: "BS",
-      },
-      {
-        nome: "Clara Fontes",
-        cargo: "Atendimento",
-        bio: "Atende cada cliente novo pessoalmente na primeira semana. Conhece o produto melhor que qualquer um.",
-        iniciais: "CF",
-      },
-    ],
+    titulo: "",
+    subtitulo: "",
+    pessoas: [] as Array<{ nome: string; cargo: string; bio: string; iniciais: string }>,
   },
 
   rodape: {
-    texto: "Feito pra quem toca a operação todo dia.",
+    texto: "Feito pra quem estuda com o tempo contado, e pra quem prepara o material.",
     navegacao: "Links do rodapé",
     links: [
-      { rotulo: "Termos", href: "#" },
-      { rotulo: "Privacidade", href: "#" },
-      { rotulo: "Contato", href: "#" },
+      { rotulo: "Como usar", href: "/como-usar" },
+      { rotulo: "Entrar", href: "/entrar" },
     ],
   },
 }
@@ -210,12 +182,15 @@ export const landing = {
 /** Rótulos do sistema. Renomeie aqui e o menu, os títulos e os vazios acompanham. */
 export const sistema = {
   nav: [
-    { rotulo: "Painel", href: "/app", icone: "layout-dashboard" },
-    { rotulo: "Clientes", href: "/app/clientes", icone: "users" },
-    { rotulo: "Pedidos", href: "/app/pedidos", icone: "kanban" },
-    { rotulo: "Agenda", href: "/app/agenda", icone: "calendar" },
+    { rotulo: "Início", href: "/app", icone: "inicio" },
+    { rotulo: "Perguntas", href: "/app/perguntas", icone: "pergunta" },
+    { rotulo: "Conteúdos", href: "/app/conteudos", icone: "conteudo" },
+    { rotulo: "Baralhos", href: "/app/baralhos", icone: "baralho" },
+    { rotulo: "Respostas", href: "/app/respostas", icone: "respostas" },
     { rotulo: "Configurações", href: "/app/configuracoes", icone: "settings" },
-  ],
+    // O último item é o convite do desafio, e o tour de boas-vindas para nele.
+    { rotulo: "Desafio de UX", href: "/app/desafio", icone: "desafio", tour: "desafio" },
+  ] as Array<{ rotulo: string; href: string; icone: string; tour?: string }>,
 
   /**
    * Textos da casca da área logada (menu, topo, estados de carregamento).
@@ -227,337 +202,329 @@ export const sistema = {
     abrirMenu: "Abrir menu",
     fecharMenu: "Fechar menu",
     pularParaConteudo: "Pular para o conteúdo",
-    carregando: "Carregando o painel",
+    carregando: "Carregando o app",
     sair: "Sair",
   },
 
-  entidades: {
-    cliente: { singular: "cliente", plural: "clientes", artigo: "o" },
-    pedido: { singular: "pedido", plural: "pedidos", artigo: "o" },
-    agendamento: { singular: "compromisso", plural: "compromissos", artigo: "o" },
-  },
-
-  etapas: {
-    novo: "Novo",
-    em_andamento: "Em andamento",
-    aguardando: "Aguardando",
-    concluido: "Concluído",
-  },
-
   vazios: {
-    clientes: {
-      titulo: "Nenhum cliente ainda",
-      texto: "Cadastre o primeiro e ele aparece aqui com histórico e contato.",
-      acao: "Cadastrar cliente",
+    conteudos: {
+      titulo: "Nenhum conteúdo colado ainda",
+      texto: "Cole o texto da primeira matéria e as perguntas saem dele na hora.",
+      acao: "Colar conteúdo",
     },
-    pedidos: {
-      titulo: "O quadro está limpo",
-      texto: "Crie um pedido e arraste entre as colunas conforme o trabalho anda.",
-      acao: "Criar pedido",
+    perguntas: {
+      titulo: "Nenhuma pergunta por aqui ainda",
+      texto: "As perguntas nascem do conteúdo colado. Cole um material e elas aparecem.",
+      acao: "Colar conteúdo",
     },
-    agenda: {
-      titulo: "Semana livre",
-      texto: "Nenhum compromisso marcado. Aproveite, ou marque o primeiro.",
-      acao: "Marcar compromisso",
+    baralhos: {
+      titulo: "Nenhum baralho montado",
+      texto: "Junte as perguntas que caem na prova e revise todas de uma vez.",
+      acao: "Montar baralho",
     },
-  },
-
-  /**
-   * Painel (`/app`), a primeira tela depois do login.
-   *
-   * Os números são todos calculados a partir dos dados; aqui moram só os rótulos
-   * e as `dica`, que respondem "de onde saiu esse número?". É essa frase que
-   * separa um painel de um enfeite com números grandes.
-   */
-  painel: {
-    saudacao: {
-      manha: "Bom dia",
-      tarde: "Boa tarde",
-      noite: "Boa noite",
-      /** `{saudacao}` e `{nome}` são trocados na hora. Sem nome, fica só a saudação. */
-      comNome: "{saudacao}, {nome}",
-    },
-
-    metricas: {
-      clientesAtivos: {
-        icone: "users",
-        rotulo: "Clientes ativos",
-        dica: "Com status ativo",
-      },
-      pedidosEmAndamento: {
-        icone: "kanban",
-        rotulo: "Pedidos em andamento",
-        dica: "Novos, em andamento e aguardando",
-      },
-      valorEmAberto: {
-        icone: "dinheiro",
-        rotulo: "Valor em aberto",
-        dica: "Soma dos pedidos ainda não concluídos",
-      },
-      compromissosDaSemana: {
-        icone: "calendar",
-        rotulo: "Compromissos na semana",
-        dica: "De hoje até os próximos sete dias",
-      },
-    },
-
-    grafico: {
-      titulo: "Pedidos por etapa",
-      descricao: "Onde o trabalho está parado agora.",
-      /** Curto e sem botão de propósito: o convite para criar já está em "Pedidos recentes". */
-      vazio: "Sem pedido nenhum para medir ainda",
-    },
-
-    compromissos: {
-      titulo: "Próximos compromissos",
-      descricao: "Os quatro primeiros da fila.",
-      hoje: "Hoje",
-      verTodos: "Ver a agenda",
-    },
-
-    recentes: {
-      titulo: "Pedidos recentes",
-      descricao: "Os cinco últimos que entraram.",
-      verTodos: "Ver todos os pedidos",
-    },
-
-    /** Pedido ou compromisso que aponta para um cliente que já foi apagado. */
-    semCliente: "Cliente removido",
-
-    vazio: {
-      titulo: "Seu painel está esperando o primeiro dado",
-      texto:
-        "Cadastre um cliente e os números, o gráfico e a agenda começam a aparecer aqui sozinhos.",
-      acao: "Cadastrar cliente",
+    respostas: {
+      titulo: "Nada respondido ainda",
+      texto: "Abra um baralho e revise. O que for marcado aparece aqui pra ser ajustado.",
+      acao: "Ir para os baralhos",
     },
   },
 
-  /**
-   * A lista de clientes.
-   *
-   * A ordem aqui espelha a ordem da tela: topo, filtros, formulário, painel de
-   * detalhe, remoção. Achar o texto que você quer trocar é ler de cima pra baixo.
-   */
-  clientes: {
-    titulo: "Clientes",
-    descricao: "Quem você atende, com contato, situação e o que está em andamento com cada um.",
-    novo: "Novo cliente",
+  /** A tela de abertura do app. */
+  inicio: {
+    titulo: "Início",
+    descricao: "As áreas do Vira Pergunta.",
+    modulos: [
+      {
+        icone: "pergunta",
+        titulo: "Perguntas",
+        texto: "As perguntas geradas a partir de cada conteúdo.",
+        href: "/app/perguntas",
+      },
+      {
+        icone: "conteudo",
+        titulo: "Conteúdos",
+        texto: "O material colado, separado por disciplina e tema.",
+        href: "/app/conteudos",
+      },
+      {
+        icone: "baralho",
+        titulo: "Baralhos",
+        texto: "As cartas organizadas para revisar antes da prova.",
+        href: "/app/baralhos",
+      },
+      {
+        icone: "respostas",
+        titulo: "Respostas",
+        texto: "O que foi acertado e o que continua errado.",
+        href: "/app/respostas",
+      },
+      {
+        icone: "settings",
+        titulo: "Configurações",
+        texto: "Visual, dados de exemplo e perfil.",
+        href: "/app/configuracoes",
+      },
+      {
+        icone: "desafio",
+        titulo: "Desafio de UX",
+        texto: "O guia de refinamento deste app.",
+        href: "/app/desafio",
+      },
+    ],
+  },
 
-    /** Os três status do modelo de dados, com o nome que faz sentido aqui. */
-    status: {
-      ativo: "Ativo",
-      pendente: "Pendente",
-      inativo: "Inativo",
-    },
-
-    filtros: {
-      buscar: "Buscar por nome, empresa ou e-mail",
-      status: "Filtrar por situação",
-      todos: "Todas as situações",
-      limpar: "Limpar filtros",
-    },
-
-    /** Vazio diferente do de `vazios.clientes`: aqui existe cadastro, o filtro é que esconde. */
+  /** Tela de Perguntas: o momento do aluno assim que abre o app. */
+  perguntas: {
+    titulo: "Perguntas",
+    descricao: "Escolha o conteúdo e responda de cabeça antes de ver a resposta.",
+    seletor: "Conteúdo",
+    todosOsConteudos: "Todos os conteúdos",
+    verResposta: "Ver a resposta",
+    esconderResposta: "Esconder a resposta",
+    resposta: "Resposta",
+    deQualConteudo: "De",
+    editar: "Ajustar pergunta",
     semResultado: {
-      titulo: "Nenhum cliente encontrado",
-      texto: "Nenhum cadastro combina com a busca e o filtro de agora.",
+      titulo: "Este conteúdo ainda não tem pergunta",
+      texto: "Abra ele em Conteúdos e gere as perguntas a partir do texto colado.",
+      acao: "Ver todos os conteúdos",
     },
+    /** Selo curto: ele mora no canto de um cartão estreito e não pode empurrar o texto. */
+    resultados: {
+      acertei: "Acertei",
+      errei: "Errei",
+      pendente: "Sem revisão",
+    },
+  },
+
+  /** Tela de Conteúdos: o momento do professor no começo da semana. */
+  conteudos: {
+    titulo: "Conteúdos",
+    descricao: "O material colado, separado por disciplina e por tema.",
+    novo: "Colar conteúdo",
+    semDisciplina: "Sem disciplina",
+    abrir: "Abrir conteúdo",
+    verPerguntas: "Ver as perguntas",
+    perguntasGeradas: "perguntas geradas",
+    semPerguntas: "Sem pergunta nenhuma ainda",
 
     formulario: {
-      tituloCriar: "Novo cliente",
-      descricaoCriar: "Só o nome e o e-mail são obrigatórios. O resto você completa quando souber.",
-      criar: "Cadastrar cliente",
+      tituloCriar: "Colar conteúdo",
+      descricaoCriar:
+        "Cole o texto da matéria. Depois de salvar, dá pra gerar as perguntas com um toque.",
+      tituloEditar: "Ajustar conteúdo",
+      descricaoEditar: "Corrija o texto ou mude onde ele fica guardado.",
+      criar: "Salvar conteúdo",
       salvar: "Salvar alterações",
       campos: {
-        nome: "Nome",
-        empresa: "Empresa",
-        email: "E-mail",
-        telefone: "Telefone",
-        status: "Situação",
-        observacoes: "Observações",
+        titulo: "Título",
+        disciplina: "Disciplina",
+        tema: "Tema",
+        texto: "Conteúdo colado",
       },
-      exemploNome: "Ex.: Marina Alvarenga",
-      exemploEmpresa: "Ex.: Estúdio Clara",
-      exemploEmail: "Ex.: marina@estudioclara.com.br",
-      exemploTelefone: "(00) 00000-0000",
-      exemploObservacoes: "Ex.: prefere contato por WhatsApp, fecha contrato no começo do mês.",
-      ajudaTelefone: "Celular ou fixo, com DDD.",
+      exemploTitulo: "Ex.: Revolução Francesa: as três fases",
+      exemploDisciplina: "Ex.: História",
+      exemploTema: "Ex.: Idade Contemporânea",
+      exemploTexto: "Cole aqui o resumo da aula, o trecho do livro ou o material que você recebeu.",
+      ajudaDisciplina: "É por ela que os conteúdos ficam agrupados na lista.",
+      ajudaTexto: "Quanto mais completo o texto, melhores as perguntas que saem dele.",
       erros: {
-        nome: "Informe o nome do cliente.",
-        emailVazio: "Informe o e-mail.",
-        emailInvalido: "E-mail inválido. Exemplo: nome@empresa.com.br",
-        telefone: "Telefone incompleto. Informe o DDD e o número.",
+        titulo: "Dê um nome ao conteúdo.",
+        disciplina: "Informe a disciplina.",
+        texto: "Cole o conteúdo. Sem texto não sai pergunta.",
       },
     },
 
     detalhe: {
-      dados: "Dados do cliente",
-      desde: "Cliente desde",
-      pedidos: "Pedidos",
-      semPedidos: "Nenhum pedido para este cliente ainda.",
-      agendamentos: "Compromissos",
-      semAgendamentos: "Nenhum compromisso marcado com este cliente.",
+      texto: "Conteúdo colado",
+      perguntas: "Perguntas deste conteúdo",
+      semPerguntas: "Ainda não saiu nenhuma pergunta deste conteúdo.",
     },
 
     remocao: {
       titulo: "Remoção",
-      aviso: "Apaga o cadastro junto com os pedidos e os compromissos vinculados a ele.",
-      acao: "Remover cliente",
-      confirmarTitulo: "Remover este cliente?",
+      aviso: "Apaga o conteúdo junto com as perguntas que saíram dele.",
+      acao: "Remover conteúdo",
+      confirmarTitulo: "Remover este conteúdo?",
       confirmarTexto:
-        "O cadastro, os pedidos e os compromissos vinculados vão embora juntos. Não dá para desfazer.",
+        "O texto e as perguntas geradas a partir dele vão embora juntos, e as cartas saem dos baralhos. Não dá para desfazer.",
       confirmar: "Remover",
     },
   },
 
-  /**
-   * Tela de Agenda.
-   *
-   * `{dia}` é um marcador trocado pelo valor real na hora de exibir. Fica aqui,
-   * e não montado no componente, pra que a frase inteira continue ajustável
-   * numa linha só.
-   */
-  agenda: {
-    titulo: "Agenda",
-    descricao: "A semana inteira à vista, com cliente, horário e local em cada compromisso.",
-    novo: "Novo compromisso",
+  /** A geração automática de perguntas, que hoje é simulada. */
+  geracao: {
+    acao: "Gerar perguntas",
+    gerando: "Gerando…",
+    titulo: "Perguntas geradas do texto",
+    descricao: "Confira antes de salvar. Dá pra apagar o que não serve.",
+    contagem: "Saíram",
+    salvar: "Salvar as perguntas",
+    descartar: "Descartar",
+    refazer: "Gerar de novo",
+    remover: "Tirar esta pergunta",
+    /** Anunciado por leitor de tela quando a geração termina. */
+    aviso: "perguntas geradas a partir do conteúdo",
+    vazio: "Cole o conteúdo primeiro. As perguntas saem do texto.",
 
-    visao: {
-      rotulo: "Modo de exibição",
-      semana: "Semana",
-      lista: "Lista",
+    /** O aviso honesto, que nunca some da tela. */
+    simulado: {
+      texto:
+        "A inteligência artificial não está rodando de verdade: estas perguntas são um resultado de exemplo. Pra valer, falta a sua chave de API.",
+      link: "Como",
     },
 
-    semana: {
-      anterior: "Semana anterior",
-      proxima: "Próxima semana",
-      hoje: "Hoje",
-      novoNoDia: "Novo compromisso em {dia}",
-      diaLivre: "Livre",
+    modal: {
+      titulo: "Como ligar a inteligência artificial de verdade",
+      descricao:
+        "São três coisas: pegar uma chave, guardar ela no lugar certo e pedir pro seu assistente escrever a chamada. Nenhuma delas leva mais que alguns minutos.",
+      passos: [
+        {
+          titulo: "Pegue uma chave de API",
+          texto:
+            "Na OpenAI, a chave sai em platform.openai.com, no menu API keys. Na Anthropic, em console.anthropic.com, também em API keys. As duas pedem cartão e cobram por uso, e um app deste tamanho gasta centavos por mês.",
+          links: [
+            { rotulo: "platform.openai.com", href: "https://platform.openai.com/api-keys" },
+            { rotulo: "console.anthropic.com", href: "https://console.anthropic.com/settings/keys" },
+          ],
+        },
+        {
+          titulo: "Guarde a chave fora do código",
+          texto:
+            "A chave mora no arquivo .env.local, na raiz do projeto, e o nome dela já está documentado sem valor nenhum no .env.example. O .env.local não vai pro GitHub, e o .gitignore já cuida disso.",
+          codigo: "OPENAI_API_KEY=cole-aqui-a-sua-chave",
+          codigoRotulo: ".env.local",
+        },
+        {
+          titulo: "Peça a chamada numa rota de servidor",
+          texto:
+            "Este é o pedido pro seu assistente, e a parte que não pode faltar é a última frase. Chave de API escrita no código do navegador é chave vazada: qualquer pessoa abre o inspetor e copia.",
+          codigo:
+            "Crie a rota src/app/api/gerar-perguntas/route.ts que recebe o texto colado, chama a API da OpenAI no servidor lendo a chave de process.env.OPENAI_API_KEY, e devolve as perguntas em JSON. A chave nunca aparece no navegador e nunca é escrita no código.",
+          codigoRotulo: "Peça assim",
+        },
+      ],
+      regra:
+        "A regra da casa, e ela vale pra qualquer chave: variável de ambiente no .env.local, chamada saindo de uma rota em src/app/api, e nada de chave escrita no código do navegador nem enviada pro repositório.",
+      fechar: "Entendi",
+      copiar: "Copiar",
+      copiado: "Copiado!",
+      falhaCopia: "Não deu para copiar automaticamente. Selecione o texto acima e use Ctrl+C (ou Cmd+C).",
     },
+  },
 
-    /** A contagem de cada dia sai de `entidades.agendamento`, não se repete aqui. */
-    lista: {
-      hoje: "Hoje",
-    },
-
-    cartao: {
-      editar: "Editar compromisso",
-      semCliente: "Cliente removido",
-    },
-
-    /** Situação do compromisso. Reaproveita os três status do modelo de dados. */
-    status: {
-      ativo: "Confirmado",
-      pendente: "A confirmar",
-      inativo: "Cancelado",
-    },
+  /** Tela de Baralhos: o momento do aluno no dia da prova. */
+  baralhos: {
+    titulo: "Baralhos",
+    descricao: "Junte as perguntas que caem na prova e revise todas de uma vez.",
+    novo: "Montar baralho",
+    revisar: "Revisar",
+    editar: "Ajustar baralho",
+    cartas: "cartas",
+    semCarta: "Nenhuma carta ainda",
+    progresso: "já acertadas",
 
     formulario: {
-      tituloCriar: "Novo compromisso",
-      tituloEditar: "Editar compromisso",
-      descricaoCriar: "Reserve o horário e escolha quem você vai atender.",
-      descricaoEditar: "Ajuste o que mudou, ou tire o compromisso da agenda.",
-      criar: "Marcar compromisso",
+      tituloCriar: "Montar baralho",
+      descricaoCriar: "Dê um nome e marque as perguntas que entram nele.",
+      tituloEditar: "Ajustar baralho",
+      descricaoEditar: "Mude o nome ou troque as cartas que entram.",
+      criar: "Montar",
       salvar: "Salvar alterações",
-      remover: "Remover",
-      campos: {
-        titulo: "Título",
-        cliente: "Cliente",
-        data: "Data",
-        hora: "Início",
-        duracao: "Duração",
-        local: "Local",
-        status: "Situação",
-      },
-      exemploTitulo: "Ex.: Apresentação da proposta",
-      exemploLocal: "Ex.: Google Meet, telefone, escritório",
-      semClientes: "Cadastre um cliente primeiro. Todo compromisso tem alguém do outro lado.",
+      nome: "Nome do baralho",
+      exemploNome: "Ex.: Prova de Humanas de sexta",
+      escolher: "Perguntas que entram",
+      ajudaEscolher: "Marque quantas quiser. Elas aparecem na ordem em que estão aqui.",
+      selecionadas: "marcadas",
+      semPerguntas: "Cole um conteúdo primeiro. Sem pergunta não dá pra montar baralho.",
       erros: {
-        titulo: "Dê um nome ao compromisso.",
-        cliente: "Escolha o cliente.",
-        data: "Informe a data.",
-        hora: "Informe o horário de início.",
+        nome: "Dê um nome ao baralho.",
+        perguntas: "Marque pelo menos uma pergunta.",
       },
-      duracoes: [
-        { valor: "15", rotulo: "15 minutos" },
-        { valor: "30", rotulo: "30 minutos" },
-        { valor: "45", rotulo: "45 minutos" },
-        { valor: "60", rotulo: "1 hora" },
-        { valor: "90", rotulo: "1h30" },
-      ],
-    },
-
-    remocao: {
-      titulo: "Remover este compromisso?",
-      texto: "Ele sai da agenda na hora, e não dá para desfazer.",
-      confirmar: "Remover",
-    },
-  },
-
-  /**
-   * O quadro de pedidos.
-   *
-   * Os nomes das colunas ficam em `etapas`, logo acima. Aqui está o que
-   * envolve o quadro: ações, cartão, formulário e mensagens.
-   */
-  pedidos: {
-    titulo: "Pedidos",
-    descricao:
-      "Arraste os cartões entre as colunas conforme o trabalho anda. Sem mouse? Cada cartão tem o botão Mover.",
-    novo: "Novo pedido",
-    /** Vira o nome do botão “+” de cada coluna: “Novo pedido em Aguardando”. */
-    novoNaColuna: "Novo pedido em",
-    editar: "Editar pedido",
-    criar: "Criar pedido",
-    salvar: "Salvar alterações",
-    mover: "Mover",
-    moverPara: "Mover para",
-    etapaAtual: "Etapa atual",
-    /** Anunciado por leitor de tela depois de mover: “… para Em andamento: Título”. */
-    avisoMovido: "Pedido movido para",
-    colunaVazia: "Nada nesta coluna",
-    soltarAqui: "Solte aqui",
-    somaDaColuna: "Soma da coluna",
-    atrasado: "Atrasado",
-    semCliente: "Sem cliente",
-    /** Prefixo do campo de valor. Troque junto com a moeda em `formato.ts`. */
-    simboloMoeda: "R$",
-
-    prioridades: {
-      baixa: "Baixa",
-      media: "Média",
-      alta: "Alta",
-    },
-
-    campos: {
-      titulo: "Título",
-      cliente: "Cliente",
-      valor: "Valor",
-      prioridade: "Prioridade",
-      prazo: "Prazo",
-      descricao: "Descrição",
-      etapa: "Etapa",
-    },
-
-    ajudas: {
-      valor: "Use vírgula para os centavos: 1.200,50.",
-      descricao: "Opcional. O combinado, em uma linha.",
-      semClientes: "Cadastre um cliente antes de criar o pedido.",
-    },
-
-    erros: {
-      titulo: "Dê um nome ao pedido.",
-      cliente: "Escolha de quem é este pedido.",
-      valor: "Informe um valor de zero para cima.",
-      prazo: "Informe a data de entrega.",
     },
 
     remocao: {
       acao: "Remover",
-      titulo: "Remover este pedido?",
-      texto: "Ele sai do quadro na hora, e não dá para desfazer.",
-      confirmar: "Remover pedido",
+      titulo: "Remover este baralho?",
+      texto: "As perguntas continuam onde estão. Só a seleção some, e não dá para desfazer.",
+      confirmar: "Remover baralho",
+    },
+
+    /** A revisão em cartas, uma de cada vez. */
+    revisao: {
+      voltar: "Voltar para os baralhos",
+      contador: "Carta {atual} de {total}",
+      dica: "Responda de cabeça antes de virar",
+      virar: "Ver a resposta",
+      voltarCarta: "Ver a pergunta de novo",
+      frente: "Pergunta",
+      verso: "Resposta",
+      acertei: "Acertei",
+      errei: "Ainda não",
+      anterior: "Carta anterior",
+      /** Anunciado por leitor de tela a cada carta marcada. */
+      aviso: "Marcada como",
+      fim: {
+        titulo: "Baralho revisado",
+        acertos: "Você acertou {acertos} de {total}.",
+        semErro: "Nenhuma ficou pra trás. Pode fechar o app tranquilo.",
+        comErro: "As que ficaram pra trás continuam marcadas em Respostas.",
+        refazer: "Revisar de novo",
+        soAsErradas: "Revisar só as que errei",
+        sair: "Voltar para os baralhos",
+      },
+      vazio: {
+        titulo: "Este baralho está sem carta",
+        texto: "As perguntas dele foram removidas. Ajuste o baralho e escolha outras.",
+        acao: "Ajustar baralho",
+      },
+    },
+  },
+
+  /** Tela de Respostas: o momento do professor depois da correção. */
+  respostas: {
+    titulo: "Respostas",
+    descricao: "O que a turma marcou nas revisões, para você ajustar o que não funcionou.",
+    aindaErrada: "ainda errada",
+    aindaErradas: "ainda erradas",
+    jaAcertadas: "já acertadas",
+    naoRevisadas: "sem revisão",
+    resumoDoConteudo: "{erradas} de {total} continuam erradas",
+    tudoCerto: "Todas as {total} já foram acertadas",
+    ajustar: "Ajustar pergunta",
+    zerar: "Zerar as marcações",
+    confirmarZerar: {
+      titulo: "Zerar as marcações deste conteúdo?",
+      texto:
+        "Todas as perguntas dele voltam para sem revisão, e a turma recomeça do zero. Não dá para desfazer.",
+      confirmar: "Zerar",
+    },
+    abrirConteudo: "Abrir o conteúdo",
+  },
+
+  /** O formulário de uma pergunta, usado nas telas que ajustam ela. */
+  pergunta: {
+    formulario: {
+      tituloEditar: "Ajustar pergunta",
+      descricaoEditar: "Corrija o enunciado ou a resposta. Vale em todos os baralhos que usam esta carta.",
+      salvar: "Salvar alterações",
+      campos: {
+        enunciado: "Pergunta",
+        resposta: "Resposta",
+      },
+      exemploEnunciado: "Ex.: O que foi o Terror, e quem conduziu esse período?",
+      exemploResposta: "Ex.: A fase mais dura da Convenção Nacional, conduzida por Robespierre.",
+      ajudaResposta: "É o que aparece atrás da carta. Curta e direta funciona melhor.",
+      erros: {
+        enunciado: "Escreva a pergunta.",
+        resposta: "Escreva a resposta.",
+      },
+    },
+    remocao: {
+      acao: "Remover pergunta",
+      titulo: "Remover esta pergunta?",
+      texto: "Ela sai dos baralhos junto, e não dá para desfazer.",
+      confirmar: "Remover",
     },
   },
 
@@ -608,7 +575,7 @@ export const sistema = {
       aviso: {
         titulo: "Isto aqui é uma prévia",
         texto:
-          "A troca vale só neste navegador e some se você limpar os dados do site. Pra ele valer no projeto inteiro (landing, sistema e Storybook), cole o JSON abaixo no design-system.json da raiz.",
+          "A troca vale só neste navegador e some se você limpar os dados do site. Pra ele valer no projeto inteiro (site, sistema e Storybook), cole o JSON abaixo no design-system.json da raiz.",
       },
       json: {
         titulo: "O JSON deste sistema",
@@ -632,7 +599,7 @@ export const sistema = {
       confirmarRestaurar: {
         titulo: "Restaurar os dados de exemplo?",
         texto:
-          "Os clientes, pedidos e compromissos que você criou ou editou somem, e os originais voltam.",
+          "Os conteúdos, perguntas e baralhos que você criou ou editou somem, e os originais voltam.",
         confirmar: "Restaurar",
       },
       confirmarLimpar: {
@@ -662,6 +629,18 @@ export const sistema = {
 }
 
 /**
+ * O modal que aparece uma vez por sessão quando o ponteiro sai da janela pela
+ * borda de cima, no computador. No celular ele não existe.
+ */
+export const saida = {
+  titulo: "Antes de fechar, uma pergunta sobre você",
+  texto:
+    "Você quer entender o que pode fazer pra crescer na carreira? Acabou de ver que dá pra criar um aplicativo inteiro. Agora tem um desafio de UX pronto pra você executar, resolvendo os problemas que existem neste produto que você acabou de ver.",
+  primario: "Ver o desafio",
+  secundario: "Agora não",
+}
+
+/**
  * A porta de entrada (`/entrar`).
  *
  * O passo a passo do Google mora aqui, e não dentro do modal, pelo mesmo motivo
@@ -671,9 +650,9 @@ export const sistema = {
 export const entrada = {
   voltar: "Voltar para o site",
 
-  titulo: "Sua operação organizada em um clique",
+  titulo: "Bem-vindo à equipe. Entra que eu te mostro",
   subtitulo:
-    "Sem cadastro, sem senha, sem e-mail de confirmação. O app roda no seu navegador e os dados ficam guardados aí mesmo.",
+    "Esta é a ferramenta que a gente usa aqui pra transformar conteúdo em pergunta. Entre com a conta da equipe ou use a entrada rápida enquanto o login não está ligado.",
 
   google: {
     botao: "Continuar com Google",
@@ -695,29 +674,30 @@ export const entrada = {
       falhou:
         "O Google recusou as credenciais deste app. Confira o Client ID, o Client Secret e o endereço de retorno cadastrado.",
       indisponivel:
-        "O login com Google ainda não está configurado neste app. Use a entrada sem senha por enquanto.",
+        "O login com Google ainda não está configurado neste app. Use a entrada rápida por enquanto.",
     },
   },
 
   separador: "ou",
 
   campos: {
-    nome: {
-      rotulo: "Seu nome",
-      placeholder: "Ana Ribeiro",
-      ajuda: "Opcional. É o nome que aparece no topo do painel.",
+    usuario: {
+      rotulo: "Seu nome ou e-mail da equipe",
+      placeholder: "voce@equipe.com.br",
+      ajuda: "É o nome que aparece no topo do app.",
+      erro: "Escreva o seu nome ou o e-mail da equipe.",
     },
-    email: {
-      rotulo: "Seu e-mail",
-      placeholder: "ana@estudio.com.br",
-      ajuda: "Opcional. Fica só no seu navegador, e nenhuma mensagem é enviada.",
-      erro: "Esse e-mail parece incompleto. Confira o @ e o domínio, ou deixe o campo em branco.",
+    senha: {
+      rotulo: "Senha",
+      placeholder: "Sua senha",
+      ajuda: "Ela fica só neste navegador. Não é enviada para lugar nenhum.",
+      erro: "Escreva a sua senha.",
     },
   },
 
-  entrarDireto: "Entrar direto (sem senha)",
+  entrarDireto: "Entrar",
   aviso:
-    "Isto não é autenticação de verdade: a sessão fica salva no seu navegador e some quando você limpa os dados do site.",
+    "A senha não sai deste navegador e nada é enviado para servidor nenhum. Ligar o login de verdade é o próximo passo, e ele está explicado na página Como usar.",
 
   modalGoogle: {
     titulo: "Como conectar o Google de verdade",
@@ -740,7 +720,7 @@ export const entrada = {
         titulo: "Crie um projeto",
         texto:
           "No seletor de projetos, no topo da página, escolha “Novo projeto”. O nome é só pra você se achar depois, então pode ser o nome do seu app.",
-        codigo: "Órbita workshop",
+        codigo: "Vira Pergunta",
         codigoRotulo: "Nome sugerido",
       },
       {
@@ -784,11 +764,297 @@ export const entrada = {
     nota: "O .env.local não vai para o Git, e não deve ir. O Client Secret é uma senha: se ele vazar, gere outro no mesmo lugar em que criou.",
 
     aviso:
-      "Assim que as três linhas estiverem no .env.local, este botão passa a fazer login de verdade, sem você mexer em código nenhum. Enquanto isso, use o botão abaixo pra entrar direto.",
+      "Assim que as três linhas estiverem no .env.local, este botão passa a fazer login de verdade, sem você mexer em código nenhum. Enquanto isso, use os campos abaixo pra entrar.",
 
     fechar: "Entendi",
     copiar: "Copiar",
     copiado: "Copiado!",
     falhaCopia: "Não deu para copiar automaticamente. Selecione o texto acima e use Ctrl+C (ou Cmd+C).",
+  },
+}
+
+/**
+ * A tela do Desafio de UX, dentro do app.
+ *
+ * Ela é o gabarito do treino: conta o que dá pra refinar neste produto, como
+ * medir a melhora e onde isso vira carreira. Nada aqui é dado pessoal de
+ * ninguém: o texto fala do APP, não de quem construiu ele.
+ */
+export const desafio = {
+  titulo: "Desafio de UX",
+  descricao: "Um guia de refinamento pra levar este app pra perto de um produto de verdade.",
+
+  abertura: {
+    texto:
+      "Este aplicativo foi construído com inteligência artificial, a partir de um prompt do método do Design Engineer. Se você quiser o seu, é de graça e sai com app e desafio junto.",
+    link: {
+      rotulo: "Pegar o meu prompt",
+      href: "https://guiadeinstalacao.vercel.app/acelerador",
+    },
+  },
+
+  refinar: {
+    titulo: "O que refinar neste app",
+    intro:
+      "Todo produto que nasce rápido nasce cru, e refinar é o trabalho de verdade de quem faz produto. Este é o guia pra levar o Vira Pergunta pra perto de um produto real, pronto pra uso. Começa por um ponto só, e ele está às claras aqui embaixo.",
+
+    ponto: {
+      titulo: "O ponto a refinar, do jeito que ele está hoje",
+      texto:
+        "A primeira tela depois de entrar é um painel genérico de módulos, todos com o mesmo peso, sem nenhuma indicação do que fazer primeiro e sem atalho pra primeira ação de valor: a informação de por onde começar simplesmente não existe. Quem explora encontra tudo e completa qualquer coisa. Nada disso impede a tarefa, só ninguém guia.",
+    },
+
+    solucao: {
+      titulo: "O caminho da solução",
+      itens: [
+        "Definir qual é a primeira ação de valor e desenhar a tela inteira em volta dela",
+        "Substituir a tela inicial vazia por um estado que já ensina o caminho",
+        "Reduzir o primeiro formulário ao mínimo. O resto pode vir depois",
+        "Mostrar progresso quando houver mais de um passo",
+        "Deixar pular qualquer tour, e não repetir para quem já passou",
+      ],
+    },
+
+    teste: {
+      titulo: "Como testar",
+      intro:
+        "Chame 5 pessoas parecidas com quem usaria isso de verdade, peça a tarefa principal sem ajudar, e observe:",
+      itens: [
+        "O que a pessoa faz nos primeiros 30 segundos, e se ela hesita",
+        "Se ela pergunta “e agora?” em voz alta",
+        "Quanto tempo até a primeira ação que gera valor de verdade",
+        "Se ela encontra sozinha a função principal do produto",
+      ],
+    },
+
+    metrica: {
+      titulo: "O número que prova",
+      nome: "Adoção",
+      definicao:
+        "Adoção é a pessoa conseguir usar uma funcionalidade pela primeira vez: descobrir que ela existe, entender pra que serve e chegar até o fim sem ninguém explicar.",
+      comoMedir:
+        "Percentual de pessoas que chegam à primeira ação de valor sem ajuda, e em quanto tempo.",
+      meta: "De 45% em 4 minutos para 80% em 90 segundos, medindo com 5 pessoas antes e outras 5 depois.",
+      fecho:
+        "O antes se mede com o ponto a refinar ainda no lugar, e o depois com o refinamento feito. Os dois números juntos, com os prints das duas versões, são o seu case.",
+      rotulos: {
+        metrica: "Métrica",
+        comoMedir: "Como medir",
+        meta: "A meta",
+      },
+    },
+
+    armadilha: {
+      titulo: "A armadilha a evitar",
+      texto:
+        "Resolver com um tour de 5 balõezinhos. Tour é curativo: a pessoa clica em “pular” e o problema continua. Melhor é a tela se explicar sozinha.",
+    },
+  },
+
+  carreira: {
+    titulo: "O que isso tem a ver com carreira",
+    paragrafos: [
+      "O que separa quem desenha tela de quem faz produto é resolver o problema certo, entender a jornada de quem usa e melhorar uma métrica de verdade.",
+      "Um antes e depois medido com gente real vale mais num portfólio do que qualquer tela bonita.",
+    ],
+    /**
+     * O último parágrafo vem partido porque tem link no meio dele. Montar isso
+     * como uma string com HTML dentro seria pior de traduzir e de auditar.
+     */
+    fecho: {
+      antes: "E é exatamente esse ciclo, achar o problema, corrigir, medir e contar, que se aprende nas formações do Design Engineer: o ",
+      link1: { rotulo: "UX Unicórnio", href: "https://www.designengineer.com.br/matriculas" },
+      meio: " e a ",
+      link2: {
+        rotulo: "Pós/MBA em Inovação orientada a IA e UX",
+        href: "https://leandrorezende.unifast.com.br/mba-em-inovacao-orientada-a-ia-e-ux-vc/",
+      },
+      depois: ".",
+    },
+  },
+
+  fecho: {
+    primario: {
+      rotulo: "Ver o meu desafio de design",
+      href: "https://guiadeinstalacao.vercel.app/desafio/hMwsBomPC1vAPpj6AUCY05wXbeoBAjxdsNoFD4ToGNTc2mj2ArSg0_BGi7H5lWdAPBoXd4CF7marN0noqzG-xg",
+    },
+    secundario: {
+      rotulo: "Garantir meu ingresso do workshop",
+      href: "https://www.designengineer.com.br/primeiroapp",
+    },
+    linkedin: {
+      rotulo: "Quer conversar? Vamos conversar no LinkedIn",
+      href: "https://www.linkedin.com/in/lbrezende/",
+    },
+  },
+}
+
+/**
+ * A página Como usar (`/como-usar`).
+ *
+ * Ela é escrita pra quem é dono deste app e pra quem for ver ele por cima do
+ * ombro: o que já funciona, o que falta ligar e onde cada peça encaixa.
+ */
+export const comoUsar = {
+  titulo: "Como usar o Vira Pergunta",
+  subtitulo:
+    "O que já está de pé, o que ainda falta conectar e onde cada coisa encaixa no projeto. Sem termo técnico solto: cada bloco diz o que você ganha.",
+  voltar: "Voltar para o site",
+  entrar: "Entrar no app",
+
+  pronto: {
+    titulo: "O que este app já faz hoje",
+    subtitulo: "Tudo abaixo funciona agora, sem configurar nada.",
+    itens: [
+      {
+        icone: "inicio",
+        titulo: "O site na frente",
+        texto:
+          "O endereço da raiz abre uma página que explica o produto para quem chega na equipe, com a prévia do app desenhada em HTML, sem arquivo de imagem nenhum.",
+      },
+      {
+        icone: "usuario",
+        titulo: "A tela de entrar",
+        texto:
+          "Botão do Google com o passo a passo de configuração dentro, campo de usuário, campo de senha e o botão de entrar. A sessão fica no seu navegador.",
+      },
+      {
+        icone: "pergunta",
+        titulo: "Perguntas",
+        texto:
+          "Você escolhe o conteúdo e vê as perguntas que saíram dele, com a resposta escondida até você pedir. É a tela de quem abre o app pra estudar.",
+      },
+      {
+        icone: "conteudo",
+        titulo: "Conteúdos",
+        texto:
+          "O material colado, agrupado por disciplina e por tema, com o botão que gera as perguntas a partir do texto.",
+      },
+      {
+        icone: "baralho",
+        titulo: "Baralhos",
+        texto:
+          "As cartas escolhidas pra revisar de uma vez, e a revisão carta a carta: você responde de cabeça, vira e marca se acertou.",
+      },
+      {
+        icone: "respostas",
+        titulo: "Respostas",
+        texto:
+          "O que continua errado depois das revisões, agrupado por conteúdo, com o caminho pra ajustar a pergunta ou o material.",
+      },
+      {
+        icone: "dados",
+        titulo: "Dados de exemplo",
+        texto:
+          "O app já nasce com uma semana de conteúdo dentro, e a tela de configurações tem um botão que restaura e outro que limpa tudo.",
+      },
+      {
+        icone: "paleta",
+        titulo: "Design system aplicado e celular resolvido",
+        texto:
+          "Cor, tipografia e raio saem de um arquivo só, e toda tela funciona em 375 pixels de largura, com alvo de toque de 44 pixels.",
+      },
+    ],
+  },
+
+  conectar: {
+    titulo: "O que ainda falta conectar, e onde cada coisa encaixa",
+    subtitulo:
+      "Cada item diz o que é, o que muda no app quando ligar, e o arquivo do projeto onde ele já está esperando.",
+    itens: [
+      {
+        icone: "email",
+        titulo: "Envio de e-mail",
+        texto:
+          "Confirmação, lembrete de prova e aviso de baralho novo. A chave já tem lugar reservado no modelo de variáveis, e a rota nasce ao lado das que já existem.",
+        onde: ".env.example → RESEND_API_KEY, e src/app/api",
+      },
+      {
+        icone: "dados",
+        titulo: "Backend e banco de dados",
+        texto:
+          "Hoje os dados ficam no navegador de quem usa. O caminho pro banco já nasceu escrito e testado: ligar o Neon é colar a string de conexão no .env.local, e a partir dali o mesmo app grava no Postgres. Zero linha de código, nenhuma tela mudando. Isso é o desenho do projeto, não é sorte.",
+        onde: "src/lib/banco.ts, src/app/api/dados e src/lib/store.ts",
+      },
+      {
+        icone: "seguranca",
+        titulo: "Login com Google",
+        texto:
+          "O caminho inteiro já está montado e desligado: o botão na tela de entrar, o passo a passo dentro dele e as rotas prontas. Colou GOOGLE_CLIENT_ID e GOOGLE_CLIENT_SECRET no .env.local, ligou.",
+        onde: "src/lib/google.ts, src/lib/sessao-servidor.ts e src/app/api/auth",
+      },
+      {
+        icone: "gerar",
+        titulo: "A API da OpenAI",
+        texto:
+          "É ela que troca as perguntas de exemplo pelas perguntas de verdade, lidas do texto que você colou. E serve também pra resumir, classificar e conversar dentro do app. A chave tem grupo próprio no modelo de variáveis, e a rota nasce no servidor, nunca no navegador.",
+        onde: ".env.example → OPENAI_API_KEY, e src/app/api",
+      },
+      {
+        icone: "telefone",
+        titulo: "WhatsApp",
+        texto:
+          "Avisar quem usa o app pelo canal que a pessoa realmente lê: o baralho da prova de sexta chega no celular na quinta à noite.",
+        onde: ".env.example → WHATSAPP_TOKEN",
+      },
+      {
+        icone: "restaurar",
+        titulo: "Automações",
+        texto:
+          "O n8n já está no projeto, com o arquivo pronto pra subir e um guia com dois exemplos desenhados. É por ele que passam WhatsApp, e-mail, planilha e agendamento sem escrever código.",
+        onde: "n8n/docker-compose.yml e n8n/README.md",
+      },
+      {
+        icone: "paleta",
+        titulo: "Storybook",
+        texto:
+          "O catálogo de componentes deste app, já configurado, com os tokens aplicados e auditoria de acessibilidade em cada componente. É o que transforma o projeto numa biblioteca que dá pra mostrar.",
+        onde: ".storybook e os arquivos .stories.tsx ao lado de cada componente",
+      },
+    ],
+    ondeRotulo: "Onde encaixa",
+  },
+
+  workshop: {
+    titulo: "Onde tudo isso se aprende",
+    texto:
+      "Tudo o que está na lista acima é ensinado no workshop. Não é pesquisa solta na internet, não é tentativa e erro: é ao vivo, passo a passo, em cima deste projeto aqui, que já veio com todos os encaixes prontos justamente pra isso.",
+    acao: "Garantir meu ingresso do workshop",
+    href: "https://www.designengineer.com.br/primeiroapp",
+  },
+
+  caminhos: {
+    titulo: "Os dois caminhos depois disso",
+    itens: [
+      {
+        icone: "formacao",
+        titulo: "Pós-graduação e MBA",
+        paraQuem: "Pra quem já é designer e quer liderança com IA",
+        texto:
+          "Inteligência artificial em processos, em research ops e em design ops, com o repertório de quem vai conduzir o time.",
+        acao: "Conhecer a Pós/MBA",
+        href: "https://leandrorezende.unifast.com.br/mba-em-inovacao-orientada-a-ia-e-ux-vc/",
+      },
+      {
+        icone: "ideia",
+        titulo: "Formação IA/UX Designer",
+        paraQuem: "Pra quem já é designer mas ainda não aplica IA no dia a dia",
+        texto: "O caminho pra sair usando, do primeiro prompt ao produto entregue.",
+        acao: "Conhecer a formação",
+        href: "https://www.designengineer.com.br/matriculas",
+      },
+    ],
+    paraQuemRotulo: "Pra quem é",
+  },
+
+  proximos: {
+    titulo: "Os meus próximos passos",
+    itens: [
+      "Usar o app com conteúdo de verdade por uma semana",
+      "Anotar tudo o que incomodar, mesmo o que parecer detalhe",
+      "Escrever o caso pro portfólio contando o problema e a decisão",
+      "Entrar no workshop pra ligar backend, login e envio",
+      "Publicar o caso na lista de portfólios do UX Unicórnio",
+    ],
   },
 }

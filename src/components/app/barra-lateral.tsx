@@ -14,7 +14,7 @@ type PropsBarraLateral = {
   aoFechar: () => void
 }
 
-/** `/app` só casa exato; os demais também valem para rotas filhas (`/app/clientes/abc`). */
+/** `/app` só casa exato; os demais também valem para rotas filhas (`/app/baralhos/abc`). */
 function ehAtivo(atual: string, href: string) {
   if (href === "/app") return atual === "/app"
   return atual === href || atual.startsWith(`${href}/`)
@@ -95,7 +95,7 @@ export function BarraLateral({ aberta, aoFechar }: PropsBarraLateral) {
         <div className="flex h-16 shrink-0 items-center justify-between gap-2 border-b border-hairline px-4">
           <Link
             href="/app"
-            className="realce-marca -mx-1 flex min-w-0 items-center rounded-ds px-1 py-1 transition-opacity hover:opacity-80 pointer-coarse:min-h-11"
+            className="-mx-1 flex min-w-0 items-center rounded-ds px-1 py-1 transition-opacity hover:opacity-80 pointer-coarse:min-h-11"
           >
             <Logo />
           </Link>
@@ -126,17 +126,15 @@ export function BarraLateral({ aberta, aoFechar }: PropsBarraLateral) {
                   <Link
                     href={item.href}
                     aria-current={ativo ? "page" : undefined}
+                    data-tour={item.tour}
                     className={cn(
                       "group relative flex items-center gap-3 rounded-ds px-3 py-2 text-sm transition-colors pointer-coarse:min-h-11",
-                      // Quatro sinais somados (tarja, superfície elevada, brilho e
-                      // peso do texto) porque a diferença entre `surface` e
-                      // `elevated` é sutil em parte dos 71 temas. Sozinha, ela não
-                      // marcaria nada.
-                      //
-                      // O brilho sai por `filter` porque a `.superficie-elevada` já
-                      // gastou o `box-shadow` com o fio de 1px por dentro.
+                      // Três sinais somados (tarja na cor de ação, superfície
+                      // elevada e peso do texto) porque a diferença entre
+                      // `surface` e `elevated` é sutil em parte dos 71 temas.
+                      // Sozinha, ela não marcaria nada.
                       ativo
-                        ? "superficie-elevada brilho-suave-filtro font-medium text-ink"
+                        ? "superficie-elevada font-medium text-ink"
                         : "text-muted hover:bg-elevated hover:text-ink"
                     )}
                   >
@@ -151,7 +149,7 @@ export function BarraLateral({ aberta, aoFechar }: PropsBarraLateral) {
                       nome={item.icone}
                       className={cn(
                         "size-[18px] shrink-0 transition-colors",
-                        ativo ? "text-primary" : "text-muted group-hover:text-ink"
+                        ativo ? "text-primary-accent" : "text-muted group-hover:text-ink"
                       )}
                     />
                     <span className="truncate">{item.rotulo}</span>

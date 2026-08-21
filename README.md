@@ -1,236 +1,172 @@
-# Órbita: um SaaS pronto pra você redesenhar
+# Vira Pergunta
 
-Este é um aplicativo web completo e funcionando. Landing page de venda, tela de
-entrada, painel com indicadores, cadastro de clientes, quadro de pedidos e
-agenda. Tudo responsivo, acessível e com o visual trocável em um arquivo.
+Cole o conteúdo que você precisa estudar e ele volta em forma de pergunta.
 
-Ele é um presente para designers de UX que nunca programaram. A ideia é simples:
-você não precisa construir um produto do zero para ter o que redesenhar. Já está
-construído. Personalize, quebre, melhore, mostre no portfólio.
+O aluno cola o texto da matéria, recebe as perguntas que a prova vai cobrar e
+revisa carta a carta no dia da prova. O professor organiza o material por
+disciplina e tema, e depois da correção ajusta o que não funcionou.
+
+É uma ferramenta interna: o site da raiz apresenta ela para quem chega na
+equipe, e o sistema fica atrás da tela de entrar.
 
 ---
 
-## Como rodar
+## Rodar na sua máquina
 
-Você precisa do [Node.js](https://nodejs.org) instalado (versão 20 ou mais
-nova). Baixe o instalador, clique em avançar até o fim, pronto.
-
-Abra o Terminal, entre na pasta do projeto e rode:
+Precisa do Node 20 ou mais novo.
 
 ```bash
 npm install
 npm run dev
 ```
 
-Depois abra <http://localhost:3000> no navegador.
+Abra http://localhost:3000. O app já vem com uma semana de conteúdo dentro, e
+não precisa de banco, de conta em serviço nenhum nem de variável de ambiente
+para funcionar.
 
-O `npm install` baixa as peças que o app usa. Demora um minuto e só precisa ser
-feito uma vez. O `npm run dev` liga o app. Enquanto ele estiver rodando, o
-Terminal fica ocupado; para desligar, aperte `Ctrl + C`.
-
-Para gerar a versão final (a mesma que vai para o ar) e conferir se está tudo
-inteiro:
-
-```bash
-npm run build
-```
-
----
-
-## O que já existe
-
-| Tela | Endereço | O que tem |
-|---|---|---|
-| Landing | `/` | Herói, prévia do produto, benefícios, como funciona, planos, time e rodapé |
-| Entrada | `/entrar` | Login com Google pronto (esperando a chave) e entrada sem senha |
-| Painel | `/app` | Indicadores do período, pedidos por etapa, próximos compromissos |
-| Clientes | `/app/clientes` | Lista, busca, cadastro, edição, remoção e ficha lateral |
-| Pedidos | `/app/pedidos` | Quadro kanban com quatro colunas, prioridade, valor e prazo |
-| Agenda | `/app/agenda` | Visão de semana e visão de lista |
-| Configurações | `/app/configuracoes` | Troca de design system (71 opções), dados de exemplo e perfil |
-
-Na primeira vez que você entra no `/app`, um tour de cinco paradas apresenta o
-app. Ele roda uma vez só, fecha no Esc, e tem um botão em Configurações pra ver
-de novo. O texto dele está em `src/content/tour.ts`.
-
-Também já está pronto:
-
-- **Design system trocável.** Cores e tipografia saem todas de um arquivo só
-- **Componentes próprios.** Botão, campo, card, modal, drawer, badge, estado
-  vazio. Sem biblioteca de terceiros, então dá pra mexer em tudo
-- **Acessibilidade.** Navegação por teclado, foco visível, rótulo em todo campo
-- **Responsivo.** Funciona de verdade em 375px de largura
-- **Estados vazios.** Toda lista tem uma tela pra quando não há nada
-- **Dados de exemplo.** 5 clientes, 6 pedidos e 4 compromissos já cadastrados
-
----
-
-## O que vem desligado (e como ligar)
-
-Recém-baixado, o app não usa banco, não usa servidor de sessão e não autentica
-ninguém. Os dados ficam no seu próprio navegador: abriu em outro computador,
-começa do zero; limpou os dados do site, some tudo.
-
-Isso é **de propósito**, por três motivos:
-
-1. **Roda em qualquer lugar, na hora.** Sem chave de API, sem cadastro em
-   serviço, sem arquivo de configuração. Dois comandos e está no ar.
-2. **Nada quebra.** Não tem servidor para cair nem cota para estourar. Você
-   pode apagar tudo e restaurar os exemplos quantas vezes quiser.
-3. **O foco é a experiência.** Seu exercício é de UX, não de infraestrutura.
-
-**Mas o código das duas peças mais pedidas já está escrito.** Login com Google e
-banco no Neon não são exercício de programação aqui: eles estão prontos e
-desligados, esperando chave.
-
-| Ligar | O que fazer | O que muda |
-|---|---|---|
-| **Login com Google** | Três linhas no `.env.local` (o modal em `/entrar` ensina a pegar cada uma) | O botão passa a autenticar de verdade, e a sessão vira um cookie assinado no servidor |
-| **Banco no Neon** | Uma linha no `.env.local` com a conexão | O app cria a tabela sozinho e passa a guardar no Postgres. Nenhuma tela muda |
-
-Sem as chaves, tudo continua funcionando do jeito que está. Com elas, funciona
-melhor. Você não escreve código nem em um caso nem no outro.
-
-O roteiro completo, incluindo e-mail, WhatsApp e automações, está em
-[`PROXIMOS-PASSOS.md`](./PROXIMOS-PASSOS.md).
-
----
-
-## Como transformar isso no *seu* produto
-
-Leia [`PROMPT.md`](./PROMPT.md).
-
-Resumo: existe um prompt pronto lá. Você preenche seis lacunas (seu produto, seu
-público, o problema que resolve, três benefícios, seu segmento e o design system
-escolhido), cola no Claude Code ou no Gemini, e a IA reescreve o app inteiro para
-você.
-
-Funciona porque só **dois arquivos** precisam mudar:
-
-- `src/content/site.ts`: todo o texto do app
-- `design-system.json`: todo o visual
-
-Nenhuma palavra e nenhuma cor estão escritas dentro dos componentes.
-
----
-
-## Como trocar só o visual, sem IA
-
-1. Rode o app
-2. Vá em **Configurações → Design system**
-3. Clique nos cards e o app inteiro se repinta na hora
-4. Gostou de um? Clique em **Copiar JSON**
-5. Cole no arquivo `design-system.json` da raiz, substituindo o conteúdo
-
-Pronto: landing, sistema e Storybook passam a usar o novo visual.
-
-> A troca feita na tela é só uma prévia, e vale apenas no seu navegador. O que
-> vale para o projeto inteiro é o `design-system.json`.
-
----
-
-## Como abrir o Storybook
-
-O Storybook é uma vitrine dos componentes. Cada botão, campo e card aparece
-isolado, em todos os estados (normal, desabilitado, com erro, carregando). É
-onde você olha uma peça de perto sem precisar navegar até a tela dela.
+## O catálogo de componentes
 
 ```bash
 npm run storybook
 ```
 
-Depois abra <http://localhost:6006>. Ele usa o mesmo `design-system.json` do
-app, então trocar o visual troca a vitrine junto.
+Abre em http://localhost:6006, com os tokens do design system aplicados e
+auditoria de acessibilidade em cada componente.
 
----
+## Publicar
 
-## Como publicar na internet (Vercel)
-
-A Vercel hospeda de graça e é da mesma empresa que faz o Next.js, então não tem
-configuração nenhuma.
-
-1. Crie uma conta em <https://vercel.com> (dá para entrar com o GitHub)
-2. Suba o projeto pro GitHub. Se nunca fez isso, o
-   [GitHub Desktop](https://desktop.github.com) faz na interface, sem terminal
-3. Na Vercel, clique em **Add New → Project** e escolha o repositório
-4. Não mude nenhuma configuração. Clique em **Deploy**
-5. Em dois minutos você recebe um endereço público, tipo
-   `seu-projeto.vercel.app`
-
-Toda vez que você atualizar o código no GitHub, a Vercel publica sozinha.
-
-> Sem `DATABASE_URL`, cada visitante do seu link vê os dados de exemplo e mexe
-> na própria cópia, no próprio navegador. Ninguém vê os dados de ninguém. Pra
-> portfólio, é exatamente o que você quer. Se você ligar o banco, isso muda:
-> passa a ser um só conjunto de dados, compartilhado por quem abrir o endereço.
-
----
-
-## Estrutura de pastas
-
-```text
-.
-├── design-system.json        ← O VISUAL INTEIRO. Cores, fontes, raio de borda.
-├── PROMPT.md                 ← O prompt que transforma o app no seu produto.
-├── PROXIMOS-PASSOS.md        ← Roteiro para plugar login, banco, e-mail etc.
-├── .env.example              ← Modelo de arquivo de senhas (todos vazios).
-├── banco/schema.sql          ← O desenho da tabela que o app cria sozinho no Neon.
-├── n8n/                      ← Automações. Opcional, o app roda sem isso.
-├── public/                   ← Imagens e ícones servidos direto (favicon, svg).
-└── src/
-    ├── content/
-    │   └── site.ts           ← TODO O TEXTO DO APP. Nenhuma palavra fora daqui.
-    │
-    ├── app/                  ← As páginas. Cada pasta vira um endereço.
-    │   ├── page.tsx          ← A landing (/)
-    │   ├── layout.tsx        ← A moldura de todas as páginas
-    │   ├── globals.css       ← Onde os tokens do design system viram CSS
-    │   ├── entrar/           ← /entrar
-    │   ├── api/              ← O servidor: login com Google e porta do banco
-    │   └── app/              ← A área logada
-    │       ├── page.tsx      ← /app, o painel
-    │       ├── clientes/     ← /app/clientes
-    │       ├── pedidos/      ← /app/pedidos
-    │       ├── agenda/       ← /app/agenda
-    │       └── configuracoes/ ← /app/configuracoes
-    │
-    ├── components/           ← As peças que montam as telas.
-    │   ├── ui/               ← Os primitivos: botão, campo, card, modal, badge
-    │   ├── marketing/        ← As dobras da landing
-    │   ├── auth/             ← Tela de entrada e modal do Google
-    │   ├── onboarding/       ← O tour de boas-vindas da primeira visita
-    │   └── app/              ← As peças da área logada, por tela
-    │
-    └── lib/                  ← O motor. Mexa aqui só quando souber o que faz.
-        ├── types.ts          ← O formato dos dados (Cliente, Pedido, Agendamento)
-        ├── store.ts          ← Onde os dados são guardados e alterados
-        ├── banco.ts          ← A conversa com o Postgres, quando ele estiver ligado
-        ├── google.ts         ← O login com Google, esperando as chaves
-        ├── sessao-servidor.ts ← O cookie assinado de quem entrou
-        ├── seed.ts           ← Os dados de exemplo
-        ├── design-system.ts  ← Ponte entre o design-system.json e o CSS
-        ├── design-systems.json ← Catálogo dos 71 visuais prontos
-        ├── tema.ts           ← A prévia de design system em tempo real
-        ├── formato.ts        ← Formatação de data, dinheiro e telefone
-        └── cn.ts             ← Utilitário para juntar classes CSS
+```bash
+npx vercel --prod --yes
 ```
 
-### Por onde começar a mexer
+---
 
-- **Quer mudar uma palavra?** `src/content/site.ts`
-- **Quer mudar uma cor?** `design-system.json`
-- **Quer mudar como um botão se comporta?** `src/components/ui/button.tsx`
-- **Quer mudar o layout de uma tela?** a pasta dela em `src/components/app/`
-- **Quer criar uma tela nova?** uma pasta nova em `src/app/app/` com um
-  `page.tsx` dentro, e um item novo em `sistema.nav` no `site.ts`
+## Como ligar depois
+
+O app nasce sem login de verdade e sem banco, e isso é o que faz ele rodar em
+dois comandos. Mas os dois já estão escritos e testados aqui dentro: ligar cada
+um é preencher linha no `.env.local`, não programar.
+
+### Login com Google
+
+Crie um ID de cliente OAuth em https://console.cloud.google.com/apis/credentials
+(a tela de entrar tem o passo a passo completo dentro do botão do Google) e cole
+no `.env.local`:
+
+```
+GOOGLE_CLIENT_ID=o-seu-client-id
+GOOGLE_CLIENT_SECRET=o-seu-client-secret
+AUTH_SECRET=um-texto-aleatorio-de-32-caracteres-ou-mais
+```
+
+Reinicie o servidor. O botão passa a autenticar de verdade, sem nenhuma tela
+mudar. O código está em `src/lib/google.ts`, `src/lib/sessao-servidor.ts` e nas
+três rotas de `src/app/api/auth`.
+
+### Banco de dados no Neon
+
+Crie um projeto Postgres em https://neon.com (tem plano gratuito), copie a
+connection string e cole no `.env.local`:
+
+```
+DATABASE_URL=postgresql://usuario:senha@servidor/banco?sslmode=require
+```
+
+Reinicie o servidor. O mesmo app passa a gravar no Postgres, e a tabela é criada
+sozinha na primeira chamada. Nenhuma tela fica sabendo da diferença. O código
+está em `src/lib/banco.ts`, na rota `src/app/api/dados` e nos dois lados de
+`src/lib/store.ts`. Conexão errada não derruba a tela: o app volta pro navegador
+sozinho.
+
+### Gerar as perguntas com inteligência artificial
+
+Hoje o botão "Gerar perguntas" funciona com um resultado de exemplo, e a tela
+avisa isso. Para ligar de verdade, pegue uma chave em
+https://platform.openai.com/api-keys e cole no `.env.local`:
+
+```
+OPENAI_API_KEY=sk-a-sua-chave
+```
+
+Depois peça ao seu assistente a rota `src/app/api/gerar-perguntas/route.ts`, que
+lê a chave de `process.env` no servidor. A chave nunca é escrita no código do
+navegador.
+
+O resto das conexões (envio de e-mail, WhatsApp, automações com n8n) está em
+`PROXIMOS-PASSOS.md`, e a versão navegável dessa lista é a página `/como-usar`.
 
 ---
 
-## Tecnologias usadas
+## As telas
 
-Next.js 16, React 19, TypeScript e Tailwind CSS 4. Ícones da biblioteca
-[lucide](https://lucide.dev). Nada além disso. Sem biblioteca de componentes,
-sem biblioteca de animação, sem estado global complicado.
+| Endereço | O que resolve |
+| --- | --- |
+| `/` | O site que apresenta a ferramenta pra quem chega na equipe |
+| `/entrar` | A porta do sistema, com Google, usuário e senha |
+| `/como-usar` | O que já funciona, o que falta ligar e onde cada coisa encaixa |
+| `/app` | A tela inicial, com as áreas do sistema |
+| `/app/perguntas` | O aluno escolhe o conteúdo e responde antes de ver a resposta |
+| `/app/conteudos` | O professor cola o material e gera as perguntas dele |
+| `/app/baralhos` | Os baralhos montados, e a revisão carta a carta |
+| `/app/respostas` | O que continuou errado, pra ajustar a pergunta ou o material |
+| `/app/desafio` | O guia de refinamento deste app |
+| `/app/configuracoes` | Design system, dados de exemplo e perfil |
 
-Se você não conhece nenhum desses nomes, tudo bem. Você não precisa conhecer
-para personalizar o app.
+---
+
+## A árvore de pastas
+
+```
+.claude/launch.json          configuração do servidor de desenvolvimento
+.storybook/                  o catálogo de componentes, com os tokens injetados
+banco/schema.sql             o desenho da tabela que o app cria sozinho no Neon
+n8n/                         o n8n pronto pra subir, com dois exemplos no README
+public/                      arquivos públicos do projeto
+design-system.json           cor, tipografia e raio. Muda aqui, muda tudo
+.env.example                 o modelo comentado das chaves, sem valor nenhum
+
+src/app/
+  page.tsx                   o site da raiz
+  entrar/                    a porta do sistema
+  como-usar/                 o mapa do que já funciona e do que falta ligar
+  app/                       tudo que fica atrás da sessão
+    layout.tsx               a casca: menu, botão de sair e trava de sessão
+    page.tsx                 o início
+    perguntas/               responder antes de ver a resposta
+    conteudos/               colar o material e gerar as perguntas
+    baralhos/                os baralhos e a revisão carta a carta
+    respostas/               o que continuou errado
+    desafio/                 o guia de refinamento
+    configuracoes/           design system, dados de exemplo e perfil
+  api/                       as rotas de servidor: sessão, dados e diagnóstico
+  globals.css                os tokens em CSS e a camada de acabamento
+
+src/components/
+  ui/                        os treze primitivos, escritos à mão, com stories
+  app/                       os componentes de cada tela do sistema
+  marketing/                 as dobras do site, uma por arquivo
+  auth/                      a tela de entrar e o passo a passo do Google
+  como-usar/                 os blocos da página Como usar
+  onboarding/                o tour da primeira visita
+
+src/content/
+  site.ts                    TODA a copy do produto, num arquivo só
+  tour.ts                    as cinco paradas do tour
+
+src/lib/
+  types.ts                   o modelo de dados
+  modelo.ts                  o vocabulário do modelo, num lugar só
+  store.ts                   a única porta de dados: navegador ou Postgres
+  seed.ts                    o material de exemplo
+  perguntas-geradas.ts       as perguntas que a geração devolve hoje
+  banco.ts                   a conversa com o Postgres, desligada
+  google.ts                  o fluxo OAuth inteiro, desligado
+  sessao-servidor.ts         o cookie assinado da sessão
+  design-system.ts           os tokens do JSON viram variáveis CSS
+  design-systems.json        o catálogo de 71 identidades da tela de ajustes
+  tema.ts                    a prévia de tema, derivando o que falta no catálogo
+  contraste.ts               o cálculo de contraste WCAG
+  formato.ts                 data, hora e texto em pt-BR, sem erro de fuso
+  semente.ts                 o hash do nome que decide o cenário do site
+  cn.ts                      o merge de classe que conhece os três raios
+```

@@ -35,8 +35,8 @@ function DrawerComGatilho({ aberto, aoFechar, ...props }: DrawerProps) {
 
 const LARGURAS: LarguraDrawer[] = ["sm", "md", "lg"]
 
-const formulario = sistema.clientes.formulario
-const detalhe = sistema.clientes.detalhe
+const formulario = sistema.conteudos.formulario
+const detalhe = sistema.conteudos.detalhe
 
 const meta = {
   title: "Primitivos/Drawer",
@@ -56,8 +56,8 @@ const meta = {
   args: {
     aberto: false,
     aoFechar: fn(),
-    titulo: "Marina Alvarenga",
-    descricao: "Estúdio Clara",
+    titulo: "Revolução Francesa: as três fases",
+    descricao: "História · Idade Contemporânea",
     largura: "md",
     mostrarFechar: true,
     fecharNoOverlay: true,
@@ -74,42 +74,42 @@ export const Padrao: Story = {
     children: (
       <div className="flex flex-col gap-6">
         <section className="flex flex-col gap-3">
-          <h3 className="font-display text-sm text-ink">{detalhe.dados}</h3>
+          <h3 className="font-display text-sm text-ink">{detalhe.texto}</h3>
           <dl className="grid gap-3 text-sm">
             <div className="flex items-center justify-between gap-3">
-              <dt className="text-muted">{formulario.campos.email}</dt>
-              <dd className="text-ink">marina@estudioclara.com.br</dd>
+              <dt className="text-muted">{formulario.campos.tema}</dt>
+              <dd className="text-ink">Idade Contemporânea</dd>
             </div>
             <div className="flex items-center justify-between gap-3">
-              <dt className="text-muted">{formulario.campos.telefone}</dt>
-              <dd className="text-ink">(11) 98877-1200</dd>
+              <dt className="text-muted">{formulario.campos.texto}</dt>
+              <dd className="text-ink">A Revolução Francesa começa em 1789…</dd>
             </div>
             <div className="flex items-center justify-between gap-3">
-              <dt className="text-muted">{formulario.campos.status}</dt>
+              <dt className="text-muted">{formulario.campos.disciplina}</dt>
               <dd>
                 <Badge variante="sucesso" ponto>
-                  {sistema.clientes.status.ativo}
+                  {sistema.perguntas.resultados.acertei}
                 </Badge>
               </dd>
             </div>
             <div className="flex items-center justify-between gap-3">
-              <dt className="text-muted">{detalhe.desde}</dt>
-              <dd className="text-ink">12/03/2024</dd>
+              <dt className="text-muted">{detalhe.texto}</dt>
+              <dd className="text-ink">10/08/2026</dd>
             </div>
           </dl>
         </section>
 
         <section className="flex flex-col gap-3">
-          <h3 className="font-display text-sm text-ink">{detalhe.agendamentos}</h3>
+          <h3 className="font-display text-sm text-ink">{detalhe.perguntas}</h3>
           <div className="rounded-ds border border-hairline bg-elevated">
-            <EstadoVazio tamanho="sm" titulo={detalhe.semAgendamentos} />
+            <EstadoVazio tamanho="sm" titulo={detalhe.semPerguntas} />
           </div>
         </section>
       </div>
     ),
     rodape: (
       <>
-        <Button variante="perigo">{sistema.clientes.remocao.acao}</Button>
+        <Button variante="perigo">{sistema.conteudos.remocao.acao}</Button>
         <Button>{formulario.salvar}</Button>
       </>
     ),
@@ -122,25 +122,25 @@ export const ComFormulario: Story = {
     descricao: formulario.descricaoCriar,
     children: (
       <div className="flex flex-col gap-4">
-        <Input rotulo={formulario.campos.nome} placeholder={formulario.exemploNome} obrigatorio />
-        <Input rotulo={formulario.campos.empresa} placeholder={formulario.exemploEmpresa} />
+        <Input rotulo={formulario.campos.titulo} placeholder={formulario.exemploTitulo} obrigatorio />
+        <Input rotulo={formulario.campos.disciplina} placeholder={formulario.exemploDisciplina} />
         <Input
-          rotulo={formulario.campos.email}
-          placeholder={formulario.exemploEmail}
+          rotulo={formulario.campos.tema}
+          placeholder={formulario.exemploTema}
           type="email"
           obrigatorio
         />
         <Input
-          rotulo={formulario.campos.telefone}
-          placeholder={formulario.exemploTelefone}
-          ajuda={formulario.ajudaTelefone}
+          rotulo={formulario.campos.texto}
+          placeholder={formulario.exemploTexto}
+          ajuda={formulario.ajudaDisciplina}
         />
         <Select
-          rotulo={formulario.campos.status}
+          rotulo={formulario.campos.disciplina}
           opcoes={[
-            { valor: "ativo", rotulo: sistema.clientes.status.ativo },
-            { valor: "pendente", rotulo: sistema.clientes.status.pendente },
-            { valor: "inativo", rotulo: sistema.clientes.status.inativo },
+            { valor: "ativo", rotulo: sistema.perguntas.resultados.acertei },
+            { valor: "pendente", rotulo: sistema.perguntas.resultados.pendente },
+            { valor: "inativo", rotulo: sistema.perguntas.resultados.errei },
           ]}
           defaultValue="ativo"
         />
@@ -165,9 +165,9 @@ export const Larguras: Story = {
           {...args}
           largura={largura}
           titulo={largura}
-          descricao={sistema.clientes.descricao}
+          descricao={sistema.conteudos.descricao}
         >
-          <p className="text-sm leading-relaxed text-muted">{sistema.clientes.descricao}</p>
+          <p className="text-sm leading-relaxed text-muted">{sistema.conteudos.descricao}</p>
         </DrawerComGatilho>
       ))}
     </div>
@@ -176,10 +176,10 @@ export const Larguras: Story = {
 
 export const SemRodape: Story = {
   args: {
-    titulo: detalhe.dados,
+    titulo: detalhe.texto,
     descricao: undefined,
     children: (
-      <p className="text-sm leading-relaxed text-muted">{sistema.clientes.descricao}</p>
+      <p className="text-sm leading-relaxed text-muted">{sistema.conteudos.descricao}</p>
     ),
   },
 }

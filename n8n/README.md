@@ -13,7 +13,7 @@ Cada caixinha é um passo. Você liga uma na outra e desenha o caminho.
 
 Em vez de escrever código, você monta um desenho tipo:
 
-> **quando** entrar um pedido novo → **então** me avise no WhatsApp
+> **quando** sair um baralho novo → **então** me avise no WhatsApp
 
 A primeira caixinha é o gatilho (o que faz a automação começar). As outras são
 as ações. É bem parecido com um fluxo de usuário no Figma, só que ele roda.
@@ -77,9 +77,10 @@ Depois acesse <http://localhost:5679>.
 
 ---
 
-## Exemplo 1: avisar no WhatsApp quando entrar um pedido novo
+## Exemplo 1: avisar no WhatsApp quando sair um baralho novo
 
-**A dor:** você só descobre que chegou pedido quando lembra de abrir o sistema.
+**A dor:** o professor monta o baralho da prova e o aluno só descobre quando
+lembra de abrir o app, quase sempre tarde demais.
 
 **A automação:**
 
@@ -87,55 +88,56 @@ Depois acesse <http://localhost:5679>.
 [Webhook]  →  [Filtro]  →  [Enviar WhatsApp]
    ↑              ↑                ↑
 o app avisa    só passa se     mensagem chega
-que criou      a prioridade    no seu celular
-um pedido      for "alta"
+que montou     o baralho tem   no celular de
+um baralho     carta dentro    quem vai estudar
 ```
 
 **Como montar:**
 
 1. No n8n, clique em **Create Workflow**
 2. Adicione o nó **Webhook**. Ele te dá uma URL, tipo
-   `http://localhost:5678/webhook/pedido-novo`. Essa URL é o "telefone" da sua
+   `http://localhost:5678/webhook/baralho-novo`. Essa URL é o "telefone" da sua
    automação: quem ligar nele dispara o fluxo
 3. Copie a URL e cole no `.env.local` do projeto, na variável `N8N_WEBHOOK_URL`
-4. Adicione o nó **Filter** e configure: só continuar se `prioridade` for igual
-   a `alta`. Sem isso você recebe mensagem de tudo e desliga em dois dias
+4. Adicione o nó **Filter** e configure: só continuar se o baralho tiver pelo
+   menos uma carta. Sem isso você recebe mensagem de baralho vazio e desliga o
+   aviso em dois dias
 5. Adicione o nó **WhatsApp Business Cloud** (ou **Twilio**, que é mais fácil de
    testar) e escreva a mensagem usando os dados que chegaram, por exemplo:
-   *"Pedido novo: {{ $json.titulo }}, de {{ $json.cliente }}"*
+   *"Baralho novo: {{ $json.nome }}, com {{ $json.cartas }} cartas"*
 6. Clique em **Test workflow**, depois em **Active** no canto superior direito
 
 **Falta a última peça:** hoje o app não chama esse webhook, porque não tem
 servidor. Essa é justamente uma das tarefas do
 [`PROXIMOS-PASSOS.md`](../PROXIMOS-PASSOS.md): criar uma rota no app que avisa
-o n8n quando um pedido é criado.
+o n8n quando um baralho é montado.
 
 ---
 
-## Exemplo 2: e-mail de confirmação quando marcar um compromisso
+## Exemplo 2: e-mail de lembrete na véspera da prova
 
-**A dor:** cliente esquece o horário e você fica com a agenda furada.
+**A dor:** o aluno monta o baralho na segunda, tem prova na sexta e não revisa
+no meio do caminho.
 
 **A automação:**
 
 ```text
 [Webhook]  →  [Enviar e-mail]  →  [Esperar até 1 dia antes]  →  [Enviar e-mail]
    ↑                ↑                        ↑                          ↑
-o app avisa    "seu horário         segura o fluxo até            "é amanhã,
-que marcou     está confirmado"     a véspera                     te espero"
+o app avisa    "seu baralho          segura o fluxo até           "é amanhã,
+que montou     está pronto"          a véspera                    revisa hoje"
 ```
 
 **Como montar:**
 
-1. Nó **Webhook**: recebe os dados do compromisso (nome, e-mail, data, hora)
+1. Nó **Webhook**: recebe os dados do baralho (nome, e-mail, data da prova)
 2. Nó **Send Email** (ou **Gmail**, ou **Resend**): escreva o texto de
    confirmação usando os campos recebidos
-3. Nó **Wait**: configure para esperar até 24 horas antes da data do
-   compromisso
+3. Nó **Wait**: configure para esperar até 24 horas antes da data da prova
 4. Nó **Send Email** de novo: o lembrete da véspera
 
-Repare que a segunda mensagem é a que evita o furo na agenda. A primeira só
-tranquiliza. As duas juntas viram um produto bom.
+Repare que a segunda mensagem é a que salva a nota. A primeira só tranquiliza.
+As duas juntas viram um produto bom.
 
 ---
 

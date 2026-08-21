@@ -45,7 +45,13 @@ export function Textarea({
         // `resize-y`: crescer é útil, encolher a largura quebra o layout da coluna.
         // O piso é 96px, quatro vezes a linha, para o campo nascer com a mesma
         // presença dos controles de 48px ao lado dele.
-        className={cn(classesControle(!!erro), "min-h-24 resize-y py-3 leading-relaxed", className)}
+        // `rounded-ds-surface` derruba o `rounded-ds` que vem de
+        // `classesControle`: a área de texto é superfície, não peça pequena.
+        className={cn(
+          classesControle(!!erro),
+          "min-h-24 resize-y rounded-ds-surface py-3 leading-relaxed",
+          className
+        )}
         {...props}
       />
     </EnvelopeCampo>

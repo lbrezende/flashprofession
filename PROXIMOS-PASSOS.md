@@ -21,14 +21,15 @@ Faça na ordem abaixo. Cada item depende do anterior estar de pé:
 
 - [ ] 1. **Login com Google**: saber *quem* está usando · *já construído, falta a chave*
 - [ ] 2. **Banco de dados (Neon)**: ter *onde* guardar · *já construído, falta a conexão*
-- [ ] 3. **E-mail (Resend)**: falar com quem usa
-- [ ] 4. **WhatsApp**: falar onde a pessoa realmente lê
-- [ ] 5. **n8n**: fazer tudo isso acontecer sozinho
-- [ ] 6. **MCP do Figma**: encurtar a ponte entre desenho e código
-- [ ] 7. **Deploy na Vercel**: colocar no ar
+- [ ] 3. **API da OpenAI**: gerar as perguntas de verdade a partir do texto colado
+- [ ] 4. **E-mail (Resend)**: falar com quem usa
+- [ ] 5. **WhatsApp**: falar onde a pessoa realmente lê
+- [ ] 6. **n8n**: fazer tudo isso acontecer sozinho
+- [ ] 7. **MCP do Figma**: encurtar a ponte entre desenho e código
+- [ ] 8. **Deploy na Vercel**: colocar no ar
 
 > A Vercel está no fim por dependência, não por prioridade. Se quiser só um link
-> pra mostrar no portfólio, **pule direto para o item 7**. O app publica hoje,
+> pra mostrar no portfólio, **pule direto para o item 8**. O app publica hoje,
 > do jeito que está.
 
 ---
@@ -44,8 +45,8 @@ valor pronto para copiar. No fim ele te dá três linhas para colar no
 verdade: a pessoa escolhe a conta Google, volta autenticada e o nome dela
 aparece no topo do app.
 
-**Por que é o primeiro item.** Sem saber quem é a pessoa, não existe "os pedidos
-*dela*", só "os pedidos". Login é o que separa uma demonstração de um produto
+**Por que é o primeiro item.** Sem saber quem é a pessoa, não existe "os
+baralhos *dela*", só "os baralhos". Login é o que separa uma demonstração de um produto
 multiusuário.
 
 E é aqui que você, como designer, encosta na parte mais subestimada da
@@ -117,10 +118,53 @@ coisa só.
 
 ---
 
-## 3. E-mail (Resend)
+## 3. API da OpenAI
+
+> **A peça que muda mais o produto.** Hoje o botão "Gerar perguntas" já
+> funciona: clicou, saiu resultado. O que ele devolve são perguntas escritas à
+> mão, em `src/lib/perguntas-geradas.ts`, e a tela avisa isso com todas as
+> letras. Com a chave, ele passa a ler o texto que a pessoa colou de verdade.
+
+**O que fazer.**
+
+1. Pegue uma chave em https://platform.openai.com/api-keys. A conta pede cartão
+   e cobra por uso; um app deste tamanho gasta centavos por mês.
+2. Cole no `.env.local`:
+
+   ```
+   OPENAI_API_KEY=sk-a-sua-chave
+   ```
+
+3. Peça pro seu assistente a rota, com estas palavras:
+
+   > Crie a rota `src/app/api/gerar-perguntas/route.ts` que recebe o texto
+   > colado, chama a API da OpenAI no servidor lendo a chave de
+   > `process.env.OPENAI_API_KEY`, e devolve as perguntas em JSON. A chave nunca
+   > aparece no navegador e nunca é escrita no código.
+
+4. Troque a chamada de `gerarPerguntas()` no
+   `src/components/app/conteudos/gerador-de-perguntas.tsx` por um `fetch` nessa
+   rota, e tire o aviso de resultado simulado.
+
+**Por que vale pra designer.** É a diferença entre um produto que USA
+inteligência artificial e um produto que fala sobre ela. E é aqui que entra o
+trabalho de verdade: quantas perguntas gerar, o que fazer quando o texto é curto
+demais, o que mostrar enquanto a resposta não chega, e como deixar a pessoa
+corrigir o que saiu errado sem perder o resto.
+
+**Documentação.** https://platform.openai.com/docs/api-reference/responses
+
+**A regra da casa, e ela não é negociável.** A chave mora em variável de
+ambiente, é documentada sem valor no `.env.example`, a chamada sai de uma rota
+de servidor e nada disso é enviado ao repositório. Chave escrita no código do
+navegador é chave vazada.
+
+---
+
+## 4. E-mail (Resend)
 
 **O que é.** Mandar e-mail de verdade a partir do app: boas-vindas, confirmação
-de compromisso, aviso de prazo estourando, recuperação de acesso.
+de baralho novo, lembrete de prova chegando, recuperação de acesso.
 
 O Resend é o serviço mais simples para isso hoje. A parte boa para designers: os
 e-mails são escritos como componentes React, então dá para desenhar de verdade,
@@ -137,10 +181,10 @@ apertado.
 
 ---
 
-## 4. WhatsApp
+## 5. WhatsApp
 
 **O que é.** No Brasil, é onde a comunicação acontece de fato. Confirmar
-compromisso, avisar de pedido novo, lembrar de prazo. Tudo isso funciona muito
+a prova de sexta, avisar que saiu baralho novo, lembrar de revisar. Tudo isso funciona muito
 melhor no WhatsApp do que no e-mail.
 
 A API oficial é a WhatsApp Cloud API, da Meta. O cadastro é burocrático (exige
@@ -161,10 +205,10 @@ isso mesmo, o mais fácil de estragar. Definir *o que* merece uma mensagem e
 
 ---
 
-## 5. n8n (automações)
+## 6. n8n (automações)
 
 **O que é.** Um app onde você monta automações arrastando caixinhas: *quando
-entrar um pedido novo, me avise no WhatsApp*. Sem escrever código.
+sair um baralho novo, me avise no WhatsApp*. Sem escrever código.
 
 Já está preparado neste repositório: a pasta [`n8n/`](./n8n/) tem um
 `docker-compose.yml` pronto e um README explicando tudo em linguagem simples.
@@ -183,7 +227,7 @@ deste projeto.
 
 ---
 
-## 6. MCP do Figma
+## 7. MCP do Figma
 
 **O que é.** MCP é um jeito de dar ferramentas para a IA. O MCP do Figma deixa
 o Claude Code (ou o Cursor) **ler o seu arquivo do Figma** (frames, cores,
@@ -204,7 +248,7 @@ conjunto de tokens, o mesmo vocabulário que o Figma exporta.
 
 ---
 
-## 7. Deploy na Vercel
+## 8. Deploy na Vercel
 
 **O que é.** Colocar o app num endereço público, que qualquer pessoa abre.
 
