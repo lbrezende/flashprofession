@@ -51,8 +51,10 @@ moram em `src/lib/jornada.ts`, num lugar só.
    A única exceção é o ícone do Google, que é marca de terceiro.
 4. **Nenhuma sombra externa.** A profundidade é borda de 1px em `--ds-hairline`,
    gradiente curto e sombra interna.
-5. **Três raios**: `rounded-ds` na peça pequena, `rounded-ds-surface` na
-   superfície larga, `rounded-ds-fine` na peça miúda dentro de outra.
+5. **Três raios, e o botão é pílula**: todo botão (e link com cara de botão)
+   usa `rounded-full`, decisão de design da casa. Fora do botão, `rounded-ds`
+   na peça pequena, `rounded-ds-surface` na superfície larga e
+   `rounded-ds-fine` na peça miúda dentro de outra.
 6. **Sem travessão e sem emoji**, em lugar nenhum.
 7. **Ícone sempre pelo mapa** de `src/components/app/icone.tsx`, do lucide.
 8. **Acessibilidade não é opcional**: estado nunca é só cor (MAP-04), o mapa em

@@ -33,7 +33,8 @@ export type BotaoLinkProps = ComponentPropsWithRef<typeof Link> & {
 }
 
 const BASE =
-  "group inline-flex select-none items-center justify-center rounded-ds font-medium whitespace-nowrap " +
+  // Espelha a pílula do primitivo Button: mexeu lá, mexe aqui.
+  "group inline-flex select-none items-center justify-center rounded-full font-medium whitespace-nowrap " +
   "transition-[background-color,border-color,color,opacity,filter] duration-150 active:translate-y-px " +
   // Espelha o mínimo de 44px do primitivo `Button` para dedo.
   "pointer-coarse:min-h-11 pointer-coarse:min-w-11"

@@ -138,7 +138,7 @@ export function MockupProduto() {
                 {mockup.proximaAcaoTexto}
               </span>
             </span>
-            <span className="preenchimento-acao hidden shrink-0 items-center rounded-ds px-2.5 py-1.5 text-[10px] font-medium text-primary-ink sm:flex lg:text-[11px]">
+            <span className="preenchimento-acao hidden shrink-0 items-center rounded-full px-2.5 py-1.5 text-[10px] font-medium text-primary-ink sm:flex lg:text-[11px]">
               {mockup.continuar}
             </span>
           </div>

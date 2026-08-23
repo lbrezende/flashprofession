@@ -76,7 +76,7 @@ export function CampoBusca({
             type="button"
             onClick={limpar}
             aria-label={sistema.acoes.limpar}
-            className="absolute top-1/2 right-2 flex size-8 -translate-y-1/2 items-center justify-center rounded-ds text-muted transition-colors hover:bg-surface hover:text-ink"
+            className="absolute top-1/2 right-2 flex size-8 -translate-y-1/2 items-center justify-center rounded-full text-muted transition-colors hover:bg-surface hover:text-ink"
           >
             <X aria-hidden="true" className="size-4" />
           </button>

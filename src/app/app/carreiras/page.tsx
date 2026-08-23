@@ -205,8 +205,8 @@ function BotaoDeArea({
       aria-pressed={ativo}
       className={
         ativo
-          ? "preenchimento-acao inline-flex items-center gap-2 rounded-ds px-3.5 py-2 text-[13px] font-medium text-primary-ink pointer-coarse:min-h-11"
-          : "superficie inline-flex items-center gap-2 rounded-ds border border-hairline px-3.5 py-2 text-[13px] text-ink transition-colors hover:border-primary/40 hover:bg-elevated pointer-coarse:min-h-11"
+          ? "preenchimento-acao inline-flex items-center gap-2 rounded-full px-3.5 py-2 text-[13px] font-medium text-primary-ink pointer-coarse:min-h-11"
+          : "superficie inline-flex items-center gap-2 rounded-full border border-hairline px-3.5 py-2 text-[13px] text-ink transition-colors hover:border-primary/40 hover:bg-elevated pointer-coarse:min-h-11"
       }
     >
       <Icone nome={icone} className="size-4" />

@@ -165,7 +165,7 @@ export default function PaginaDesafio() {
               href={desafio.fecho.primario.href}
               target="_blank"
               rel="noopener noreferrer"
-              className="preenchimento-acao group inline-flex h-12 items-center justify-center gap-2 rounded-ds px-6 text-[15px] font-medium text-primary-ink transition-[filter] duration-150 hover:brightness-[1.08] pointer-coarse:min-h-11"
+              className="preenchimento-acao group inline-flex h-12 items-center justify-center gap-2 rounded-full px-6 text-[15px] font-medium text-primary-ink transition-[filter] duration-150 hover:brightness-[1.08] pointer-coarse:min-h-11"
             >
               {desafio.fecho.primario.rotulo}
               <Icone nome="link-externo" className="size-4" />
@@ -175,7 +175,7 @@ export default function PaginaDesafio() {
               href={desafio.fecho.secundario.href}
               target="_blank"
               rel="noopener noreferrer"
-              className="superficie inline-flex h-12 items-center justify-center gap-2 rounded-ds border border-hairline px-6 text-[15px] font-medium text-ink transition-colors duration-150 hover:bg-elevated pointer-coarse:min-h-11"
+              className="superficie inline-flex h-12 items-center justify-center gap-2 rounded-full border border-hairline px-6 text-[15px] font-medium text-ink transition-colors duration-150 hover:bg-elevated pointer-coarse:min-h-11"
             >
               {desafio.fecho.secundario.rotulo}
               <Icone nome="link-externo" className="size-4" />

@@ -205,8 +205,8 @@ function EtapaAutopercepcao() {
                       key={valor}
                       className={
                         marcado
-                          ? "preenchimento-acao cursor-pointer rounded-ds px-3 py-1.5 text-[13px] font-medium text-primary-ink pointer-coarse:min-h-11 pointer-coarse:inline-flex pointer-coarse:items-center"
-                          : "superficie-elevada cursor-pointer rounded-ds border border-hairline px-3 py-1.5 text-[13px] text-muted transition-colors hover:border-primary/40 hover:text-ink has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-primary pointer-coarse:min-h-11 pointer-coarse:inline-flex pointer-coarse:items-center"
+                          ? "preenchimento-acao cursor-pointer rounded-full px-3 py-1.5 text-[13px] font-medium text-primary-ink pointer-coarse:min-h-11 pointer-coarse:inline-flex pointer-coarse:items-center"
+                          : "superficie-elevada cursor-pointer rounded-full border border-hairline px-3 py-1.5 text-[13px] text-muted transition-colors hover:border-primary/40 hover:text-ink has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-primary pointer-coarse:min-h-11 pointer-coarse:inline-flex pointer-coarse:items-center"
                       }
                     >
                       <input

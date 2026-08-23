@@ -156,6 +156,17 @@ arquivo de vídeo pra reproduzir, e fingir reprodução seria mentir na tela).
 
 ---
 
+## O botão é pílula
+
+**Todos os botões do design system têm as bordas em semicírculo**
+(`rounded-full`), por decisão de design: o primitivo `Button`, o `BotaoLink`
+que espelha ele, os botões de área em Carreiras, os seletores da autoavaliação,
+os links com cara de botão do Desafio e do Como usar, o botão de limpar da
+busca (que vira círculo) e até o botão falso da prévia do site. `rounded-full`
+em vez de um número porque o navegador fecha o semicírculo em qualquer altura.
+Campo, cartão e selo continuam nos três raios do design system: a pílula é do
+botão, não da interface inteira.
+
 ## Storybook
 
 **Primitivo novo com story nova**: `BarraProgresso` nasceu com
