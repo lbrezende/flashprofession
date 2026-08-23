@@ -223,3 +223,29 @@ profissão.
 **Perfil vira leitura com login real.** Nome e e-mail vêm da conta Google;
 editar aqui gravaria uma sessão local que o servidor ignora, e um e-mail
 diferente apontaria pra jornada de outra pessoa.
+
+---
+
+## O mapa do banco e o Prisma
+
+**`/banco` é material de estudo, não tela do produto.** Fica fora da casca do
+app, como `/como-usar` e `/exemplo`. O mapa é uma árvore em React Flow: da
+tabela no Postgres até o campo dentro do jsonb, abrindo nó por nó, com o
+requisito que cada dado serve, um exemplo e onde ele mora no código. A
+posição é calculada (coluna por profundidade), porque "à direita" quer dizer
+"dentro de". A seta cheia é chave estrangeira; a pontilhada é pertencimento.
+
+**A árvore mora em `src/content/banco.ts`, à mão.** Poderia ser gerada dos
+tipos, mas o que vale pra estudar é a descrição, o requisito e o exemplo, e
+isso ninguém gera. O preço é manter os dois juntos quando `types.ts` mudar, e
+o arquivo avisa isso no cabeçalho.
+
+**Dois desenhos, lado a lado.** O atual (duas tabelas, três coleções num
+jsonb) e o seguinte (uma tabela por coleção, com REFERENCES e colunas
+tipadas), que já estava comentado em `banco/schema.sql`. Ver os dois no mesmo
+lugar é o que explica por que o atual existe e o que o seguinte compra.
+
+**Prisma entrou só pra olhar.** `db pull` desenha o schema a partir do que
+existe no Neon e o Studio navega nas linhas. O app continua no driver do Neon:
+trocar a camada de dados por um ORM pra ganhar um visualizador seria pagar
+caro por uma ferramenta que cabe num script.

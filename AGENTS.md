@@ -74,8 +74,17 @@ encaixe de alguma coisa que ainda vai ser ligada.
 ## O React Flow
 
 `@xyflow/react` entrou porque o requisito MAP-02 pede ele pelo nome. Ele é
-importado num arquivo só (`src/components/app/mapa/fluxo.tsx`) e chega por
-import adiado: o resto do app não paga pelo peso dele.
+importado em dois arquivos só, os dois carregados por import adiado: o mapa
+dos níveis (`src/components/app/mapa/fluxo.tsx`) e o mapa do banco pra estudo
+(`src/components/banco/mapa-do-banco.tsx`). O resto do app não paga pelo peso
+dele.
+
+## O Prisma é só leitura
+
+`prisma` entrou como dependência de desenvolvimento pra duas coisas: `npm run
+banco:desenhar` (lê o Neon e reescreve `prisma/schema.prisma`) e `npm run
+banco:studio` (um cliente de banco no navegador). Nenhuma tela nem rota passa
+pelo Prisma: o app fala com o Postgres pelo driver do Neon em `src/lib/banco.ts`.
 
 ## Componente novo entra no Storybook
 

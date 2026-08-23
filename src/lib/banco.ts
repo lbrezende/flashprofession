@@ -230,3 +230,32 @@ export async function substituirTudo(usuario: string, dados: Dados): Promise<voi
     ),
   ])
 }
+
+/**
+ * Quantas linhas existem, por tabela e por coleção, somando todo mundo.
+ *
+ * Serve só à página de estudo `/banco`: é agregado, sem nada de ninguém em
+ * particular. Devolve `null` sem banco ou com o banco fora do ar, e a página
+ * mostra o mapa sem os números.
+ */
+export async function contagens(): Promise<Record<string, number> | null> {
+  const sql = await pronto()
+  if (!sql) return null
+  try {
+    const usuarios = (await sql`SELECT count(*)::int AS total FROM usuarios`) as Array<{
+      total: number
+    }>
+    const porColecao = (await sql`
+      SELECT colecao, count(*)::int AS total FROM registros GROUP BY colecao
+    `) as Array<{ colecao: string; total: number }>
+    const resultado: Record<string, number> = { usuarios: usuarios[0]?.total ?? 0, registros: 0 }
+    for (const linha of porColecao) {
+      resultado[linha.colecao] = linha.total
+      resultado.registros += linha.total
+    }
+    return resultado
+  } catch (erro) {
+    console.error("[banco] contagens falharam", erro)
+    return null
+  }
+}

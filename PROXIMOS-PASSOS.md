@@ -114,6 +114,17 @@ ninguém lê nem grava o que é de outra pessoa. Quem acabou de entrar recebe a
 jornada vazia, e o app mostra os três estados de onboarding (sem profissão,
 sem nível, sem curso) até a pessoa montar a dela.
 
+**Pra olhar o banco.** Duas ferramentas, as duas lendo a `DATABASE_URL` do
+`.env.local`:
+
+- `npm run banco:studio` abre o Prisma Studio em <http://localhost:5555>: cada
+  tabela, linha por linha, com filtro e edição.
+- `npm run banco:desenhar` lê o Neon e reescreve `prisma/schema.prisma`, a
+  documentação do que existe no banco agora. Rode depois de mudar uma tabela.
+- A página `/banco` do próprio app é o mapa pra estudar: da tabela até o campo
+  dentro do jsonb, com o requisito que cada dado serve e onde ele mora no
+  código, mais a stack inteira no fim.
+
 **Documentação:** <https://neon.com/docs/introduction>
 
 **Variável:** `DATABASE_URL`
