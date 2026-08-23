@@ -1,7 +1,9 @@
+import { cookies } from "next/headers"
+import { redirect } from "next/navigation"
 import { FormularioDeEntrada } from "@/components/auth/formulario-de-entrada"
 import { entrada } from "@/content/site"
 import { googleConfigurado } from "@/lib/google"
-import { sessaoConfigurada } from "@/lib/sessao-servidor"
+import { COOKIE_SESSAO, lerCookieDeSessao, sessaoConfigurada } from "@/lib/sessao-servidor"
 
 /**
  * A tela de entrar, agora com uma decisão que só o servidor pode tomar.
@@ -23,6 +25,12 @@ type Props = { searchParams: Promise<{ google?: string }> }
 export default async function PaginaEntrar({ searchParams }: Props) {
   const { google } = await searchParams
   const avisos = entrada.google.avisos as Record<string, string | undefined>
+
+  // Quem já tem sessão assinada não tem o que fazer aqui: vai direto pro app.
+  // É o que faz o link "Entrar" do site levar quem já entrou pra dentro, em
+  // vez de pedir a conta de novo.
+  const pote = await cookies()
+  if (lerCookieDeSessao(pote.get(COOKIE_SESSAO)?.value)) redirect("/app")
 
   return (
     <FormularioDeEntrada

@@ -17,7 +17,7 @@ import {
 } from "@/components/ui"
 import { sistema as textos } from "@/content/site"
 import { tour } from "@/content/tour"
-import { entrar, sair, useSessao } from "@/lib/store"
+import { entrar, sair, useEstadoDaSessao, useSessao } from "@/lib/store"
 
 const copy = textos.configuracoes.perfil
 
@@ -31,6 +31,10 @@ type Erros = { nome?: string; email?: string }
 export function Perfil() {
   const router = useRouter()
   const sessao = useSessao()
+  // Com o login real ligado, quem diz o nome e o e-mail é a conta Google. O
+  // formulário vira leitura: editar aqui gravaria uma sessão local que o
+  // servidor ignora, e um e-mail diferente apontaria pra jornada de outra pessoa.
+  const { loginReal } = useEstadoDaSessao()
   const rodarTour = useRodarTour()
   const [nome, setNome] = useState("")
   const [email, setEmail] = useState("")
@@ -89,7 +93,7 @@ export function Perfil() {
           </span>
           <CardTitulo como="h2">{copy.titulo}</CardTitulo>
         </div>
-        <CardDescricao>{copy.descricao}</CardDescricao>
+        <CardDescricao>{loginReal ? copy.descricaoLigado : copy.descricao}</CardDescricao>
       </CardCabecalho>
 
       <CardConteudo className="flex-1">
@@ -98,6 +102,7 @@ export function Perfil() {
           <Input
             rotulo={copy.nome}
             obrigatorio
+            disabled={loginReal}
             value={nome}
             onChange={(evento) => {
               setNome(evento.target.value)
@@ -117,20 +122,23 @@ export function Perfil() {
               setSalvo(false)
             }}
             erro={erros.email}
-            ajuda={copy.ajudaEmail}
+            ajuda={loginReal ? copy.ajudaEmailLigado : copy.ajudaEmail}
+            disabled={loginReal}
             autoComplete="email"
           />
 
-          <div className="flex flex-wrap items-center gap-3">
-            <Button type="submit" iconeEsquerda={<Icone nome="check" />}>
-              {copy.salvar}
-            </Button>
+          {!loginReal && (
+            <div className="flex flex-wrap items-center gap-3">
+              <Button type="submit" iconeEsquerda={<Icone nome="check" />}>
+                {copy.salvar}
+              </Button>
 
-            {/* Sempre no DOM: região viva que só aparece depois não é anunciada. */}
-            <p role="status" className="text-[13px] text-success">
-              {salvo ? copy.salvo : ""}
-            </p>
-          </div>
+              {/* Sempre no DOM: região viva que só aparece depois não é anunciada. */}
+              <p role="status" className="text-[13px] text-success">
+                {salvo ? copy.salvo : ""}
+              </p>
+            </div>
+          )}
         </form>
       </CardConteudo>
 

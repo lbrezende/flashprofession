@@ -3,8 +3,8 @@
 import { useMemo } from "react"
 import { CabecalhoPagina } from "@/components/app/cabecalho-pagina"
 import { Icone } from "@/components/app/icone"
-import { BotaoLink } from "@/components/marketing/botao-link"
-import { BarraProgresso, Card, CardConteudo, EstadoVazio } from "@/components/ui"
+import { EstadoDaJornada, faltaNaJornada } from "@/components/app/estado-da-jornada"
+import { BarraProgresso, Card, CardConteudo } from "@/components/ui"
 import { palavras, sistema } from "@/content/site"
 import { acharProfissao } from "@/lib/catalogo"
 import { contar } from "@/lib/formato"
@@ -33,22 +33,19 @@ export default function PaginaProgresso() {
   const dedicacao = useMemo(() => minutosPorDia(dados.sessoes), [dados.sessoes])
   const totalMinutos = dados.sessoes.reduce((total, sessao) => total + sessao.minutos, 0)
 
-  if (!jornada || !profissao || !jornada.resultado) {
+  // Progresso só existe depois da primeira ação: profissão, nível e a
+  // primeira aula. O vazio diz a primeira coisa que falta (RB-10).
+  const falta = faltaNaJornada(jornada, profissao, "curso", dados)
+  if (falta || !jornada || !profissao || !jornada.resultado) {
     return (
       <>
         <CabecalhoPagina titulo={textos.titulo} descricao={textos.descricao} />
-        <div className="superficie rounded-ds-surface border border-hairline" data-tour="progresso">
-          <EstadoVazio
-            icone={<Icone nome="progresso" />}
-            titulo={sistema.vazios.progresso.titulo}
-            texto={sistema.vazios.progresso.texto}
-            acao={
-              <BotaoLink href="/app" variante="secundaria">
-                {sistema.vazios.progresso.acao}
-              </BotaoLink>
-            }
-          />
-        </div>
+        <EstadoDaJornada
+          falta={falta ?? "curso"}
+          icone="progresso"
+          profissao={profissao}
+          tour="progresso"
+        />
       </>
     )
   }

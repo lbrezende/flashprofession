@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server"
 import { COOKIE_STATE } from "@/app/api/auth/google/route"
+import { registrarUsuario } from "@/lib/banco"
 import { perfilDoGoogle } from "@/lib/google"
 import { COOKIE_SESSAO, criarCookieDeSessao, opcoesDoCookie } from "@/lib/sessao-servidor"
 
@@ -41,6 +42,16 @@ export async function GET(requisicao: Request) {
 
   const cookie = criarCookieDeSessao(sessao)
   if (!cookie) return recusar(requisicao, "indisponivel")
+
+  // A pessoa passa a existir no banco no momento em que entra. Sem banco
+  // configurado a função não faz nada; com banco, cria na primeira vez e
+  // marca o acesso nas outras. Falhar aqui não pode barrar o login: o banco
+  // pode estar dormindo, e a rota de dados refaz o registro antes de gravar.
+  try {
+    await registrarUsuario(sessao)
+  } catch (erro) {
+    console.error("[auth] não registrou o usuário no banco", erro)
+  }
 
   const resposta = NextResponse.redirect(new URL("/app", requisicao.url))
   resposta.cookies.set(COOKIE_SESSAO, cookie, opcoesDoCookie())

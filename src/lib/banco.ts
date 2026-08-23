@@ -1,29 +1,31 @@
 import { neon } from "@neondatabase/serverless"
-import type { Dados, Evidencia, Jornada, SessaoDeEstudo } from "./types"
+import type { Dados, Evidencia, Jornada, Sessao, SessaoDeEstudo } from "./types"
 
 /**
- * O banco no Neon, montado e desligado.
+ * O banco no Neon.
  *
  * O app inteiro funciona sem ele: o `store` guarda tudo no navegador e ninguém
  * precisa criar conta em lugar nenhum pra rodar `npm run dev`. Quando a
- * `DATABASE_URL` aparece no `.env.local`, este arquivo acorda, cria a tabela
+ * `DATABASE_URL` aparece no `.env.local`, este arquivo acorda, cria as tabelas
  * sozinho na primeira chamada e o `store` passa a falar com o Postgres em vez
- * do navegador. Não tem código pra escrever no meio: é colar a conexão.
+ * do navegador.
  *
- * SOBRE O FORMATO DA TABELA. É uma tabela só, com a coleção, o id e o registro
- * em `jsonb`. Não é preguiça, é a escolha que sobrevive ao que este projeto
- * existe pra fazer: você vai trocar os campos de uma
- * coleção e inventar coleção nova, e nada disso pede
- * migração aqui. Numa coluna por campo, cada mudança de ideia no produto viraria
- * `ALTER TABLE`. Trocar isso por tabelas com colunas de verdade, com índice e
- * chave estrangeira, é justamente o assunto do workshop, e o `banco/schema.sql`
- * já mostra o desenho.
+ * CADA REGISTRO TEM DONO. A tabela `registros` carrega a coluna `usuario`, que
+ * aponta pra `usuarios`, e toda função deste arquivo recebe o dono como
+ * primeiro argumento. Não existe "ler tudo": existe ler tudo DE ALGUÉM. É o
+ * que faz duas pessoas logadas no mesmo app verem cada uma só a própria
+ * jornada. Quem decide o dono é a sessão assinada lida pela rota
+ * (`src/lib/sessao-servidor.ts`), nunca um campo vindo do navegador.
+ *
+ * SOBRE O FORMATO. Uma tabela de registros com a coleção, o id e o registro em
+ * `jsonb`. É a escolha que sobrevive ao produto mudar de ideia: trocar os
+ * campos de uma coleção ou inventar coleção nova não pede migração. Trocar
+ * isso por uma tabela por coleção, com colunas tipadas, está desenhado em
+ * `banco/schema.sql`.
  *
  * Este arquivo só é importado pelas rotas de `src/app/api`. A `DATABASE_URL`
  * traz a senha do banco dentro dela e nunca chega no navegador.
  */
-
-const TABELA = "registros"
 
 /** As coleções que o app guarda hoje. Serve de porteiro do que vem da rede. */
 export const COLECOES = ["jornadas", "evidencias", "sessoes"] as const
@@ -43,7 +45,7 @@ export function bancoConfigurado(): boolean {
 }
 
 /**
- * Cria a tabela na primeira chamada e nunca mais.
+ * Cria as tabelas na primeira chamada e nunca mais.
  *
  * A promessa fica guardada de propósito: sem isso, duas requisições ao mesmo
  * tempo no primeiro acesso rodariam o `CREATE TABLE` em paralelo. O `IF NOT
@@ -55,20 +57,31 @@ let preparacao: Promise<void> | null = null
 async function preparar(sql: NonNullable<ReturnType<typeof conexao>>) {
   if (!preparacao) {
     preparacao = (async () => {
+      // O mesmo desenho de banco/schema.sql. Mudou lá, muda aqui.
+      await sql`
+        CREATE TABLE IF NOT EXISTS usuarios (
+          id             text        PRIMARY KEY,
+          email          text        NOT NULL,
+          nome           text        NOT NULL,
+          criado_em      timestamptz NOT NULL DEFAULT now(),
+          ultimo_acesso  timestamptz NOT NULL DEFAULT now()
+        )
+      `
       await sql`
         CREATE TABLE IF NOT EXISTS registros (
+          usuario    text        NOT NULL REFERENCES usuarios(id) ON DELETE CASCADE,
           colecao    text        NOT NULL,
           id         text        NOT NULL,
           dados      jsonb       NOT NULL,
           criado_em  timestamptz NOT NULL DEFAULT now(),
-          PRIMARY KEY (colecao, id)
+          PRIMARY KEY (usuario, colecao, id)
         )
       `
-      // A ordem das telas é sempre "mais novo primeiro". Sem este índice, cada
-      // listagem varre a tabela inteira pra ordenar.
+      // A ordem das telas é sempre "mais novo primeiro", e sempre de uma pessoa
+      // só. Sem este índice, cada listagem varreria a tabela inteira.
       await sql`
-        CREATE INDEX IF NOT EXISTS registros_colecao_criado_em
-        ON registros (colecao, criado_em DESC)
+        CREATE INDEX IF NOT EXISTS registros_usuario_colecao_criado_em
+        ON registros (usuario, colecao, criado_em DESC)
       `
     })().catch((erro) => {
       // Falhou a preparação, esquece a promessa: a próxima requisição tenta de
@@ -80,12 +93,40 @@ async function preparar(sql: NonNullable<ReturnType<typeof conexao>>) {
   return preparacao
 }
 
-/** Devolve a conexão já com a tabela garantida, ou `null` se não tem banco. */
+/** Devolve a conexão já com as tabelas garantidas, ou `null` se não tem banco. */
 async function pronto() {
   const sql = conexao()
   if (!sql) return null
   await preparar(sql)
   return sql
+}
+
+/**
+ * O id de uma pessoa é o e-mail em minúsculas.
+ *
+ * O Google garante que o e-mail é dela, e minúsculas porque `Ana@x.com` e
+ * `ana@x.com` são a mesma caixa de entrada: tratar como duas pessoas faria a
+ * jornada "sumir" na segunda vez que ela entrasse com a letra diferente.
+ */
+export function idDoUsuario(sessao: Pick<Sessao, "email">): string {
+  return sessao.email.trim().toLowerCase()
+}
+
+/**
+ * Garante que a pessoa existe na tabela e marca o acesso.
+ *
+ * Chamada na volta do login. É um `upsert`: na primeira vez cria, nas outras
+ * só atualiza o nome (a pessoa pode ter trocado no Google) e a hora.
+ */
+export async function registrarUsuario(sessao: Sessao): Promise<void> {
+  const sql = await pronto()
+  if (!sql) return
+  await sql`
+    INSERT INTO usuarios (id, email, nome)
+    VALUES (${idDoUsuario(sessao)}, ${sessao.email}, ${sessao.nome})
+    ON CONFLICT (id) DO UPDATE
+      SET nome = EXCLUDED.nome, ultimo_acesso = now()
+  `
 }
 
 type Linha = { colecao: string; id: string; dados: unknown }
@@ -100,22 +141,29 @@ function montar(linhas: Linha[]): Dados {
   return dados
 }
 
-export async function lerTudo(): Promise<Dados | null> {
+/** Tudo que é de uma pessoa. Quem acabou de chegar recebe as três coleções vazias. */
+export async function lerTudo(usuario: string): Promise<Dados | null> {
   const sql = await pronto()
   if (!sql) return null
   const linhas = (await sql`
-    SELECT colecao, id, dados FROM registros ORDER BY criado_em DESC
+    SELECT colecao, id, dados FROM registros
+    WHERE usuario = ${usuario}
+    ORDER BY criado_em DESC
   `) as Linha[]
   return montar(linhas)
 }
 
-export async function inserir(colecao: Colecao, item: { id: string }): Promise<void> {
+export async function inserir(
+  usuario: string,
+  colecao: Colecao,
+  item: { id: string }
+): Promise<void> {
   const sql = await pronto()
   if (!sql) return
   await sql`
-    INSERT INTO registros (colecao, id, dados)
-    VALUES (${colecao}, ${item.id}, ${JSON.stringify(item)}::jsonb)
-    ON CONFLICT (colecao, id) DO UPDATE SET dados = EXCLUDED.dados
+    INSERT INTO registros (usuario, colecao, id, dados)
+    VALUES (${usuario}, ${colecao}, ${item.id}, ${JSON.stringify(item)}::jsonb)
+    ON CONFLICT (usuario, colecao, id) DO UPDATE SET dados = EXCLUDED.dados
   `
 }
 
@@ -124,9 +172,11 @@ export async function inserir(colecao: Colecao, item: { id: string }): Promise<v
  *
  * O `||` do jsonb funde os dois objetos dentro do banco, numa ida só. Ler,
  * mesclar em JavaScript e gravar de volta seriam duas idas com uma janela no
- * meio onde outra aba poderia gravar por cima.
+ * meio onde outra aba poderia gravar por cima. O `WHERE usuario` é o que
+ * impede alguém de alterar registro alheio adivinhando o id.
  */
 export async function atualizar(
+  usuario: string,
   colecao: Colecao,
   id: string,
   patch: Record<string, unknown>
@@ -136,29 +186,30 @@ export async function atualizar(
   await sql`
     UPDATE registros
     SET dados = dados || ${JSON.stringify(patch)}::jsonb
-    WHERE colecao = ${colecao} AND id = ${id}
+    WHERE usuario = ${usuario} AND colecao = ${colecao} AND id = ${id}
   `
 }
 
-export async function remover(colecao: Colecao, id: string): Promise<void> {
+export async function remover(usuario: string, colecao: Colecao, id: string): Promise<void> {
   const sql = await pronto()
   if (!sql) return
-  await sql`DELETE FROM registros WHERE colecao = ${colecao} AND id = ${id}`
-
-  // As três coleções deste app são independentes entre si: apagar uma
-  // evidência ou uma sessão não deixa órfão em lugar nenhum, e a jornada nunca
-  // é apagada por aqui (trocar de profissão preserva histórico, regra RB-07).
-  // Por isso não existe cascata neste DELETE.
+  await sql`
+    DELETE FROM registros
+    WHERE usuario = ${usuario} AND colecao = ${colecao} AND id = ${id}
+  `
+  // As três coleções são independentes entre si: apagar uma evidência ou uma
+  // sessão não deixa órfão em lugar nenhum, e a jornada nunca é apagada por
+  // aqui (trocar de profissão preserva histórico, regra RB-07).
 }
 
 /**
- * Troca todo o conteúdo de uma vez, numa transação.
+ * Troca todo o conteúdo de UMA pessoa de uma vez, numa transação.
  *
  * É o que está por trás de "restaurar exemplos" e "limpar tudo" na tela de
  * configurações. Apagar e inserir em duas idas soltas deixaria o banco vazio se
  * a segunda falhasse; dentro da transação, ou troca inteiro ou não troca.
  */
-export async function substituirTudo(dados: Dados): Promise<void> {
+export async function substituirTudo(usuario: string, dados: Dados): Promise<void> {
   const sql = await pronto()
   if (!sql) return
 
@@ -170,11 +221,11 @@ export async function substituirTudo(dados: Dados): Promise<void> {
   }
 
   await sql.transaction((tx) => [
-    tx`DELETE FROM registros`,
+    tx`DELETE FROM registros WHERE usuario = ${usuario}`,
     ...linhas.map(
       ([colecao, id, corpo]) => tx`
-        INSERT INTO registros (colecao, id, dados)
-        VALUES (${colecao}, ${id}, ${corpo}::jsonb)
+        INSERT INTO registros (usuario, colecao, id, dados)
+        VALUES (${usuario}, ${colecao}, ${id}, ${corpo}::jsonb)
       `
     ),
   ])

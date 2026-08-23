@@ -49,21 +49,35 @@ export const InicioNovo: Story = {
   },
 }
 
+/**
+ * Os três vazios do onboarding, na ordem em que a jornada se monta. No app
+ * eles saem pelo componente `EstadoDaJornada`, que escolhe sozinho qual dos
+ * três mostrar; aqui cada um aparece isolado, pra revisar texto e ação.
+ */
 export const SemProfissao: Story = {
   args: {
-    titulo: sistema.aprender.semProfissao.titulo,
-    texto: sistema.aprender.semProfissao.texto,
+    titulo: sistema.vazios.jornada.profissao.titulo,
+    texto: sistema.vazios.jornada.profissao.texto,
     icone: <MessageCircleQuestionMark />,
-    acao: <Button iconeEsquerda={<Plus />}>{sistema.aprender.semProfissao.acao}</Button>,
+    acao: <Button iconeEsquerda={<Plus />}>{sistema.vazios.jornada.profissao.acao}</Button>,
   },
 }
 
-export const Progresso: Story = {
+export const SemNivel: Story = {
   args: {
-    titulo: sistema.vazios.progresso.titulo,
-    texto: sistema.vazios.progresso.texto,
+    titulo: sistema.vazios.jornada.nivel.titulo,
+    texto: sistema.vazios.jornada.nivel.texto.replace("{profissao}", "UX/UI Designer"),
     icone: <Layers />,
-    acao: <Button iconeEsquerda={<Plus />}>{sistema.vazios.progresso.acao}</Button>,
+    acao: <Button iconeEsquerda={<Plus />}>{sistema.vazios.jornada.nivel.acao}</Button>,
+  },
+}
+
+export const SemCurso: Story = {
+  args: {
+    titulo: sistema.vazios.jornada.curso.titulo,
+    texto: sistema.vazios.jornada.curso.texto,
+    icone: <Layers />,
+    acao: <Button iconeEsquerda={<Plus />}>{sistema.vazios.jornada.curso.acao}</Button>,
   },
 }
 

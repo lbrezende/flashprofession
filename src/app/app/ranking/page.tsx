@@ -3,8 +3,9 @@
 import { useMemo, useState } from "react"
 import { CabecalhoPagina } from "@/components/app/cabecalho-pagina"
 import { Icone } from "@/components/app/icone"
+import { EstadoDaJornada, faltaNaJornada } from "@/components/app/estado-da-jornada"
 import { BotaoLink } from "@/components/marketing/botao-link"
-import { Badge, Button, Card, CardConteudo, Confirmar, EstadoVazio } from "@/components/ui"
+import { Badge, Button, Card, CardConteudo, Confirmar } from "@/components/ui"
 import { sistema } from "@/content/site"
 import { COMUNIDADE_RANKING, acharProfissao } from "@/lib/catalogo"
 import { minutosNoPeriodo, scoreDaPessoa, sequenciaDeDias } from "@/lib/jornada"
@@ -41,22 +42,19 @@ export default function PaginaRanking() {
     return [...comunidade, minha].sort((a, b) => b.score - a.score)
   }, [dados, jornada, participa])
 
-  if (!jornada || !profissao) {
+  // O ranking compara scores, e score nasce do nível validado: sem profissão
+  // e sem nível não há o que comparar. O vazio diz a primeira coisa que falta.
+  const falta = faltaNaJornada(jornada, profissao, "nivel")
+  if (falta || !jornada || !profissao) {
     return (
       <>
         <CabecalhoPagina titulo={textos.titulo} descricao={textos.descricao} />
-        <div className="superficie rounded-ds-surface border border-hairline" data-tour="ranking">
-          <EstadoVazio
-            icone={<Icone nome="ranking" />}
-            titulo={sistema.aprender.semProfissao.titulo}
-            texto={sistema.aprender.semProfissao.texto}
-            acao={
-              <BotaoLink href="/app/carreiras" variante="secundaria">
-                {sistema.aprender.semProfissao.acao}
-              </BotaoLink>
-            }
-          />
-        </div>
+        <EstadoDaJornada
+          falta={falta ?? "nivel"}
+          icone="ranking"
+          profissao={profissao}
+          tour="ranking"
+        />
       </>
     )
   }

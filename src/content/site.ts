@@ -225,12 +225,14 @@ export const sistema = {
     ateProximoNivel: "até o nível seguinte",
     indicadores: {
       titulo: "Seu progresso, num olhar",
-      nivel: "Nível atual",
-      competencias: "Competências concluídas",
-      horasSemana: "Horas nos últimos 7 dias",
-      sequencia: "Sequência de dias",
-      cases: "Cases no perfil",
-      ranking: "Posição no ranking",
+      // Uma palavra por indicador: o valor ao lado ("2 de 5", "8 dias", "#9")
+      // carrega a metade do sentido que o rótulo longo repetia.
+      nivel: "Nível",
+      competencias: "Competências",
+      horasSemana: "Semana",
+      sequencia: "Sequência",
+      cases: "Cases",
+      ranking: "Ranking",
       ultimaAtividade: "Última atividade",
       verDetalhe: "Ver detalhe",
     },
@@ -277,8 +279,11 @@ export const sistema = {
     esforco: "Esforço estimado",
     oportunidades: "Oportunidades típicas",
     tipoTrabalho: "Tipo de trabalho",
-    escolher: "Escolher esta profissão e começar o nivelamento",
-    continuarNivelamento: "Continuar o nivelamento desta profissão",
+    // Uma palavra cada: o botão mora num cartão estreito e não pode quebrar
+    // linha. A ficha inteira em volta já diz "esta profissão", e o próximo
+    // passo (o nivelamento) é a tela seguinte, não precisa caber no rótulo.
+    escolher: "Escolher",
+    continuarNivelamento: "Continuar",
     jaEscolhida: "Esta já é a sua profissão objetivo",
     trocar: {
       titulo: "Trocar o seu objetivo para esta profissão?",
@@ -389,11 +394,6 @@ export const sistema = {
       irAprender: "Abrir no Aprender",
       fechar: "Recolher detalhes",
     },
-    semDiagnostico: {
-      titulo: "Seu mapa nasce do nivelamento",
-      texto: "Faça o diagnóstico primeiro: é ele que posiciona você em um dos cinco níveis.",
-      acao: "Fazer o nivelamento",
-    },
     ajudaTeclado: "Use as setas ou o Tab para navegar entre os níveis, e Enter para expandir.",
   },
 
@@ -441,11 +441,6 @@ export const sistema = {
       campoOnde: "Onde você aprendeu",
       exemploOnde: "Ex.: curso na empresa, projeto no trabalho, estudo por conta",
       acao: "Registrar e ir para a validação",
-    },
-    semProfissao: {
-      titulo: "A trilha nasce do seu objetivo",
-      texto: "Escolha uma profissão e faça o nivelamento: a trilha vem priorizada pelas suas lacunas.",
-      acao: "Explorar as carreiras",
     },
     emPreparacao: {
       titulo: "A trilha desta profissão está em preparação",
@@ -614,15 +609,39 @@ export const sistema = {
   // --- vazios compartilhados -------------------------------------------------
 
   vazios: {
+    /**
+     * Os três vazios do onboarding, na ordem em que a jornada se monta: sem
+     * profissão, sem nível, sem curso começado. Toda tela que depende dessas
+     * coisas mostra o mesmo estado, pela mesma palavra, pelo componente
+     * `EstadoDaJornada`. O {profissao} é trocado pelo nome da profissão.
+     */
+    jornada: {
+      profissao: {
+        titulo: "Comece escolhendo a sua profissão",
+        texto:
+          "Tudo aqui se monta em volta de um objetivo: a área, a profissão e o que ela pede no dia a dia. Escolha de olhos abertos, e troque quando quiser sem perder nada.",
+        acao: "Escolher a profissão",
+        href: "/app/carreiras",
+      },
+      nivel: {
+        titulo: "Descubra de onde você parte",
+        texto:
+          "Um nivelamento rápido, em duas partes, diz o seu nível em {profissao} e monta o mapa dos cinco níveis. Leva uns 15 minutos, e você pode sair e voltar sem perder nada.",
+        acao: "Fazer o nivelamento",
+        href: "/app/diagnostico",
+      },
+      curso: {
+        titulo: "Sua primeira aula está esperando",
+        texto:
+          "Os números desta tela nascem do que você faz em Aprender: conclua a primeira aula e valide a competência. Tudo aparece aqui com a origem de cada número.",
+        acao: "Ir para Aprender",
+        href: "/app/aprender",
+      },
+    },
     inicioNovo: {
       titulo: "Sua jornada começa pela escolha",
       texto: "Escolha uma área e uma profissão: o resto do app se monta em volta desse objetivo.",
       acao: "Explorar as carreiras",
-    },
-    progresso: {
-      titulo: "Seu progresso nasce da primeira ação",
-      texto: "Conclua o nivelamento e a primeira aula: os números aparecem aqui com a origem de cada um.",
-      acao: "Ir para o início",
     },
   },
 
@@ -703,6 +722,10 @@ export const sistema = {
       nome: "Nome",
       email: "E-mail",
       ajudaEmail: "Fica só no seu navegador. Nada é enviado para lugar nenhum.",
+      /** Com o Google ligado, nome e e-mail vêm da conta e não se editam aqui. */
+      descricaoLigado:
+        "Nome e e-mail vêm da sua conta Google. É o e-mail que diz de quem é a jornada guardada no banco.",
+      ajudaEmailLigado: "Pra trocar, troque na conta Google e entre de novo.",
       salvar: "Salvar alterações",
       salvo: "Perfil atualizado.",
       sair: "Sair da sessão",
@@ -739,6 +762,11 @@ export const entrada = {
   titulo: "Seu caminho continua de onde você parou",
   subtitulo:
     "Entre pra ver seu nível, seu mapa e a próxima ação recomendada. Enquanto o login não está ligado, a entrada rápida guarda tudo neste navegador.",
+  /** O subtítulo de quando o Google está ligado: a conta guarda a jornada de verdade. */
+  subtituloLigado:
+    "Entre com a sua conta Google. Sua jornada fica guardada nela: feche o navegador, troque de computador, e o caminho continua de onde você parou.",
+  avisoLigado:
+    "Usamos só o seu nome e o seu e-mail, pra saber que a jornada é sua. Nada é publicado na sua conta Google.",
 
   google: {
     botao: "Continuar com Google",

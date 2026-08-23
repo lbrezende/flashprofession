@@ -8,11 +8,15 @@ import { ModalDeSaida } from "@/components/app/desafio/modal-de-saida"
 import { Logo } from "@/components/app/logo"
 import { Tour } from "@/components/onboarding/tour"
 import { sistema } from "@/content/site"
-import { sair, useDados, useSessao } from "@/lib/store"
+import { sair, useDados, useEstadoDaSessao, useSessao } from "@/lib/store"
 
 export default function LayoutSistema({ children }: { children: React.ReactNode }) {
   const router = useRouter()
   const sessao = useSessao()
+  // O servidor ainda não respondeu quem está logado. Decidir antes disso
+  // expulsaria quem acabou de voltar do Google: o cookie já existe, mas o
+  // navegador ainda não copiou a sessão pra si.
+  const { conferida } = useEstadoDaSessao()
   // O store ainda não sabe se os dados moram no navegador ou no banco. Enquanto
   // não souber, a casca segura o esqueleto: mostrar os dados de exemplo e
   // trocar depois pelos do banco seria piscar conteúdo falso na tela.
@@ -30,8 +34,8 @@ export default function LayoutSistema({ children }: { children: React.ReactNode 
   }, [])
 
   useEffect(() => {
-    if (hidratado && !sessao) router.replace("/entrar")
-  }, [hidratado, sessao, router])
+    if (hidratado && conferida && !sessao) router.replace("/entrar")
+  }, [hidratado, conferida, sessao, router])
 
   const abrirMenu = useCallback(() => setMenuAberto(true), [])
   const fecharMenu = useCallback(() => setMenuAberto(false), [])
@@ -51,7 +55,7 @@ export default function LayoutSistema({ children }: { children: React.ReactNode 
     router.replace("/entrar")
   }, [router])
 
-  if (!hidratado || !sessao || carregando) return <EsqueletoSistema />
+  if (!hidratado || !conferida || !sessao || carregando) return <EsqueletoSistema />
 
   return (
     <div className="min-h-dvh bg-canvas">

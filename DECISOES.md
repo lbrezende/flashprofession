@@ -186,3 +186,40 @@ encaixes estão em `PROXIMOS-PASSOS.md`. **Revisão humana de resposta curta e
 feedback por IA**: as respostas curtas ficam registradas na jornada e o
 feedback dos desafios é de demonstração, com o caminho pra ligar a OpenAI
 documentado.
+
+---
+
+## Login de verdade e banco por pessoa
+
+**O login é o Google, e só ele, quando as chaves existem.** A entrada rápida
+(nome e senha que não iam a lugar nenhum) servia pra testar telas sem conta.
+Com `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET` e `AUTH_SECRET` no ambiente, ela
+some da tela de entrar: guardaria a jornada num navegador enquanto o banco
+espera por uma pessoa de verdade. Sem as chaves (o `npm run dev` de quem clonou
+o projeto), tudo continua como era.
+
+**Cada registro tem dono.** A tabela `usuarios` nasce na volta do Google (id =
+e-mail em minúsculas) e `registros` ganhou a coluna `usuario` na chave
+primária. A rota `/api/dados` lê o dono do cookie assinado, nunca do corpo da
+requisição, e sem sessão responde 401. Duas pessoas no mesmo app veem cada uma
+só a própria jornada; quem acabou de entrar recebe as três coleções vazias.
+
+**Banco ligado nunca cai pros dados de exemplo.** Se o Neon estiver dormindo
+ou fora do ar, a pessoa logada vê a jornada vazia e o erro fica no log. Mostrar
+a jornada de demonstração no lugar da dela seria mentir pra quem está logado.
+
+**A casca espera o servidor antes de decidir.** Depois de voltar do Google o
+cookie já existe, mas o navegador ainda não copiou a sessão pra si; decidir
+nesse instante expulsava quem tinha acabado de entrar. `useEstadoDaSessao()`
+diz quando a resposta chegou, e só então a casca escolhe entre app e `/entrar`.
+
+**Três vazios de onboarding, um componente.** `EstadoDaJornada` decide, na
+ordem em que a jornada se monta, a PRIMEIRA coisa que falta: profissão, nível
+ou curso começado. Mapa, Aprender, Praticar, Progresso e Ranking mostram o
+mesmo estado com as mesmas palavras e uma única ação (RB-10). Antes cada tela
+tinha o seu texto, e o Mapa mandava fazer o nivelamento de quem nem tinha
+profissão.
+
+**Perfil vira leitura com login real.** Nome e e-mail vêm da conta Google;
+editar aqui gravaria uma sessão local que o servidor ignora, e um e-mail
+diferente apontaria pra jornada de outra pessoa.

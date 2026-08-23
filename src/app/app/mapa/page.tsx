@@ -6,8 +6,9 @@ import { CabecalhoPagina } from "@/components/app/cabecalho-pagina"
 import { Icone } from "@/components/app/icone"
 import { SeloEstado } from "@/components/app/selo-estado"
 import type { NoDeNivel } from "@/components/app/mapa/fluxo"
+import { EstadoDaJornada, faltaNaJornada } from "@/components/app/estado-da-jornada"
 import { BotaoLink } from "@/components/marketing/botao-link"
-import { BarraProgresso, Button, Card, CardConteudo, EstadoVazio } from "@/components/ui"
+import { BarraProgresso, Button, Card, CardConteudo } from "@/components/ui"
 import { estadosDeNo, sistema } from "@/content/site"
 import { acharProfissao, modulosDaProfissao } from "@/lib/catalogo"
 import {
@@ -65,22 +66,14 @@ export default function PaginaMapa() {
     }))
   }, [profissao, jornada])
 
-  if (!jornada || !profissao || !jornada.resultado) {
+  // O mapa precisa de profissão E de nível. O vazio diz a primeira coisa que
+  // falta, e só ela (RB-10).
+  const falta = faltaNaJornada(jornada, profissao, "nivel")
+  if (falta || !jornada || !profissao || !jornada.resultado) {
     return (
       <>
         <CabecalhoPagina titulo={textos.titulo} descricao={textos.descricao} />
-        <div className="superficie rounded-ds-surface border border-hairline" data-tour="mapa">
-          <EstadoVazio
-            icone={<Icone nome="mapa" />}
-            titulo={textos.semDiagnostico.titulo}
-            texto={textos.semDiagnostico.texto}
-            acao={
-              <BotaoLink href="/app/diagnostico" comChip iconeDireita={<Icone nome="seta-direita" />}>
-                {textos.semDiagnostico.acao}
-              </BotaoLink>
-            }
-          />
-        </div>
+        <EstadoDaJornada falta={falta ?? "nivel"} icone="mapa" profissao={profissao} tour="mapa" />
       </>
     )
   }

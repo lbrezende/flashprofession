@@ -11,16 +11,30 @@
 -- (https://console.neon.tech), cole tudo e execute.
 -- =============================================================================
 
+-- Quem usa o app. Uma linha por pessoa, criada na volta do login com Google.
+-- O id é o e-mail em minúsculas: é o que o Google garante que é dela.
+CREATE TABLE IF NOT EXISTS usuarios (
+  id             text        PRIMARY KEY,  -- e-mail em minúsculas
+  email          text        NOT NULL,     -- como veio do Google
+  nome           text        NOT NULL,
+  criado_em      timestamptz NOT NULL DEFAULT now(),
+  ultimo_acesso  timestamptz NOT NULL DEFAULT now()
+);
+
+-- Tudo que cada pessoa produz. CADA LINHA TEM DONO: a chave primária começa
+-- pelo usuário, e a rota /api/dados só lê e grava com o dono da sessão
+-- assinada. Apagar a pessoa apaga o que é dela (ON DELETE CASCADE).
 CREATE TABLE IF NOT EXISTS registros (
+  usuario    text        NOT NULL REFERENCES usuarios(id) ON DELETE CASCADE,
   colecao    text        NOT NULL,   -- 'jornadas', 'evidencias', 'sessoes'
   id         text        NOT NULL,   -- o mesmo id que o app já usa (jor-a1b2c3)
   dados      jsonb       NOT NULL,   -- o registro inteiro, do jeito que a tela lê
   criado_em  timestamptz NOT NULL DEFAULT now(),
-  PRIMARY KEY (colecao, id)
+  PRIMARY KEY (usuario, colecao, id)
 );
 
-CREATE INDEX IF NOT EXISTS registros_colecao_criado_em
-  ON registros (colecao, criado_em DESC);
+CREATE INDEX IF NOT EXISTS registros_usuario_colecao_criado_em
+  ON registros (usuario, colecao, criado_em DESC);
 
 
 -- =============================================================================
@@ -38,6 +52,7 @@ CREATE INDEX IF NOT EXISTS registros_colecao_criado_em
 --
 -- CREATE TABLE jornadas (
 --   id           text PRIMARY KEY,
+--   usuario      text NOT NULL REFERENCES usuarios(id) ON DELETE CASCADE,
 --   profissao_id text,
 --   etapa        text NOT NULL DEFAULT 'novo',
 --   resultado    jsonb,               -- nível, confiança, domínio por competência

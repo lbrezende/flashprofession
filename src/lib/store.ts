@@ -123,6 +123,9 @@ async function recarregarDoBanco() {
     const resposta = await fetch("/api/dados", { cache: "no-store" })
     const corpo = (await resposta.json()) as { ligado: boolean; dados: Dados | null }
     if (corpo.ligado && corpo.dados) publicar(corpo.dados)
+    // 401 no meio do uso: a sessão do servidor expirou. Derruba a local pra
+    // casca mandar entrar de novo, em vez de deixar a pessoa gravando no vazio.
+    if (resposta.status === 401) gravarSessaoLocal(null)
   } catch (erro) {
     console.error("[dados] leitura falhou", erro)
   }
@@ -146,10 +149,19 @@ function descobrirModo() {
   descoberta = (async () => {
     try {
       const resposta = await fetch("/api/dados", { cache: "no-store" })
-      const corpo = (await resposta.json()) as { ligado: boolean; dados: Dados | null }
-      if (corpo.ligado && corpo.dados) {
+      const corpo = (await resposta.json()) as {
+        ligado: boolean
+        autenticado?: boolean
+        dados: Dados | null
+      }
+      if (corpo.ligado) {
+        // Banco ligado é banco, mesmo quando ele não entregou nada: sem sessão
+        // (a casca vai mandar entrar) ou banco fora do ar. Cair pro navegador
+        // aqui mostraria os dados de exemplo pra quem está logado, que é a
+        // mentira que este app não conta. Quem chegou agora recebe o vazio, e
+        // o vazio é o começo da jornada (ONB-03).
         modo = "banco"
-        publicar(corpo.dados)
+        publicar(corpo.dados ?? VAZIO)
         return
       }
     } catch {
@@ -382,6 +394,20 @@ const ouvintesDaSessao = new Set<Ouvinte>()
 let sessaoCrua: string | null = null
 let sessaoLida = false
 
+/**
+ * O que o servidor disse sobre login, numa identidade estável.
+ *
+ * `conferida` vira verdadeira quando a resposta chegou (ou falhou de vez). Até
+ * lá a casca do app não decide nada: depois de voltar do Google, o cookie
+ * existe mas o localStorage ainda está vazio, e expulsar a pessoa nesse
+ * instante seria mandar embora quem acabou de entrar. `loginReal` diz se este
+ * ambiente tem Google e segredo ligados, e com isso a entrada simulada deixa
+ * de existir.
+ */
+export type EstadoDaSessao = { conferida: boolean; loginReal: boolean }
+let estadoDaSessao: EstadoDaSessao = { conferida: false, loginReal: false }
+const SESSAO_NO_SERVIDOR: EstadoDaSessao = { conferida: false, loginReal: false }
+
 function avisarSessao() {
   for (const o of ouvintesDaSessao) o()
 }
@@ -406,24 +432,28 @@ let perguntaDeSessao: Promise<void> | null = null
  * Se tiver, ela substitui o que estiver guardado no navegador: o login de
  * verdade ganha da simulação, sempre.
  *
- * Se NÃO tiver, a sessão local fica onde está. Apagar ela aqui seria o
- * caminho "mais seguro" que quebra a tela: enquanto a entrada sem senha existir
- * como botão em `/entrar`, quem clica nela tem que continuar dentro do app na
- * próxima carga. Segurança de verdade não vem de derrubar essa sessão, vem de
- * cada rota de servidor exigir a sessão assinada antes de entregar dado, que é
- * o passo do workshop.
+ * Se NÃO tiver e o login real está ligado neste ambiente, a sessão local cai:
+ * ela só podia ter vindo da entrada simulada, que não existe mais quando o
+ * Google está configurado, ou de um cookie que expirou. Sem login real (o
+ * `npm run dev` sem chaves), a sessão local fica, porque é ela que sustenta
+ * o app pra quem está só testando as telas.
  */
 function perguntarSessaoAoServidor() {
   if (perguntaDeSessao) return perguntaDeSessao
 
   perguntaDeSessao = (async () => {
+    let loginReal = false
     try {
       const resposta = await fetch("/api/auth/sessao", { cache: "no-store" })
-      const corpo = (await resposta.json()) as { sessao: Sessao | null }
+      const corpo = (await resposta.json()) as { ligado: boolean; sessao: Sessao | null }
+      loginReal = corpo.ligado
       if (corpo.sessao) gravarSessaoLocal(corpo.sessao)
+      else if (corpo.ligado) gravarSessaoLocal(null)
     } catch {
       // Sem resposta do servidor, fica valendo o que o navegador tem.
     }
+    estadoDaSessao = { conferida: true, loginReal }
+    avisarSessao()
   })()
 
   return perguntaDeSessao
@@ -459,6 +489,14 @@ export function entrar(nome = "Visitante", email = "voce@exemplo.com"): Sessao {
 export function sair() {
   if (typeof window === "undefined") return
   gravarSessaoLocal(null)
+  // Os dados de quem saiu não podem sobrar na memória pra próxima pessoa que
+  // entrar nesta aba. Volta ao estado de "ainda não sei", e a próxima montagem
+  // da casca pergunta de novo ao servidor.
+  if (modo === "banco") {
+    descoberta = null
+    modo = "descobrindo"
+    publicar(VAZIO, true)
+  }
   // O cookie do servidor precisa cair junto: sem isso, a próxima carga
   // perguntaria ao servidor, ele responderia a sessão antiga, e a pessoa
   // voltaria logada depois de clicar em sair.
@@ -497,4 +535,16 @@ export function useSessao() {
   } catch {
     return null
   }
+}
+
+/**
+ * O que o servidor já disse sobre a sessão. A casca do app só decide entre
+ * "mostra o app" e "manda entrar" depois que `conferida` ficar verdadeira.
+ */
+export function useEstadoDaSessao(): EstadoDaSessao {
+  return useSyncExternalStore(
+    inscreverSessao,
+    () => estadoDaSessao,
+    () => SESSAO_NO_SERVIDOR
+  )
 }

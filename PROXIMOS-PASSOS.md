@@ -95,9 +95,10 @@ tabela sozinho, e a partir daí é o Postgres que guarda tudo. Nenhuma tela muda
 nenhuma linha de código muda. Para conferir que ligou, cadastre alguma coisa e
 abra o app em outro navegador: o que você cadastrou está lá.
 
-Se a conexão estiver errada ou o banco fora do ar, o app **não quebra**: ele
-volta a guardar no navegador e registra o erro no terminal. É de propósito, para
-uma configuração errada não derrubar a tela de ninguém.
+Se o banco estiver fora do ar, o app **não quebra**: a pessoa logada vê a
+jornada vazia e o erro fica no terminal. Ele NÃO volta pros dados de exemplo
+nesse caso, de propósito: mostrar a jornada de demonstração no lugar da de
+alguém seria mentir pra quem está logado.
 
 **Onde o código está.**
 
@@ -106,11 +107,12 @@ uma configuração errada não derrubar a tela de ninguém.
 - `banco/schema.sql`: o desenho da tabela, e o desenho seguinte quando você
   quiser ir além de uma tabela só
 
-**Uma coisa que ainda falta, e é o exercício de verdade:** a rota `/api/dados`
-não pergunta *quem* está chamando. Na sua máquina não faz diferença; publicado,
-qualquer pessoa com o endereço lê e grava. Amarrar cada registro à sessão
-assinada do item 1 é o próximo passo natural, e é onde login e banco viram uma
-coisa só.
+**Login e banco são uma coisa só.** Com a `DATABASE_URL` preenchida, a rota
+`/api/dados` só responde pra quem tem a sessão assinada do item 1: cada
+registro nasce com dono (a tabela `usuarios`, criada na volta do Google), e
+ninguém lê nem grava o que é de outra pessoa. Quem acabou de entrar recebe a
+jornada vazia, e o app mostra os três estados de onboarding (sem profissão,
+sem nível, sem curso) até a pessoa montar a dela.
 
 **Documentação:** <https://neon.com/docs/introduction>
 

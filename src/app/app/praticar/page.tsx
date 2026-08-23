@@ -4,6 +4,7 @@ import { useState } from "react"
 import { CabecalhoPagina } from "@/components/app/cabecalho-pagina"
 import { PainelVideo } from "@/components/app/aprender/painel-video"
 import { Icone } from "@/components/app/icone"
+import { EstadoDaJornada, faltaNaJornada } from "@/components/app/estado-da-jornada"
 import { BotaoLink } from "@/components/marketing/botao-link"
 import {
   Badge,
@@ -35,22 +36,19 @@ export default function PaginaPraticar() {
 
   const [desafioAbertoId, setDesafioAbertoId] = useState<string | null>(null)
 
-  if (!jornada || !profissao) {
+  // Praticar precisa de profissão E de nível: os desafios vêm priorizados
+  // pelas lacunas do diagnóstico. O vazio diz a primeira coisa que falta.
+  const falta = faltaNaJornada(jornada, profissao, "nivel")
+  if (falta || !jornada || !profissao) {
     return (
       <>
         <CabecalhoPagina titulo={textos.titulo} descricao={textos.descricao} />
-        <div className="superficie rounded-ds-surface border border-hairline" data-tour="praticar">
-          <EstadoVazio
-            icone={<Icone nome="praticar" />}
-            titulo={sistema.aprender.semProfissao.titulo}
-            texto={sistema.aprender.semProfissao.texto}
-            acao={
-              <BotaoLink href="/app/carreiras" comChip iconeDireita={<Icone nome="seta-direita" />}>
-                {sistema.aprender.semProfissao.acao}
-              </BotaoLink>
-            }
-          />
-        </div>
+        <EstadoDaJornada
+          falta={falta ?? "nivel"}
+          icone="praticar"
+          profissao={profissao}
+          tour="praticar"
+        />
       </>
     )
   }

@@ -94,7 +94,9 @@ export function FormularioDeEntrada({ googleLigado, aviso }: FormularioDeEntrada
               <h1 className="font-display text-2xl text-ink sm:text-[28px] sm:leading-tight">
                 {entrada.titulo}
               </h1>
-              <p className="mt-2.5 text-sm leading-relaxed text-muted">{entrada.subtitulo}</p>
+              <p className="mt-2.5 text-sm leading-relaxed text-muted">
+                {googleLigado ? entrada.subtituloLigado : entrada.subtitulo}
+              </p>
 
               <div className="mt-8">
                 {/* Com as chaves no ambiente, o botão manda pro Google de
@@ -103,7 +105,9 @@ export function FormularioDeEntrada({ googleLigado, aviso }: FormularioDeEntrada
                     que ensina a configurar, porque fingir um login que não
                     existe seria pior que não ter o botão. */}
                 <Button
-                  variante="secundaria"
+                  // Com o Google ligado ele é a única ação da tela, e a única
+                  // ação é a primária. Sem o Google, quem manda é o "Entrar".
+                  variante={googleLigado ? "primaria" : "secundaria"}
                   tamanho="lg"
                   larguraTotal
                   iconeEsquerda={<IconeGoogle />}
@@ -133,58 +137,69 @@ export function FormularioDeEntrada({ googleLigado, aviso }: FormularioDeEntrada
                 )}
               </div>
 
-              <div className="my-7 flex items-center gap-3" aria-hidden="true">
-                <span className="h-px flex-1 bg-hairline" />
-                <span className="text-[11px] tracking-[0.16em] text-muted uppercase">
-                  {entrada.separador}
-                </span>
-                <span className="h-px flex-1 bg-hairline" />
-              </div>
+              {/* Com o Google ligado, a conta Google É a entrada: a entrada
+                  rápida some, porque ela guardaria a jornada num navegador
+                  enquanto o banco espera por uma pessoa de verdade. */}
+              {googleLigado ? (
+                <p className="mt-6 text-[12.5px] leading-relaxed text-muted">
+                  {entrada.avisoLigado}
+                </p>
+              ) : (
+                <>
+                  <div className="my-7 flex items-center gap-3" aria-hidden="true">
+                    <span className="h-px flex-1 bg-hairline" />
+                    <span className="text-[11px] tracking-[0.16em] text-muted uppercase">
+                      {entrada.separador}
+                    </span>
+                    <span className="h-px flex-1 bg-hairline" />
+                  </div>
 
-              {/* `noValidate`: a validação é nossa, em português e por campo. */}
-              <form onSubmit={aoEnviar} noValidate className="flex flex-col gap-4">
-                <Input
-                  rotulo={entrada.campos.usuario.rotulo}
-                  placeholder={entrada.campos.usuario.placeholder}
-                  ajuda={entrada.campos.usuario.ajuda}
-                  erro={erroUsuario || undefined}
-                  value={usuario}
-                  onChange={(evento) => {
-                    setUsuario(evento.target.value)
-                    // O erro sai assim que a pessoa mexe: manter reclamação na
-                    // tela enquanto ela corrige é ruído, não ajuda.
-                    if (erroUsuario) setErroUsuario("")
-                  }}
-                  autoComplete="username"
-                />
+                  {/* `noValidate`: a validação é nossa, em português e por campo. */}
+                  <form onSubmit={aoEnviar} noValidate className="flex flex-col gap-4">
+                    <Input
+                      rotulo={entrada.campos.usuario.rotulo}
+                      placeholder={entrada.campos.usuario.placeholder}
+                      ajuda={entrada.campos.usuario.ajuda}
+                      erro={erroUsuario || undefined}
+                      value={usuario}
+                      onChange={(evento) => {
+                        setUsuario(evento.target.value)
+                        // O erro sai assim que a pessoa mexe: manter reclamação na
+                        // tela enquanto ela corrige é ruído, não ajuda.
+                        if (erroUsuario) setErroUsuario("")
+                      }}
+                      autoComplete="username"
+                    />
 
-                <Input
-                  rotulo={entrada.campos.senha.rotulo}
-                  placeholder={entrada.campos.senha.placeholder}
-                  ajuda={entrada.campos.senha.ajuda}
-                  erro={erroSenha || undefined}
-                  value={senha}
-                  onChange={(evento) => {
-                    setSenha(evento.target.value)
-                    if (erroSenha) setErroSenha("")
-                  }}
-                  type="password"
-                  autoComplete="current-password"
-                />
+                    <Input
+                      rotulo={entrada.campos.senha.rotulo}
+                      placeholder={entrada.campos.senha.placeholder}
+                      ajuda={entrada.campos.senha.ajuda}
+                      erro={erroSenha || undefined}
+                      value={senha}
+                      onChange={(evento) => {
+                        setSenha(evento.target.value)
+                        if (erroSenha) setErroSenha("")
+                      }}
+                      type="password"
+                      autoComplete="current-password"
+                    />
 
-                <Button
-                  type="submit"
-                  tamanho="lg"
-                  larguraTotal
-                  carregando={entrando}
-                  className="mt-2"
-                  iconeDireita={<Icone nome="seta-direita" />}
-                >
-                  {entrada.entrarDireto}
-                </Button>
-              </form>
+                    <Button
+                      type="submit"
+                      tamanho="lg"
+                      larguraTotal
+                      carregando={entrando}
+                      className="mt-2"
+                      iconeDireita={<Icone nome="seta-direita" />}
+                    >
+                      {entrada.entrarDireto}
+                    </Button>
+                  </form>
 
-              <p className="mt-5 text-[12.5px] leading-relaxed text-muted">{entrada.aviso}</p>
+                  <p className="mt-5 text-[12.5px] leading-relaxed text-muted">{entrada.aviso}</p>
+                </>
+              )}
             </div>
           </main>
         </div>

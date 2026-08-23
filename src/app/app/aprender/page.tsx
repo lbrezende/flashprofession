@@ -5,6 +5,7 @@ import { CabecalhoPagina } from "@/components/app/cabecalho-pagina"
 import { PainelVideo } from "@/components/app/aprender/painel-video"
 import { Icone } from "@/components/app/icone"
 import { SeloEstado } from "@/components/app/selo-estado"
+import { EstadoDaJornada, faltaNaJornada } from "@/components/app/estado-da-jornada"
 import { BotaoLink } from "@/components/marketing/botao-link"
 import {
   BarraProgresso,
@@ -46,22 +47,19 @@ export default function PaginaAprender() {
   const [modalExterno, setModalExterno] = useState(false)
   const [ondeAprendeu, setOndeAprendeu] = useState("")
 
-  if (!jornada || !profissao || !jornada.resultado) {
+  // A trilha precisa de profissão E de nível: o vazio diz só a primeira coisa
+  // que falta (RB-10).
+  const falta = faltaNaJornada(jornada, profissao, "nivel")
+  if (falta || !jornada || !profissao || !jornada.resultado) {
     return (
       <>
         <CabecalhoPagina titulo={textos.titulo} descricao={textos.descricao} />
-        <div className="superficie rounded-ds-surface border border-hairline" data-tour="aprender">
-          <EstadoVazio
-            icone={<Icone nome="aprender" />}
-            titulo={textos.semProfissao.titulo}
-            texto={textos.semProfissao.texto}
-            acao={
-              <BotaoLink href="/app/carreiras" comChip iconeDireita={<Icone nome="seta-direita" />}>
-                {textos.semProfissao.acao}
-              </BotaoLink>
-            }
-          />
-        </div>
+        <EstadoDaJornada
+          falta={falta ?? "nivel"}
+          icone="aprender"
+          profissao={profissao}
+          tour="aprender"
+        />
       </>
     )
   }
