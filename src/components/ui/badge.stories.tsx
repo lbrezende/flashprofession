@@ -1,16 +1,16 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite"
-import { sistema } from "@/content/site"
+import { estadosDeNo, sistema } from "@/content/site"
 import { Badge, type VarianteBadge } from "./badge"
 
 const VARIANTES: VarianteBadge[] = ["neutra", "sucesso", "aviso", "perigo", "destaque"]
 
 /** O que cada variante quer dizer no produto, com uma amostra real de cada. */
 const NO_PRODUTO: { variante: VarianteBadge; rotulo: string }[] = [
-  { variante: "sucesso", rotulo: sistema.perguntas.resultados.acertei },
-  { variante: "aviso", rotulo: sistema.perguntas.resultados.pendente },
-  { variante: "neutra", rotulo: sistema.perguntas.resultados.errei },
-  { variante: "perigo", rotulo: sistema.perguntas.resultados.errei },
-  { variante: "destaque", rotulo: sistema.baralhos.revisao.frente },
+  { variante: "sucesso", rotulo: estadosDeNo.concluido.rotulo },
+  { variante: "aviso", rotulo: estadosDeNo["nao-iniciado"].rotulo },
+  { variante: "neutra", rotulo: estadosDeNo["aguardando-validacao"].rotulo },
+  { variante: "perigo", rotulo: estadosDeNo["aguardando-validacao"].rotulo },
+  { variante: "destaque", rotulo: sistema.carreiras.objetivoAtual },
 ]
 
 const meta = {
@@ -23,7 +23,7 @@ const meta = {
     children: { control: "text" },
   },
   args: {
-    children: sistema.perguntas.resultados.acertei,
+    children: estadosDeNo.concluido.rotulo,
     variante: "neutra",
     ponto: false,
   },
@@ -82,9 +82,9 @@ export const EmLista: Story = {
   render: () => (
     <ul className="w-full max-w-md divide-y divide-hairline rounded-ds border border-hairline bg-surface">
       {[
-        { nome: "Revolução Francesa", variante: "sucesso" as const, status: sistema.perguntas.resultados.acertei },
-        { nome: "Função do segundo grau", variante: "aviso" as const, status: sistema.perguntas.resultados.pendente },
-        { nome: "Climas do Brasil", variante: "neutra" as const, status: sistema.perguntas.resultados.errei },
+        { nome: "Processo de UX", variante: "sucesso" as const, status: estadosDeNo.concluido.rotulo },
+        { nome: "Pesquisa com usuários", variante: "aviso" as const, status: estadosDeNo["aguardando-validacao"].rotulo },
+        { nome: "Testes de usabilidade", variante: "neutra" as const, status: estadosDeNo["nao-iniciado"].rotulo },
       ].map((linha) => (
         <li key={linha.nome} className="flex items-center justify-between gap-3 px-4 py-3">
           <span className="text-sm text-ink">{linha.nome}</span>

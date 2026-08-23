@@ -14,7 +14,7 @@ type PropsBarraLateral = {
   aoFechar: () => void
 }
 
-/** `/app` só casa exato; os demais também valem para rotas filhas (`/app/baralhos/abc`). */
+/** `/app` só casa exato; os demais também valem para rotas filhas (`/app/carreiras/abc`). */
 function ehAtivo(atual: string, href: string) {
   if (href === "/app") return atual === "/app"
   return atual === href || atual.startsWith(`${href}/`)

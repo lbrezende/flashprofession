@@ -262,7 +262,10 @@ export function Tour() {
         acharia ela ali, e o tour sumiria no meio.
       */
       const viva = instancia.current
-      if (viva && !encerrado.current) {
+      // Só grava se o balão ainda estava DE PÉ: um trecho que terminou pelo
+      // botão de próximo já guardou a posição certa, e regravar aqui voltaria
+      // a jornada um passo.
+      if (viva && !encerrado.current && viva.isActive()) {
         const parada = trechoAtual.current[viva.getActiveIndex() ?? 0]
         if (parada) guardarPasso(parada.indice + 1)
       }

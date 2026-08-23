@@ -1,13 +1,15 @@
-# Vira Pergunta
+# Rumo
 
-Cole o conteúdo que você precisa estudar e ele volta em forma de pergunta.
+Da dúvida de carreira ao próximo passo certo.
 
-O aluno cola o texto da matéria, recebe as perguntas que a prova vai cobrar e
-revisa carta a carta no dia da prova. O professor organiza o material por
-disciplina e tema, e depois da correção ajusta o que não funcionou.
+A pessoa escolhe a profissão, descobre em que nível está num diagnóstico em
+duas partes (autoavaliação + teste), enxerga o caminho completo em cinco
+níveis, aprende com validação no fim, pratica em desafios que viram cases e
+acompanha progresso e ranking com consentimento.
 
-É uma ferramenta interna: o site da raiz apresenta ela para quem chega na
-equipe, e o sistema fica atrás da tela de entrar.
+Esta versão implementa o documento de requisitos da plataforma de preparação
+de carreira com dados de demonstração: toda a jornada é navegável sem backend,
+e a profissão do teste ponta a ponta é UX/UI Designer.
 
 ---
 
@@ -20,9 +22,11 @@ npm install
 npm run dev
 ```
 
-Abra http://localhost:3000. O app já vem com uma semana de conteúdo dentro, e
-não precisa de banco, de conta em serviço nenhum nem de variável de ambiente
-para funcionar.
+Abra http://localhost:3000. O app já vem com uma jornada de demonstração no meio
+do caminho (nível 2 em UX/UI Designer), e não precisa de banco, de conta em
+serviço nenhum nem de variável de ambiente para funcionar. Em Configurações,
+"Limpar tudo" mostra a experiência de quem acabou de chegar e "Restaurar
+exemplos" volta ao estado de demonstração.
 
 ## O catálogo de componentes
 
@@ -78,19 +82,20 @@ está em `src/lib/banco.ts`, na rota `src/app/api/dados` e nos dois lados de
 `src/lib/store.ts`. Conexão errada não derruba a tela: o app volta pro navegador
 sozinho.
 
-### Gerar as perguntas com inteligência artificial
+### Ligar a inteligência artificial no nivelamento e no feedback
 
-Hoje o botão "Gerar perguntas" funciona com um resultado de exemplo, e a tela
-avisa isso. Para ligar de verdade, pegue uma chave em
-https://platform.openai.com/api-keys e cole no `.env.local`:
+Hoje o teste adaptativo, a avaliação das respostas curtas e o feedback dos
+desafios seguem regras de demonstração, e as telas dizem isso. Para ligar de
+verdade, pegue uma chave em https://platform.openai.com/api-keys e cole no
+`.env.local`:
 
 ```
 OPENAI_API_KEY=sk-a-sua-chave
 ```
 
-Depois peça ao seu assistente a rota `src/app/api/gerar-perguntas/route.ts`, que
-lê a chave de `process.env` no servidor. A chave nunca é escrita no código do
-navegador.
+Depois peça ao seu assistente as rotas em `src/app/api` (por exemplo,
+`avaliar-resposta` e `feedback-desafio`), lendo a chave de `process.env` no
+servidor. A chave nunca é escrita no código do navegador.
 
 O resto das conexões (envio de e-mail, WhatsApp, automações com n8n) está em
 `PROXIMOS-PASSOS.md`, e a versão navegável dessa lista é a página `/como-usar`.
@@ -101,18 +106,22 @@ O resto das conexões (envio de e-mail, WhatsApp, automações com n8n) está em
 
 | Endereço | O que resolve |
 | --- | --- |
-| `/` | O site que apresenta a ferramenta pra quem chega na equipe |
+| `/` | O site que apresenta o produto, com o caminho de cinco níveis de verdade |
 | `/entrar` | A porta do sistema, com Google, usuário e senha |
 | `/como-usar` | O que já funciona, o que falta ligar e onde cada coisa encaixa |
-| `/app` | A tela inicial, com as áreas do sistema |
-| `/app/perguntas` | O aluno escolhe o conteúdo e responde antes de ver a resposta |
-| `/app/conteudos` | O professor cola o material e gera as perguntas dele |
-| `/app/baralhos` | Os baralhos montados, e a revisão carta a carta |
-| `/app/respostas` | O que continuou errado, pra ajustar a pergunta ou o material |
+| `/app` | Início com retomada: objetivo, progresso e a próxima ação (ONB) |
+| `/app/carreiras` | Áreas e profissões, com busca e filtros (CAR) |
+| `/app/carreiras/[id]` | A ficha completa da profissão antes de decidir |
+| `/app/diagnostico` | O nivelamento: contexto, autoavaliação, teste e resultado (DIA) |
+| `/app/mapa` | Os cinco níveis em React Flow, com alternativa em lista (MAP) |
+| `/app/aprender` | Vídeos curtos, tarefas e validação com revisão (APR) |
+| `/app/praticar` | Desafios com rubrica, evidências e cases (PRA) |
+| `/app/progresso` | Indicadores, dedicação, domínio por competência e histórico (PRO) |
+| `/app/ranking` | A comunidade com fórmula aberta e opt-in (RNK) |
+| `/app/perfil` | Objetivo, visibilidade pública e evidências |
 | `/app/desafio` | O guia de refinamento deste app |
-| `/app/configuracoes` | Design system, dados de exemplo e perfil |
-
----
+| `/app/configuracoes` | Design system, dados de exemplo e perfil de acesso |
+| `/exemplo` | Um exemplo à parte de tela de vaga, em HTML e CSS puros |
 
 ## A árvore de pastas
 
@@ -121,7 +130,6 @@ O resto das conexões (envio de e-mail, WhatsApp, automações com n8n) está em
 .storybook/                  o catálogo de componentes, com os tokens injetados
 banco/schema.sql             o desenho da tabela que o app cria sozinho no Neon
 n8n/                         o n8n pronto pra subir, com dois exemplos no README
-public/                      arquivos públicos do projeto
 design-system.json           cor, tipografia e raio. Muda aqui, muda tudo
 .env.example                 o modelo comentado das chaves, sem valor nenhum
 
@@ -129,42 +137,47 @@ src/app/
   page.tsx                   o site da raiz
   entrar/                    a porta do sistema
   como-usar/                 o mapa do que já funciona e do que falta ligar
+  exemplo/                   o exemplo de tela de vaga em HTML puro
   app/                       tudo que fica atrás da sessão
     layout.tsx               a casca: menu, botão de sair e trava de sessão
-    page.tsx                 o início
-    perguntas/               responder antes de ver a resposta
-    conteudos/               colar o material e gerar as perguntas
-    baralhos/                os baralhos e a revisão carta a carta
-    respostas/               o que continuou errado
+    page.tsx                 o início com retomada
+    carreiras/               áreas, profissões e a ficha de cada uma
+    diagnostico/             o nivelamento em quatro etapas
+    mapa/                    os cinco níveis em React Flow
+    aprender/                módulos, aulas, tarefas e validação
+    praticar/                desafios, evidências e cases
+    progresso/               indicadores, dedicação e histórico
+    ranking/                 a comunidade, com fórmula aberta
+    perfil/                  objetivo e visibilidade pública
     desafio/                 o guia de refinamento
     configuracoes/           design system, dados de exemplo e perfil
   api/                       as rotas de servidor: sessão, dados e diagnóstico
-  globals.css                os tokens em CSS e a camada de acabamento
 
 src/components/
-  ui/                        os treze primitivos, escritos à mão, com stories
+  ui/                        os primitivos, escritos à mão, com stories
   app/                       os componentes de cada tela do sistema
   marketing/                 as dobras do site, uma por arquivo
   auth/                      a tela de entrar e o passo a passo do Google
   como-usar/                 os blocos da página Como usar
-  onboarding/                o tour da primeira visita
+  onboarding/                o tour que guia a jornada inteira
 
 src/content/
   site.ts                    TODA a copy do produto, num arquivo só
-  tour.ts                    as cinco paradas do tour
+  tour.ts                    as doze paradas do onboarding guiado
 
 src/lib/
-  types.ts                   o modelo de dados
-  modelo.ts                  o vocabulário do modelo, num lugar só
+  types.ts                   o modelo de dados: catálogo e estado do usuário
+  catalogo.ts                áreas, profissões, níveis, questões e desafios
+  modelo.ts                  o vocabulário do modelo e a fórmula do score
+  jornada.ts                 as contas derivadas: horas, estados, próxima ação
   store.ts                   a única porta de dados: navegador ou Postgres
-  seed.ts                    o material de exemplo
-  perguntas-geradas.ts       as perguntas que a geração devolve hoje
+  seed.ts                    a jornada de exemplo no meio do caminho
   banco.ts                   a conversa com o Postgres, desligada
   google.ts                  o fluxo OAuth inteiro, desligado
   sessao-servidor.ts         o cookie assinado da sessão
   design-system.ts           os tokens do JSON viram variáveis CSS
   design-systems.json        o catálogo de 71 identidades da tela de ajustes
-  tema.ts                    a prévia de tema, derivando o que falta no catálogo
+  tema.ts                    a prévia de tema, derivando o que falta
   contraste.ts               o cálculo de contraste WCAG
   formato.ts                 data, hora e texto em pt-BR, sem erro de fuso
   semente.ts                 o hash do nome que decide o cenário do site

@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite"
 import { useEffect, useState } from "react"
 import { fn } from "storybook/test"
-import { sistema } from "@/content/site"
+import { estadosDeNo, sistema } from "@/content/site"
 import { Badge } from "./badge"
 import { Button } from "./button"
 import { Drawer, type DrawerProps, type LarguraDrawer } from "./drawer"
@@ -35,8 +35,8 @@ function DrawerComGatilho({ aberto, aoFechar, ...props }: DrawerProps) {
 
 const LARGURAS: LarguraDrawer[] = ["sm", "md", "lg"]
 
-const formulario = sistema.conteudos.formulario
-const detalhe = sistema.conteudos.detalhe
+const formulario = sistema.praticar.envio
+const detalhe = sistema.perfil.evidencias
 
 const meta = {
   title: "Primitivos/Drawer",
@@ -56,8 +56,8 @@ const meta = {
   args: {
     aberto: false,
     aoFechar: fn(),
-    titulo: "Revolução Francesa: as três fases",
-    descricao: "História · Idade Contemporânea",
+    titulo: "Case: abandono do onboarding",
+    descricao: "Pesquisa com usuários · UX/UI Designer",
     largura: "md",
     mostrarFechar: true,
     fecharNoOverlay: true,
@@ -74,43 +74,43 @@ export const Padrao: Story = {
     children: (
       <div className="flex flex-col gap-6">
         <section className="flex flex-col gap-3">
-          <h3 className="font-display text-sm text-ink">{detalhe.texto}</h3>
+          <h3 className="font-display text-sm text-ink">{detalhe.titulo}</h3>
           <dl className="grid gap-3 text-sm">
             <div className="flex items-center justify-between gap-3">
-              <dt className="text-muted">{formulario.campos.tema}</dt>
-              <dd className="text-ink">Idade Contemporânea</dd>
+              <dt className="text-muted">{formulario.campoLink}</dt>
+              <dd className="text-ink">https://exemplo.com/case-onboarding</dd>
             </div>
             <div className="flex items-center justify-between gap-3">
-              <dt className="text-muted">{formulario.campos.texto}</dt>
-              <dd className="text-ink">A Revolução Francesa começa em 1789…</dd>
+              <dt className="text-muted">{formulario.campoTexto}</dt>
+              <dd className="text-ink">Investiguei o abandono com 5 entrevistas…</dd>
             </div>
             <div className="flex items-center justify-between gap-3">
-              <dt className="text-muted">{formulario.campos.disciplina}</dt>
+              <dt className="text-muted">{formulario.campoLink}</dt>
               <dd>
                 <Badge variante="sucesso" ponto>
-                  {sistema.perguntas.resultados.acertei}
+                  {estadosDeNo.concluido.rotulo}
                 </Badge>
               </dd>
             </div>
             <div className="flex items-center justify-between gap-3">
-              <dt className="text-muted">{detalhe.texto}</dt>
-              <dd className="text-ink">10/08/2026</dd>
+              <dt className="text-muted">{detalhe.titulo}</dt>
+              <dd className="text-ink">19/08/2026</dd>
             </div>
           </dl>
         </section>
 
         <section className="flex flex-col gap-3">
-          <h3 className="font-display text-sm text-ink">{detalhe.perguntas}</h3>
+          <h3 className="font-display text-sm text-ink">{detalhe.titulo}</h3>
           <div className="rounded-ds border border-hairline bg-elevated">
-            <EstadoVazio tamanho="sm" titulo={detalhe.semPerguntas} />
+            <EstadoVazio tamanho="sm" titulo={detalhe.nenhuma} />
           </div>
         </section>
       </div>
     ),
     rodape: (
       <>
-        <Button variante="perigo">{sistema.conteudos.remocao.acao}</Button>
-        <Button>{formulario.salvar}</Button>
+        <Button variante="perigo">{sistema.ranking.sair}</Button>
+        <Button>{formulario.salvarRascunho}</Button>
       </>
     ),
   },
@@ -118,29 +118,29 @@ export const Padrao: Story = {
 
 export const ComFormulario: Story = {
   args: {
-    titulo: formulario.tituloCriar,
-    descricao: formulario.descricaoCriar,
+    titulo: formulario.titulo,
+    descricao: formulario.exemploTexto,
     children: (
       <div className="flex flex-col gap-4">
-        <Input rotulo={formulario.campos.titulo} placeholder={formulario.exemploTitulo} obrigatorio />
-        <Input rotulo={formulario.campos.disciplina} placeholder={formulario.exemploDisciplina} />
+        <Input rotulo={formulario.campoTexto} placeholder={formulario.exemploTexto} obrigatorio />
+        <Input rotulo={formulario.campoLink} placeholder={formulario.exemploLink} />
         <Input
-          rotulo={formulario.campos.tema}
-          placeholder={formulario.exemploTema}
+          rotulo={formulario.campoLink}
+          placeholder={formulario.exemploLink}
           type="email"
           obrigatorio
         />
         <Input
-          rotulo={formulario.campos.texto}
+          rotulo={formulario.campoTexto}
           placeholder={formulario.exemploTexto}
-          ajuda={formulario.ajudaDisciplina}
+          ajuda={formulario.exemploLink}
         />
         <Select
-          rotulo={formulario.campos.disciplina}
+          rotulo={formulario.campoLink}
           opcoes={[
-            { valor: "ativo", rotulo: sistema.perguntas.resultados.acertei },
-            { valor: "pendente", rotulo: sistema.perguntas.resultados.pendente },
-            { valor: "inativo", rotulo: sistema.perguntas.resultados.errei },
+            { valor: "ativo", rotulo: estadosDeNo.concluido.rotulo },
+            { valor: "pendente", rotulo: estadosDeNo["nao-iniciado"].rotulo },
+            { valor: "inativo", rotulo: estadosDeNo["aguardando-validacao"].rotulo },
           ]}
           defaultValue="ativo"
         />
@@ -149,7 +149,7 @@ export const ComFormulario: Story = {
     rodape: (
       <>
         <Button variante="secundaria">{sistema.acoes.cancelar}</Button>
-        <Button>{formulario.criar}</Button>
+        <Button>{formulario.enviarFinal}</Button>
       </>
     ),
   },
@@ -165,9 +165,9 @@ export const Larguras: Story = {
           {...args}
           largura={largura}
           titulo={largura}
-          descricao={sistema.conteudos.descricao}
+          descricao={sistema.carreiras.descricao}
         >
-          <p className="text-sm leading-relaxed text-muted">{sistema.conteudos.descricao}</p>
+          <p className="text-sm leading-relaxed text-muted">{sistema.carreiras.descricao}</p>
         </DrawerComGatilho>
       ))}
     </div>
@@ -176,10 +176,10 @@ export const Larguras: Story = {
 
 export const SemRodape: Story = {
   args: {
-    titulo: detalhe.texto,
+    titulo: detalhe.titulo,
     descricao: undefined,
     children: (
-      <p className="text-sm leading-relaxed text-muted">{sistema.conteudos.descricao}</p>
+      <p className="text-sm leading-relaxed text-muted">{sistema.carreiras.descricao}</p>
     ),
   },
 }

@@ -13,7 +13,7 @@ Cada caixinha é um passo. Você liga uma na outra e desenha o caminho.
 
 Em vez de escrever código, você monta um desenho tipo:
 
-> **quando** sair um baralho novo → **então** me avise no WhatsApp
+> **quando** chegar o feedback de um desafio → **então** me avise no WhatsApp
 
 A primeira caixinha é o gatilho (o que faz a automação começar). As outras são
 as ações. É bem parecido com um fluxo de usuário no Figma, só que ele roda.
@@ -77,10 +77,10 @@ Depois acesse <http://localhost:5679>.
 
 ---
 
-## Exemplo 1: avisar no WhatsApp quando sair um baralho novo
+## Exemplo 1: avisar no WhatsApp quando o feedback do desafio chegar
 
-**A dor:** o professor monta o baralho da prova e o aluno só descobre quando
-lembra de abrir o app, quase sempre tarde demais.
+**A dor:** a pessoa envia a evidência do desafio e só descobre que o feedback
+chegou quando lembra de abrir o app, quase sempre dias depois.
 
 **A automação:**
 
@@ -88,55 +88,54 @@ lembra de abrir o app, quase sempre tarde demais.
 [Webhook]  →  [Filtro]  →  [Enviar WhatsApp]
    ↑              ↑                ↑
 o app avisa    só passa se     mensagem chega
-que montou     o baralho tem   no celular de
-um baralho     carta dentro    quem vai estudar
+que o feedback a avaliação     no celular de
+foi publicado  foi concluída   quem enviou
 ```
 
 **Como montar:**
 
 1. No n8n, clique em **Create Workflow**
 2. Adicione o nó **Webhook**. Ele te dá uma URL, tipo
-   `http://localhost:5678/webhook/baralho-novo`. Essa URL é o "telefone" da sua
+   `http://localhost:5678/webhook/feedback-desafio`. Essa URL é o "telefone" da sua
    automação: quem ligar nele dispara o fluxo
 3. Copie a URL e cole no `.env.local` do projeto, na variável `N8N_WEBHOOK_URL`
-4. Adicione o nó **Filter** e configure: só continuar se o baralho tiver pelo
-   menos uma carta. Sem isso você recebe mensagem de baralho vazio e desliga o
-   aviso em dois dias
+4. Adicione o nó **Filter** e configure: só continuar se a avaliação estiver
+   concluída. Sem isso você recebe mensagem de rascunho e desliga o aviso em
+   dois dias
 5. Adicione o nó **WhatsApp Business Cloud** (ou **Twilio**, que é mais fácil de
    testar) e escreva a mensagem usando os dados que chegaram, por exemplo:
-   *"Baralho novo: {{ $json.nome }}, com {{ $json.cartas }} cartas"*
+   *"Seu desafio {{ $json.nome }} foi avaliado: {{ $json.nota }}"*
 6. Clique em **Test workflow**, depois em **Active** no canto superior direito
 
 **Falta a última peça:** hoje o app não chama esse webhook, porque não tem
 servidor. Essa é justamente uma das tarefas do
 [`PROXIMOS-PASSOS.md`](../PROXIMOS-PASSOS.md): criar uma rota no app que avisa
-o n8n quando um baralho é montado.
+o n8n quando um feedback é publicado.
 
 ---
 
-## Exemplo 2: e-mail de lembrete na véspera da prova
+## Exemplo 2: e-mail de lembrete quando a sequência vai quebrar
 
-**A dor:** o aluno monta o baralho na segunda, tem prova na sexta e não revisa
-no meio do caminho.
+**A dor:** a pessoa estuda quatro dias seguidos, para um dia e a constância vai
+embora sem ninguém perceber.
 
 **A automação:**
 
 ```text
 [Webhook]  →  [Enviar e-mail]  →  [Esperar até 1 dia antes]  →  [Enviar e-mail]
    ↑                ↑                        ↑                          ↑
-o app avisa    "seu baralho          segura o fluxo até           "é amanhã,
-que montou     está pronto"          a véspera                    revisa hoje"
+o app avisa    "sequência de         segura o fluxo até           "estuda 20 min
+o último dia   4 dias de pé"         o fim do dia seguinte        hoje e ela vive"
 ```
 
 **Como montar:**
 
-1. Nó **Webhook**: recebe os dados do baralho (nome, e-mail, data da prova)
-2. Nó **Send Email** (ou **Gmail**, ou **Resend**): escreva o texto de
-   confirmação usando os campos recebidos
-3. Nó **Wait**: configure para esperar até 24 horas antes da data da prova
-4. Nó **Send Email** de novo: o lembrete da véspera
+1. Nó **Webhook**: recebe os dados da sequência (nome, e-mail, dias seguidos)
+2. Nó **Send Email** (ou **Gmail**, ou **Resend**): celebre a sequência de pé
+3. Nó **Wait**: configure para esperar até o fim do dia seguinte
+4. Nó **Send Email** de novo: o lembrete que salva a sequência
 
-Repare que a segunda mensagem é a que salva a nota. A primeira só tranquiliza.
+Repare que a segunda mensagem é a que salva a constância. A primeira só celebra.
 As duas juntas viram um produto bom.
 
 ---

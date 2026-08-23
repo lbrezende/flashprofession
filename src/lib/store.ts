@@ -2,7 +2,8 @@
 
 import { useCallback, useSyncExternalStore } from "react"
 import { SEED } from "./seed"
-import type { Baralho, Conteudo, Dados, Pergunta, Sessao } from "./types"
+import type { Dados, Evidencia, Jornada, Sessao, SessaoDeEstudo } from "./types"
+import { novoId as gerarId } from "./ids"
 
 /**
  * A ÚNICA porta de dados do app. Nenhuma tela lê ou grava por fora daqui.
@@ -25,12 +26,15 @@ import type { Baralho, Conteudo, Dados, Pergunta, Sessao } from "./types"
  * as mesmas funções nos dois modos. É por isso que a regra de nunca ler ou
  * gravar fora deste arquivo vale tanto: ela é o que transforma "ligar o banco"
  * numa linha de configuração em vez de uma reforma em vinte telas.
+ *
+ * O QUE MORA AQUI é o estado do usuário: a jornada, as evidências e as sessões
+ * de estudo. O catálogo de profissões é conteúdo e mora em `catalogo.ts`.
  */
 
-const CHAVE_DADOS = "colo-o-conteudo-que-preciso:dados:v1"
+const CHAVE_DADOS = "colo-o-conteudo-que-preciso:dados:v2"
 const CHAVE_SESSAO = "colo-o-conteudo-que-preciso:sessao:v1"
 
-const VAZIO: Dados = { conteudos: [], perguntas: [], baralhos: [] }
+const VAZIO: Dados = { jornadas: [], evidencias: [], sessoes: [] }
 
 type Modo = "descobrindo" | "navegador" | "banco"
 
@@ -72,9 +76,9 @@ function lerDoNavegador(): Dados {
     const salvo = JSON.parse(bruto) as Partial<Dados>
     // Tolerante a dados antigos ou corrompidos: cada coleção cai no seed.
     return {
-      conteudos: Array.isArray(salvo.conteudos) ? salvo.conteudos : SEED.conteudos,
-      perguntas: Array.isArray(salvo.perguntas) ? salvo.perguntas : SEED.perguntas,
-      baralhos: Array.isArray(salvo.baralhos) ? salvo.baralhos : SEED.baralhos,
+      jornadas: Array.isArray(salvo.jornadas) ? salvo.jornadas : SEED.jornadas,
+      evidencias: Array.isArray(salvo.evidencias) ? salvo.evidencias : SEED.evidencias,
+      sessoes: Array.isArray(salvo.sessoes) ? salvo.sessoes : SEED.sessoes,
     }
   } catch {
     return SEED
@@ -103,8 +107,8 @@ async function pedir(metodo: string, corpo: unknown) {
 /**
  * Manda a mudança pro banco depois de a tela já ter mudado.
  *
- * A tela não espera a rede: quem marcou uma carta como sabida vê o resultado na
- * hora. Se o banco recusar, a gente recarrega de lá e a tela volta pra verdade,
+ * A tela não espera a rede: quem concluiu uma tarefa vê o progresso na hora.
+ * Se o banco recusar, a gente recarrega de lá e a tela volta pra verdade,
  * em vez de ficar mostrando uma mudança que não aconteceu.
  */
 function enviar(metodo: string, corpo: unknown) {
@@ -169,9 +173,9 @@ function inscrever(o: Ouvinte) {
 /**
  * Aplica a mudança nos dois lados: primeiro na tela, depois onde ela mora.
  *
- * `local` grava no navegador e `remoto` fala com o banco. Cada operação escreve
- * as duas versões da mesma intenção, lado a lado, porque a alternativa (traduzir
- * uma na outra) é onde os dois lados começam a divergir sem ninguém perceber.
+ * Cada operação escreve as duas versões da mesma intenção, lado a lado, porque
+ * a alternativa (traduzir uma na outra) é onde os dois lados começam a
+ * divergir sem ninguém perceber.
  */
 function aplicar(proximo: (atual: Dados) => Dados, remoto: () => void) {
   const dados = proximo(instantaneo.dados)
@@ -181,7 +185,39 @@ function aplicar(proximo: (atual: Dados) => Dados, remoto: () => void) {
 }
 
 export function novoId(prefixo: string) {
-  return `${prefixo}-${Math.random().toString(36).slice(2, 9)}`
+  return gerarId(prefixo)
+}
+
+/** O dia local de hoje, AAAA-MM-DD, montado por componente pra não cair de fuso. */
+function hojeISO() {
+  const agora = new Date()
+  const dois = (n: number) => String(n).padStart(2, "0")
+  return `${agora.getFullYear()}-${dois(agora.getMonth() + 1)}-${dois(agora.getDate())}`
+}
+
+/** A jornada em branco de quem acabou de escolher (ou ainda não escolheu). */
+export function jornadaEmBranco(profissaoId: string | null): Jornada {
+  return {
+    id: gerarId("jor"),
+    profissaoId,
+    etapa: profissaoId ? "autopercepcao" : "novo",
+    autopercepcao: {},
+    respostasDoTeste: {},
+    questaoAtual: 0,
+    resultado: null,
+    competenciasConcluidas: [],
+    conteudosVistos: [],
+    tarefasFeitas: [],
+    avaliacoes: {},
+    retomada: null,
+    publico: {
+      participaRanking: false,
+      nomePublico: "",
+      mostrarEvidencias: false,
+      disponibilidade: "",
+    },
+    criadoEm: new Date().toISOString(),
+  }
 }
 
 // --- hook público ---------------------------------------------------------
@@ -193,119 +229,109 @@ export function useDados() {
     () => NO_SERVIDOR
   )
 
-  const criarConteudo = useCallback((c: Omit<Conteudo, "id" | "criadoEm">) => {
-    const novo: Conteudo = { ...c, id: novoId("con"), criadoEm: new Date().toISOString() }
-    aplicar(
-      (d) => ({ ...d, conteudos: [novo, ...d.conteudos] }),
-      () => enviar("POST", { colecao: "conteudos", item: novo })
-    )
-    return novo
-  }, [])
+  /** A jornada ativa. Nula é o estado de quem acabou de chegar (ONB-03). */
+  const jornada = dados.jornadas[0] ?? null
 
-  const atualizarConteudo = useCallback((id: string, patch: Partial<Conteudo>) => {
+  /**
+   * Atualiza a jornada ativa com um pedaço novo, criando ela se não existir.
+   *
+   * Toda tela grava por aqui: é o que faz sair no meio do diagnóstico e voltar
+   * amanhã sem repetir trabalho válido (ONB-04).
+   */
+  const atualizarJornada = useCallback((patch: Partial<Jornada>) => {
+    const atual = instantaneo.dados.jornadas[0]
+    if (atual) {
+      aplicar(
+        (d) => ({
+          ...d,
+          jornadas: d.jornadas.map((j) => (j.id === atual.id ? { ...j, ...patch } : j)),
+        }),
+        () => enviar("PATCH", { colecao: "jornadas", id: atual.id, patch })
+      )
+      return
+    }
+
+    const nova: Jornada = { ...jornadaEmBranco(null), ...patch }
     aplicar(
-      (d) => ({ ...d, conteudos: d.conteudos.map((c) => (c.id === id ? { ...c, ...patch } : c)) }),
-      () => enviar("PATCH", { colecao: "conteudos", id, patch })
+      (d) => ({ ...d, jornadas: [nova] }),
+      () => enviar("POST", { colecao: "jornadas", item: nova })
     )
   }, [])
 
   /**
-   * Tira o conteúdo e tudo que só existia por causa dele.
-   *
-   * As perguntas daquele conteúdo vão junto, porque pergunta sem o material de
-   * origem não dá pra corrigir nem pra estudar. E as cartas que essas perguntas
-   * ocupavam saem dos baralhos: um baralho com carta fantasma travaria a
-   * revisão bem no dia da prova, que é o pior momento possível.
+   * Troca de profissão sem apagar nada (CAR-05 e RB-07): evidências e sessões
+   * ficam, e o que se zera é só a posição do diagnóstico na profissão nova.
    */
-  const removerConteudo = useCallback((id: string) => {
+  const trocarProfissao = useCallback((profissaoId: string) => {
+    const atual = instantaneo.dados.jornadas[0]
+    const patch: Partial<Jornada> = {
+      profissaoId,
+      etapa: "autopercepcao" as const,
+      autopercepcao: {},
+      respostasDoTeste: {},
+      questaoAtual: 0,
+      resultado: null,
+      retomada: null,
+    }
+    if (atual) {
+      aplicar(
+        (d) => ({
+          ...d,
+          jornadas: d.jornadas.map((j) => (j.id === atual.id ? { ...j, ...patch } : j)),
+        }),
+        () => enviar("PATCH", { colecao: "jornadas", id: atual.id, patch })
+      )
+      return
+    }
+    const nova: Jornada = { ...jornadaEmBranco(profissaoId) }
     aplicar(
-      (d) => {
-        const orfas = new Set(
-          d.perguntas.filter((p) => p.conteudoId === id).map((p) => p.id)
-        )
-        return {
-          conteudos: d.conteudos.filter((c) => c.id !== id),
-          perguntas: d.perguntas.filter((p) => p.conteudoId !== id),
-          baralhos: d.baralhos.map((b) => ({
-            ...b,
-            perguntaIds: b.perguntaIds.filter((pid) => !orfas.has(pid)),
-          })),
-        }
-      },
-      // O banco faz a mesma limpeza do lado de lá, numa chamada só.
-      () => enviar("DELETE", { colecao: "conteudos", id })
+      (d) => ({ ...d, jornadas: [nova] }),
+      () => enviar("POST", { colecao: "jornadas", item: nova })
     )
   }, [])
 
-  const criarPergunta = useCallback((p: Omit<Pergunta, "id" | "criadoEm">) => {
-    const nova: Pergunta = { ...p, id: novoId("per"), criadoEm: new Date().toISOString() }
+  const criarEvidencia = useCallback((e: Omit<Evidencia, "id" | "criadoEm">) => {
+    const nova: Evidencia = { ...e, id: gerarId("evi"), criadoEm: new Date().toISOString() }
     aplicar(
-      (d) => ({ ...d, perguntas: [nova, ...d.perguntas] }),
-      () => enviar("POST", { colecao: "perguntas", item: nova })
+      (d) => ({ ...d, evidencias: [nova, ...d.evidencias] }),
+      () => enviar("POST", { colecao: "evidencias", item: nova })
     )
     return nova
   }, [])
 
-  /** Várias de uma vez: é o que sai de um conteúdo colado, em um movimento só. */
-  const criarPerguntas = useCallback((novas: Array<Omit<Pergunta, "id" | "criadoEm">>) => {
-    const agora = new Date().toISOString()
-    const criadas: Pergunta[] = novas.map((p) => ({
-      ...p,
-      id: novoId("per"),
-      criadoEm: agora,
-    }))
-    aplicar(
-      (d) => ({ ...d, perguntas: [...criadas, ...d.perguntas] }),
-      () => {
-        for (const item of criadas) enviar("POST", { colecao: "perguntas", item })
-      }
-    )
-    return criadas
-  }, [])
-
-  const atualizarPergunta = useCallback((id: string, patch: Partial<Pergunta>) => {
-    aplicar(
-      (d) => ({ ...d, perguntas: d.perguntas.map((p) => (p.id === id ? { ...p, ...patch } : p)) }),
-      () => enviar("PATCH", { colecao: "perguntas", id, patch })
-    )
-  }, [])
-
-  /** A carta sai dos baralhos junto, pelo mesmo motivo da remoção do conteúdo. */
-  const removerPergunta = useCallback((id: string) => {
+  const atualizarEvidencia = useCallback((id: string, patch: Partial<Evidencia>) => {
     aplicar(
       (d) => ({
         ...d,
-        perguntas: d.perguntas.filter((p) => p.id !== id),
-        baralhos: d.baralhos.map((b) => ({
-          ...b,
-          perguntaIds: b.perguntaIds.filter((pid) => pid !== id),
-        })),
+        evidencias: d.evidencias.map((e) => (e.id === id ? { ...e, ...patch } : e)),
       }),
-      () => enviar("DELETE", { colecao: "perguntas", id })
+      () => enviar("PATCH", { colecao: "evidencias", id, patch })
     )
   }, [])
 
-  const criarBaralho = useCallback((b: Omit<Baralho, "id" | "criadoEm">) => {
-    const novo: Baralho = { ...b, id: novoId("bar"), criadoEm: new Date().toISOString() }
+  const removerEvidencia = useCallback((id: string) => {
     aplicar(
-      (d) => ({ ...d, baralhos: [novo, ...d.baralhos] }),
-      () => enviar("POST", { colecao: "baralhos", item: novo })
-    )
-    return novo
-  }, [])
-
-  const atualizarBaralho = useCallback((id: string, patch: Partial<Baralho>) => {
-    aplicar(
-      (d) => ({ ...d, baralhos: d.baralhos.map((b) => (b.id === id ? { ...b, ...patch } : b)) }),
-      () => enviar("PATCH", { colecao: "baralhos", id, patch })
+      (d) => ({ ...d, evidencias: d.evidencias.filter((e) => e.id !== id) }),
+      () => enviar("DELETE", { colecao: "evidencias", id })
     )
   }, [])
 
-  /** O baralho é só uma seleção: desfazer ele não apaga pergunta nenhuma. */
-  const removerBaralho = useCallback((id: string) => {
+  /**
+   * Registra um bloco de tempo ativo (PRO-02). Quem chama são as ações que
+   * comprovam atividade (concluir vídeo, enviar avaliação, enviar evidência),
+   * nunca um relógio rodando sozinho: tempo de aba aberta não é dedicação.
+   */
+  const registrarSessao = useCallback((tipo: SessaoDeEstudo["tipo"], minutos: number) => {
+    const nova: SessaoDeEstudo = {
+      id: gerarId("ses"),
+      tipo,
+      minutos,
+      data: hojeISO(),
+      criadoEm: new Date().toISOString(),
+    }
     aplicar(
-      (d) => ({ ...d, baralhos: d.baralhos.filter((b) => b.id !== id) }),
-      () => enviar("DELETE", { colecao: "baralhos", id })
+      (d) => ({ ...d, sessoes: [nova, ...d.sessoes] }),
+      () => enviar("POST", { colecao: "sessoes", item: nova })
     )
   }, [])
 
@@ -321,18 +347,15 @@ export function useDados() {
 
   return {
     dados,
+    jornada,
     /** Ligado até saber onde os dados moram. A casca do app espera nele. */
     carregando,
-    criarConteudo,
-    atualizarConteudo,
-    removerConteudo,
-    criarPergunta,
-    criarPerguntas,
-    atualizarPergunta,
-    removerPergunta,
-    criarBaralho,
-    atualizarBaralho,
-    removerBaralho,
+    atualizarJornada,
+    trocarProfissao,
+    criarEvidencia,
+    atualizarEvidencia,
+    removerEvidencia,
+    registrarSessao,
     restaurarExemplos,
     limparTudo,
   }

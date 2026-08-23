@@ -8,28 +8,47 @@
  */
 
 export const marca = {
-  nome: "Vira Pergunta",
-  tagline: "O conteúdo que você precisa estudar, em forma de pergunta",
+  nome: "Rumo",
+  tagline: "Da dúvida de carreira ao próximo passo certo",
   descricaoCurta:
-    "Cole o material da matéria e receba as perguntas que a prova vai fazer.",
+    "Escolha a profissão, descubra em que nível você está e siga um caminho claro até chegar lá.",
 }
 
 /**
- * O nome de cada coleção com o artigo junto.
- *
- * Não é camada de tradução: a pasta, a rota e o rótulo já falam esta mesma
- * palavra. O que mora aqui é gramática, pra frase montada em tempo de execução
- * sair em português correto ("3 perguntas", "o baralho", "a pergunta").
+ * O nome de cada coisa contável com o artigo junto: é o que faz a frase montada
+ * em tempo de execução sair em português correto ("3 competências", "1 case").
  */
 export const palavras = {
-  conteudo: { singular: "conteúdo", plural: "conteúdos", artigo: "o" },
+  competencia: { singular: "competência", plural: "competências", artigo: "a" },
+  profissao: { singular: "profissão", plural: "profissões", artigo: "a" },
+  desafio: { singular: "desafio", plural: "desafios", artigo: "o" },
+  evidencia: { singular: "evidência", plural: "evidências", artigo: "a" },
+  caseDePortfolio: { singular: "case", plural: "cases", artigo: "o" },
+  dia: { singular: "dia", plural: "dias", artigo: "o" },
   pergunta: { singular: "pergunta", plural: "perguntas", artigo: "a" },
-  baralho: { singular: "baralho", plural: "baralhos", artigo: "o" },
-  carta: { singular: "carta", plural: "cartas", artigo: "a" },
+  modulo: { singular: "módulo", plural: "módulos", artigo: "o" },
+  jornada: { singular: "jornada", plural: "jornadas", artigo: "a" },
+  sessao: { singular: "sessão de estudo", plural: "sessões de estudo", artigo: "a" },
+} as const
+
+/** Os estados de um nó do mapa, com rótulo e ícone (MAP-04: nunca só cor). */
+export const estadosDeNo = {
+  "nao-iniciado": { rotulo: "Não iniciado", icone: "pendente" },
+  disponivel: { rotulo: "Disponível", icone: "disponivel" },
+  "em-andamento": { rotulo: "Em andamento", icone: "comecar" },
+  "aguardando-validacao": { rotulo: "Aguardando validação", icone: "aguardando" },
+  concluido: { rotulo: "Concluído", icone: "acertei" },
+  bloqueado: { rotulo: "Bloqueado", icone: "bloqueado" },
+} as const
+
+/** Os três degraus da autodeclaração, na ordem (DIA-02). */
+export const rotulosAutopercepcao = {
+  "nunca-vi": "Nunca vi",
+  conheco: "Conheço",
+  domino: "Domino",
 } as const
 
 export const landing = {
-  /** Barra fixa do topo do site. Os `href` com `#` apontam para as dobras. */
   cabecalho: {
     navegacao: "Navegação da página",
     irParaInicio: "Ir para o início",
@@ -37,115 +56,100 @@ export const landing = {
     comoUsar: "Como usar",
     links: [
       { rotulo: "Como funciona", href: "#como-funciona" },
-      { rotulo: "As cartas", href: "#amostra" },
+      { rotulo: "O caminho", href: "#caminho" },
       { rotulo: "O que muda", href: "#beneficios" },
     ],
   },
 
   /** Dobra 1: a promessa. */
   hero: {
-    eyebrow: "Ferramenta interna da equipe",
-    titulo: "Chegar na prova sabendo o que você já sabe",
+    eyebrow: "Preparação para uma nova carreira",
+    titulo: "Da dúvida de carreira ao próximo passo certo",
     subtitulo:
-      "Você cola o conteúdo da matéria e ele volta em perguntas, do jeito que a prova vai cobrar. Estudar deixa de ser reler e passa a ser responder.",
-    ctaPrimario: "Começar a estudar",
+      "Você escolhe a profissão, descobre em que nível está de verdade e recebe o caminho completo até chegar lá: o que aprender, o que praticar e como provar.",
+    ctaPrimario: "Descobrir meu nível",
     ctaSecundario: "Ver como funciona",
   },
 
   /**
-   * A "foto do produto" do topo. É um app falso montado em HTML e CSS, sem
-   * nenhum arquivo de imagem. Os rótulos vivem aqui porque mudar o produto tem
-   * que mudar também o que aparece na prévia.
-   *
-   * A `descricao` é o texto alternativo: a prévia inteira é anunciada como uma
-   * imagem só, então é a única frase que o leitor de tela vai ouvir dela.
+   * A "foto do produto" do topo: o mapa de cinco níveis com a próxima ação.
+   * É um app falso montado em HTML e CSS, sem arquivo de imagem, pintado pelos
+   * mesmos tokens do produto.
    */
   mockup: {
     descricao:
-      "Prévia do app: uma carta de estudo aberta, com a pergunta de História na frente e os botões de acertei e errei embaixo.",
-    endereco: "vira-pergunta.app",
-    titulo: "Prova de Humanas de sexta",
-    contador: "Carta 2 de 5",
-    pergunta: "O que foi o Terror, e quem conduziu esse período?",
-    dica: "Responda de cabeça antes de virar",
-    virar: "Ver a resposta",
-    acertei: "Acertei",
-    errei: "Ainda não",
-    lista: {
-      titulo: "Conteúdos da semana",
-      itens: [
-        { titulo: "Revolução Francesa: as três fases", disciplina: "História" },
-        { titulo: "Fotossíntese e respiração celular", disciplina: "Biologia" },
-        { titulo: "Função do segundo grau", disciplina: "Matemática" },
-      ],
-    },
+      "Prévia do app: o caminho de evolução de UX Designer em cinco níveis, com o nível 2 em andamento e a próxima ação recomendada.",
+    endereco: "rumo.app",
+    titulo: "Seu caminho em UX Design",
+    selo: "Nível 2 de 5",
+    proximaAcao: "Próxima ação",
+    proximaAcaoTexto: "Continuar: Conduzindo sem contaminar",
+    continuar: "Continuar",
   },
 
   /** Dobra 2: os três passos do uso. */
   comoFunciona: {
-    titulo: "Do texto colado até a carta virada",
-    subtitulo: "São três passos, e o primeiro leva menos de um minuto.",
+    titulo: "Do primeiro clique ao nível seguinte",
+    subtitulo: "Três passos, e o primeiro leva menos de quinze minutos.",
     passos: [
       {
         numero: "01",
-        titulo: "Cole o conteúdo da matéria",
+        titulo: "Escolha a profissão de olhos abertos",
         texto:
-          "O resumo da aula, o trecho do livro, o material que o professor mandou. Você cola, diz de que disciplina é, e pronto.",
+          "Explore as áreas, veja a rotina real de cada profissão, as entregas e o esforço estimado, antes de decidir.",
       },
       {
         numero: "02",
-        titulo: "Ele volta em perguntas",
+        titulo: "Descubra em que nível você está",
         texto:
-          "Cada ponto importante do texto sai como uma pergunta, com a resposta guardada atrás dela.",
+          "Declare o que acha que sabe e confirme num teste rápido. O resultado mostra suas lacunas, seus pontos fortes e o primeiro passo.",
       },
       {
         numero: "03",
-        titulo: "No dia da prova, o baralho pergunta",
+        titulo: "Siga o caminho, com prova no fim",
         texto:
-          "Uma carta por vez. Você responde de cabeça, vira, e marca se acertou. O que ficou errado continua aparecendo.",
+          "Aprenda com vídeos curtos, execute tarefas, valide o domínio e pratique em desafios reais que viram cases no seu perfil.",
       },
     ],
   },
 
-  /** Dobra 3: a prova viva. Três cartas de verdade, do material de exemplo. */
-  amostra: {
-    titulo: "Três cartas que já estão lá dentro",
+  /** Dobra 3: a dobra viva, com os cinco níveis de verdade do catálogo. */
+  caminho: {
+    titulo: "Cinco níveis, sempre à vista",
     subtitulo:
-      "Elas saíram dos conteúdos que a equipe colou nesta semana. É assim que o baralho chega até você.",
-    frente: "Pergunta",
-    verso: "Resposta",
+      "Este é o caminho real de UX/UI Designer dentro do app: do primeiro contato à liderança, com critérios claros para avançar em cada nível.",
+    nivelRotulo: "Nível",
   },
 
-  /** Dobra 4: o que cada pessoa ganha. */
+  /** Dobra 4: o que a pessoa ganha. */
   beneficios: {
-    titulo: "O que muda pra quem estuda e pra quem ensina",
+    titulo: "O que muda quando o caminho fica visível",
     itens: [
       {
-        icone: "pergunta",
-        titulo: "O conteúdo já chega perguntando",
+        icone: "nivel",
+        titulo: "Você sabe onde está, com evidência",
         texto:
-          "Colar o texto é o único trabalho. O que volta é a lista do que você precisa saber responder, e revisar deixa de começar do zero.",
+          "O diagnóstico combina o que você declara com o que o teste confirma, e explica o resultado: nível, lacunas e confiança.",
       },
       {
-        icone: "estudar",
-        titulo: "Pouco tempo e ainda assim rende",
+        icone: "mapa",
+        titulo: "O caminho inteiro, sem mistério",
         texto:
-          "Uma pergunta de cada vez, com a resposta atrás. Em minutos você descobre o que já sabe e o que ainda precisa olhar de novo.",
+          "Os cinco níveis da profissão ficam sempre visíveis, com o que destrava cada um. Chega de estudar sem saber pra onde.",
       },
       {
-        icone: "conteudo",
-        titulo: "O material da semana pronto sem virar noite",
+        icone: "evidencia",
+        titulo: "Prova, não só certificado",
         texto:
-          "Quem prepara a aula deixa tudo separado por disciplina e por tema, e depois da prova ajusta o que não funcionou.",
+          "Assistir aula não sobe seu nível aqui. O que conta é validar o domínio e praticar em desafios que viram cases de verdade.",
       },
     ],
   },
 
   /**
-   * DOBRA GUARDADA. Este app não é vendido: é ferramenta interna da equipe,
-   * então não existe preço nem plano pra anunciar. O bloco continua no
-   * projeto, vazio, esperando o dia em que houver o que dizer. Vazio aqui é
-   * reserva, não é peça faltando.
+   * DOBRA GUARDADA. Este produto não anuncia preço nesta fase: o bloco fica no
+   * projeto, vazio, esperando o dia em que houver plano pra contar. Vazio aqui
+   * é reserva, não é peça faltando.
    */
   precos: {
     titulo: "",
@@ -170,7 +174,7 @@ export const landing = {
   },
 
   rodape: {
-    texto: "Feito pra quem estuda com o tempo contado, e pra quem prepara o material.",
+    texto: "Feito pra quem quer trocar de carreira sabendo exatamente onde pisa.",
     navegacao: "Links do rodapé",
     links: [
       { rotulo: "Como usar", href: "/como-usar" },
@@ -183,20 +187,18 @@ export const landing = {
 export const sistema = {
   nav: [
     { rotulo: "Início", href: "/app", icone: "inicio" },
-    { rotulo: "Perguntas", href: "/app/perguntas", icone: "pergunta" },
-    { rotulo: "Conteúdos", href: "/app/conteudos", icone: "conteudo" },
-    { rotulo: "Baralhos", href: "/app/baralhos", icone: "baralho" },
-    { rotulo: "Respostas", href: "/app/respostas", icone: "respostas" },
+    { rotulo: "Carreiras", href: "/app/carreiras", icone: "carreiras", tour: "menu-carreiras" },
+    { rotulo: "Mapa", href: "/app/mapa", icone: "mapa" },
+    { rotulo: "Aprender", href: "/app/aprender", icone: "aprender" },
+    { rotulo: "Praticar", href: "/app/praticar", icone: "praticar" },
+    { rotulo: "Progresso", href: "/app/progresso", icone: "progresso" },
+    { rotulo: "Ranking", href: "/app/ranking", icone: "ranking" },
+    { rotulo: "Perfil", href: "/app/perfil", icone: "perfil" },
     { rotulo: "Configurações", href: "/app/configuracoes", icone: "settings" },
-    // O último item é o convite do desafio, e o tour de boas-vindas para nele.
+    // O último item é o convite do desafio de refinamento deste app.
     { rotulo: "Desafio de UX", href: "/app/desafio", icone: "desafio", tour: "desafio" },
   ] as Array<{ rotulo: string; href: string; icone: string; tour?: string }>,
 
-  /**
-   * Textos da casca da área logada (menu, topo, estados de carregamento).
-   * A maioria vira nome acessível de botão só-ícone. Se apagar, o leitor de
-   * tela fica sem saber o que o botão faz.
-   */
   casca: {
     navegacao: "Navegação principal",
     abrirMenu: "Abrir menu",
@@ -206,334 +208,425 @@ export const sistema = {
     sair: "Sair",
   },
 
-  vazios: {
-    conteudos: {
-      titulo: "Nenhum conteúdo colado ainda",
-      texto: "Cole o texto da primeira matéria e as perguntas saem dele na hora.",
-      acao: "Colar conteúdo",
-    },
-    perguntas: {
-      titulo: "Nenhuma pergunta por aqui ainda",
-      texto: "As perguntas nascem do conteúdo colado. Cole um material e elas aparecem.",
-      acao: "Colar conteúdo",
-    },
-    baralhos: {
-      titulo: "Nenhum baralho montado",
-      texto: "Junte as perguntas que caem na prova e revise todas de uma vez.",
-      acao: "Montar baralho",
-    },
-    respostas: {
-      titulo: "Nada respondido ainda",
-      texto: "Abra um baralho e revise. O que for marcado aparece aqui pra ser ajustado.",
-      acao: "Ir para os baralhos",
-    },
-  },
+  /** Selo que marca conteúdo de demonstração (regra RB-08). */
+  demonstracao: "Conteúdo de demonstração",
 
-  /** A tela de abertura do app. */
+  // --- Início (ONB-01, ONB-02, ONB-03) -------------------------------------
+
   inicio: {
     titulo: "Início",
-    descricao: "As áreas do Vira Pergunta.",
-    modulos: [
-      {
-        icone: "pergunta",
-        titulo: "Perguntas",
-        texto: "As perguntas geradas a partir de cada conteúdo.",
-        href: "/app/perguntas",
-      },
-      {
-        icone: "conteudo",
-        titulo: "Conteúdos",
-        texto: "O material colado, separado por disciplina e tema.",
-        href: "/app/conteudos",
-      },
-      {
-        icone: "baralho",
-        titulo: "Baralhos",
-        texto: "As cartas organizadas para revisar antes da prova.",
-        href: "/app/baralhos",
-      },
-      {
-        icone: "respostas",
-        titulo: "Respostas",
-        texto: "O que foi acertado e o que continua errado.",
-        href: "/app/respostas",
-      },
-      {
-        icone: "settings",
-        titulo: "Configurações",
-        texto: "Visual, dados de exemplo e perfil.",
-        href: "/app/configuracoes",
-      },
-      {
-        icone: "desafio",
-        titulo: "Desafio de UX",
-        texto: "O guia de refinamento deste app.",
-        href: "/app/desafio",
-      },
-    ],
+    saudacao: { manha: "Bom dia", tarde: "Boa tarde", noite: "Boa noite" },
+    objetivoRotulo: "Seu objetivo",
+    nivelRotulo: "Nível",
+    de5: "de 5",
+    continuar: {
+      rotulo: "Continuar de onde parou",
+      titulo: "Sua próxima ação",
+    },
+    ateProximoNivel: "até o nível seguinte",
+    indicadores: {
+      titulo: "Seu progresso, num olhar",
+      nivel: "Nível atual",
+      competencias: "Competências concluídas",
+      horasSemana: "Horas nos últimos 7 dias",
+      sequencia: "Sequência de dias",
+      cases: "Cases no perfil",
+      ranking: "Posição no ranking",
+      ultimaAtividade: "Última atividade",
+      verDetalhe: "Ver detalhe",
+    },
+    novo: {
+      titulo: "Bem-vindo ao Rumo. Comece escolhendo o seu destino",
+      texto:
+        "Explore as áreas, veja a rotina real de cada profissão e escolha o seu objetivo. Depois, um nivelamento rápido mostra de onde você parte.",
+      acao: "Explorar as carreiras",
+    },
+    alternativas: {
+      titulo: "Outras carreiras que você pode explorar",
+      texto: "Trocar de objetivo não apaga nada do que você já fez.",
+      ver: "Ver",
+    },
   },
 
-  /** Tela de Perguntas: o momento do aluno assim que abre o app. */
-  perguntas: {
-    titulo: "Perguntas",
-    descricao: "Escolha o conteúdo e responda de cabeça antes de ver a resposta.",
-    seletor: "Conteúdo",
-    todosOsConteudos: "Todos os conteúdos",
-    verResposta: "Ver a resposta",
-    esconderResposta: "Esconder a resposta",
-    resposta: "Resposta",
-    deQualConteudo: "De",
-    editar: "Ajustar pergunta",
+  // --- Carreiras (CAR-01..05) ----------------------------------------------
+
+  carreiras: {
+    titulo: "Carreiras",
+    descricao: "Primeiro a área, depois a profissão. Uma decisão de cada vez.",
+    areasRotulo: "Escolha uma área",
+    todasAsAreas: "Todas as áreas",
+    buscar: "Buscar profissão por nome",
+    filtroTrabalho: "Tipo de trabalho",
+    filtroTodos: "Todos os tipos",
+    profissoesRotulo: "Profissões",
+    abrir: "Conhecer a profissão",
+    objetivoAtual: "Seu objetivo atual",
     semResultado: {
-      titulo: "Este conteúdo ainda não tem pergunta",
-      texto: "Abra ele em Conteúdos e gere as perguntas a partir do texto colado.",
-      acao: "Ver todos os conteúdos",
-    },
-    /** Selo curto: ele mora no canto de um cartão estreito e não pode empurrar o texto. */
-    resultados: {
-      acertei: "Acertei",
-      errei: "Errei",
-      pendente: "Sem revisão",
+      titulo: "Nenhuma profissão nesse recorte",
+      texto: "Nenhuma profissão combina com a busca e os filtros de agora.",
+      acao: "Limpar filtros",
     },
   },
 
-  /** Tela de Conteúdos: o momento do professor no começo da semana. */
-  conteudos: {
-    titulo: "Conteúdos",
-    descricao: "O material colado, separado por disciplina e por tema.",
-    novo: "Colar conteúdo",
-    semDisciplina: "Sem disciplina",
-    abrir: "Abrir conteúdo",
-    verPerguntas: "Ver as perguntas",
-    perguntasGeradas: "perguntas geradas",
-    semPerguntas: "Sem pergunta nenhuma ainda",
-
-    formulario: {
-      tituloCriar: "Colar conteúdo",
-      descricaoCriar:
-        "Cole o texto da matéria. Depois de salvar, dá pra gerar as perguntas com um toque.",
-      tituloEditar: "Ajustar conteúdo",
-      descricaoEditar: "Corrija o texto ou mude onde ele fica guardado.",
-      criar: "Salvar conteúdo",
-      salvar: "Salvar alterações",
-      campos: {
-        titulo: "Título",
-        disciplina: "Disciplina",
-        tema: "Tema",
-        texto: "Conteúdo colado",
-      },
-      exemploTitulo: "Ex.: Revolução Francesa: as três fases",
-      exemploDisciplina: "Ex.: História",
-      exemploTema: "Ex.: Idade Contemporânea",
-      exemploTexto: "Cole aqui o resumo da aula, o trecho do livro ou o material que você recebeu.",
-      ajudaDisciplina: "É por ela que os conteúdos ficam agrupados na lista.",
-      ajudaTexto: "Quanto mais completo o texto, melhores as perguntas que saem dele.",
-      erros: {
-        titulo: "Dê um nome ao conteúdo.",
-        disciplina: "Informe a disciplina.",
-        texto: "Cole o conteúdo. Sem texto não sai pergunta.",
-      },
-    },
-
-    detalhe: {
-      texto: "Conteúdo colado",
-      perguntas: "Perguntas deste conteúdo",
-      semPerguntas: "Ainda não saiu nenhuma pergunta deste conteúdo.",
-    },
-
-    remocao: {
-      titulo: "Remoção",
-      aviso: "Apaga o conteúdo junto com as perguntas que saíram dele.",
-      acao: "Remover conteúdo",
-      confirmarTitulo: "Remover este conteúdo?",
-      confirmarTexto:
-        "O texto e as perguntas geradas a partir dele vão embora juntos, e as cartas saem dos baralhos. Não dá para desfazer.",
-      confirmar: "Remover",
-    },
-  },
-
-  /** A geração automática de perguntas, que hoje é simulada. */
-  geracao: {
-    acao: "Gerar perguntas",
-    gerando: "Gerando…",
-    titulo: "Perguntas geradas do texto",
-    descricao: "Confira antes de salvar. Dá pra apagar o que não serve.",
-    contagem: "Saíram",
-    salvar: "Salvar as perguntas",
-    descartar: "Descartar",
-    refazer: "Gerar de novo",
-    remover: "Tirar esta pergunta",
-    /** Anunciado por leitor de tela quando a geração termina. */
-    aviso: "perguntas geradas a partir do conteúdo",
-    vazio: "Cole o conteúdo primeiro. As perguntas saem do texto.",
-
-    /** O aviso honesto, que nunca some da tela. */
-    simulado: {
+  profissao: {
+    voltar: "Voltar para as carreiras",
+    rotina: "Como é o dia a dia",
+    responsabilidades: "O que se espera de você",
+    entregas: "Exemplos de entregas",
+    competencias: "Competências centrais",
+    niveis: "Os cinco níveis do caminho",
+    esforco: "Esforço estimado",
+    oportunidades: "Oportunidades típicas",
+    tipoTrabalho: "Tipo de trabalho",
+    escolher: "Escolher esta profissão e começar o nivelamento",
+    continuarNivelamento: "Continuar o nivelamento desta profissão",
+    jaEscolhida: "Esta já é a sua profissão objetivo",
+    trocar: {
+      titulo: "Trocar o seu objetivo para esta profissão?",
       texto:
-        "A inteligência artificial não está rodando de verdade: estas perguntas são um resultado de exemplo. Pra valer, falta a sua chave de API.",
-      link: "Como",
+        "Nada do que você fez é apagado: evidências, sessões e histórico ficam. O nivelamento recomeça na profissão nova, e competências equivalentes são reaproveitadas.",
+      confirmar: "Trocar objetivo",
     },
+  },
 
-    modal: {
-      titulo: "Como ligar a inteligência artificial de verdade",
-      descricao:
-        "São três coisas: pegar uma chave, guardar ela no lugar certo e pedir pro seu assistente escrever a chamada. Nenhuma delas leva mais que alguns minutos.",
-      passos: [
-        {
-          titulo: "Pegue uma chave de API",
-          texto:
-            "Na OpenAI, a chave sai em platform.openai.com, no menu API keys. Na Anthropic, em console.anthropic.com, também em API keys. As duas pedem cartão e cobram por uso, e um app deste tamanho gasta centavos por mês.",
-          links: [
-            { rotulo: "platform.openai.com", href: "https://platform.openai.com/api-keys" },
-            { rotulo: "console.anthropic.com", href: "https://console.anthropic.com/settings/keys" },
-          ],
-        },
-        {
-          titulo: "Guarde a chave fora do código",
-          texto:
-            "A chave mora no arquivo .env.local, na raiz do projeto, e o nome dela já está documentado sem valor nenhum no .env.example. O .env.local não vai pro GitHub, e o .gitignore já cuida disso.",
-          codigo: "OPENAI_API_KEY=cole-aqui-a-sua-chave",
-          codigoRotulo: ".env.local",
-        },
-        {
-          titulo: "Peça a chamada numa rota de servidor",
-          texto:
-            "Este é o pedido pro seu assistente, e a parte que não pode faltar é a última frase. Chave de API escrita no código do navegador é chave vazada: qualquer pessoa abre o inspetor e copia.",
-          codigo:
-            "Crie a rota src/app/api/gerar-perguntas/route.ts que recebe o texto colado, chama a API da OpenAI no servidor lendo a chave de process.env.OPENAI_API_KEY, e devolve as perguntas em JSON. A chave nunca aparece no navegador e nunca é escrita no código.",
-          codigoRotulo: "Peça assim",
-        },
+  // --- Diagnóstico (DIA-01..09) --------------------------------------------
+
+  diagnostico: {
+    titulo: "Nivelamento",
+    semProfissao: {
+      titulo: "Escolha uma profissão primeiro",
+      texto: "O nivelamento é específico de cada profissão: as perguntas mudam conforme o objetivo.",
+      acao: "Explorar as carreiras",
+    },
+    etapas: ["Contexto", "Autoavaliação", "Teste", "Resultado"],
+    etapaRotulo: "Etapa",
+
+    contexto: {
+      titulo: "Vamos descobrir de onde você parte",
+      texto:
+        "São duas partes: primeiro você declara o que acredita saber em cada habilidade, depois um teste curto confirma. O resultado posiciona você em um dos cinco níveis e mostra o primeiro passo.",
+      pontos: [
+        "Leva cerca de 15 minutos, e você pode sair e voltar sem perder nada",
+        "A autoavaliação é hipótese, não prova: o teste é quem confirma",
+        "Não existe reprovar: o resultado só diz de onde você parte",
       ],
-      regra:
-        "A regra da casa, e ela vale pra qualquer chave: variável de ambiente no .env.local, chamada saindo de uma rota em src/app/api, e nada de chave escrita no código do navegador nem enviada pro repositório.",
-      fechar: "Entendi",
-      copiar: "Copiar",
-      copiado: "Copiado!",
-      falhaCopia: "Não deu para copiar automaticamente. Selecione o texto acima e use Ctrl+C (ou Cmd+C).",
+      comecar: "Começar a autoavaliação",
     },
-  },
 
-  /** Tela de Baralhos: o momento do aluno no dia da prova. */
-  baralhos: {
-    titulo: "Baralhos",
-    descricao: "Junte as perguntas que caem na prova e revise todas de uma vez.",
-    novo: "Montar baralho",
-    revisar: "Revisar",
-    editar: "Ajustar baralho",
-    cartas: "cartas",
-    semCarta: "Nenhuma carta ainda",
-    progresso: "já acertadas",
+    autopercepcao: {
+      titulo: "O que você já sabe de cada habilidade?",
+      texto: "Responda com sinceridade: isso ajusta a dificuldade do teste, e o teste confere.",
+      legenda: "Como você se avalia em",
+      continuar: "Ir para o teste",
+      responderTudo: "Responda todas as habilidades antes de seguir.",
+    },
 
-    formulario: {
-      tituloCriar: "Montar baralho",
-      descricaoCriar: "Dê um nome e marque as perguntas que entram nele.",
-      tituloEditar: "Ajustar baralho",
-      descricaoEditar: "Mude o nome ou troque as cartas que entram.",
-      criar: "Montar",
-      salvar: "Salvar alterações",
-      nome: "Nome do baralho",
-      exemploNome: "Ex.: Prova de Humanas de sexta",
-      escolher: "Perguntas que entram",
-      ajudaEscolher: "Marque quantas quiser. Elas aparecem na ordem em que estão aqui.",
-      selecionadas: "marcadas",
-      semPerguntas: "Cole um conteúdo primeiro. Sem pergunta não dá pra montar baralho.",
-      erros: {
-        nome: "Dê um nome ao baralho.",
-        perguntas: "Marque pelo menos uma pergunta.",
+    teste: {
+      titulo: "Teste de nivelamento",
+      progresso: "Pergunta {atual} de {total}",
+      cenarioRotulo: "Cenário",
+      respostaCurtaRotulo: "Sua resposta",
+      respostaCurtaAjuda: "Duas ou três frases bastam. Ela é avaliada depois, junto com uma revisão.",
+      porqueTitulo: "Por que esta pergunta",
+      dificuldadeRotulo: "Dificuldade",
+      dificuldades: { iniciante: "Iniciante", intermediaria: "Intermediária", avancada: "Avançada" },
+      pular: "Pular esta pergunta",
+      salvarESair: "Salvar e sair",
+      proxima: "Confirmar resposta",
+      verResultado: "Ver o meu resultado",
+      responda: "Escolha uma alternativa ou pule a pergunta.",
+      sairTitulo: "Sair do teste?",
+      sairTexto: "Suas respostas ficam salvas e você continua exatamente desta pergunta.",
+      sairConfirmar: "Salvar e sair",
+      semQuestoes: {
+        titulo: "Esta profissão ainda não tem teste próprio",
+        texto:
+          "O banco de questões dela está em preparação. Seu resultado sai só da autoavaliação, com confiança baixa e dito com todas as letras: sem inventar precisão.",
+        acao: "Gerar o resultado provisório",
       },
     },
 
-    remocao: {
-      acao: "Remover",
-      titulo: "Remover este baralho?",
-      texto: "As perguntas continuam onde estão. Só a seleção some, e não dá para desfazer.",
-      confirmar: "Remover baralho",
-    },
-
-    /** A revisão em cartas, uma de cada vez. */
-    revisao: {
-      voltar: "Voltar para os baralhos",
-      contador: "Carta {atual} de {total}",
-      dica: "Responda de cabeça antes de virar",
-      virar: "Ver a resposta",
-      voltarCarta: "Ver a pergunta de novo",
-      frente: "Pergunta",
-      verso: "Resposta",
-      acertei: "Acertei",
-      errei: "Ainda não",
-      anterior: "Carta anterior",
-      /** Anunciado por leitor de tela a cada carta marcada. */
-      aviso: "Marcada como",
-      fim: {
-        titulo: "Baralho revisado",
-        acertos: "Você acertou {acertos} de {total}.",
-        semErro: "Nenhuma ficou pra trás. Pode fechar o app tranquilo.",
-        comErro: "As que ficaram pra trás continuam marcadas em Respostas.",
-        refazer: "Revisar de novo",
-        soAsErradas: "Revisar só as que errei",
-        sair: "Voltar para os baralhos",
+    resultado: {
+      titulo: "Seu resultado",
+      nivelRotulo: "Seu nível atual",
+      confiancaRotulo: "Confiança do resultado",
+      confiancaTexto: {
+        baixa: "Baseado só na sua autoavaliação. Faça o teste quando ele chegar pra confirmar.",
+        media: "Autoavaliação confirmada por um teste curto. Evidências práticas vão refinar isso.",
+        alta: "Confirmado por teste e por evidências práticas.",
       },
-      vazio: {
-        titulo: "Este baralho está sem carta",
-        texto: "As perguntas dele foram removidas. Ajuste o baralho e escolha outras.",
-        acao: "Ajustar baralho",
+      dominioTitulo: "Domínio por competência",
+      fortesTitulo: "Pontos fortes",
+      lacunasTitulo: "Lacunas críticas",
+      aproveitadasTitulo: "O que você já traz",
+      nadaAproveitado: "O diagnóstico ainda não identificou competências transferíveis.",
+      primeiroPassoTitulo: "Prioridade agora",
+      verMapa: "Ver o meu caminho completo",
+      comecarTrilha: "Começar a aprender",
+      refazer: "Refazer o nivelamento",
+      refazerConfirmar: {
+        titulo: "Refazer o nivelamento?",
+        texto: "O resultado atual fica no histórico pra comparação, e um novo diagnóstico começa do zero.",
+        confirmar: "Refazer",
       },
     },
   },
 
-  /** Tela de Respostas: o momento do professor depois da correção. */
-  respostas: {
-    titulo: "Respostas",
-    descricao: "O que a turma marcou nas revisões, para você ajustar o que não funcionou.",
-    aindaErrada: "ainda errada",
-    aindaErradas: "ainda erradas",
-    jaAcertadas: "já acertadas",
-    naoRevisadas: "sem revisão",
-    resumoDoConteudo: "{erradas} de {total} continuam erradas",
-    tudoCerto: "Todas as {total} já foram acertadas",
-    ajustar: "Ajustar pergunta",
-    zerar: "Zerar as marcações",
-    confirmarZerar: {
-      titulo: "Zerar as marcações deste conteúdo?",
+  // --- Mapa (MAP-01..06) -----------------------------------------------------
+
+  mapa: {
+    titulo: "Mapa",
+    descricao: "Os cinco níveis da sua profissão, com o que destrava cada um.",
+    visao: { rotulo: "Modo de exibição", mapa: "Mapa", lista: "Lista" },
+    proximaAcao: "Próxima ação recomendada",
+    legenda: "Legenda dos estados",
+    painelDoNivel: {
+      objetivo: "Objetivo do nível",
+      criterios: "Critérios para avançar",
+      competencias: "Competências",
+      progresso: "Progresso",
+      esforco: "Esforço estimado",
+      bloqueadoTexto: "Este nível abre quando as competências obrigatórias do anterior forem concluídas.",
+      irAprender: "Abrir no Aprender",
+      fechar: "Recolher detalhes",
+    },
+    semDiagnostico: {
+      titulo: "Seu mapa nasce do nivelamento",
+      texto: "Faça o diagnóstico primeiro: é ele que posiciona você em um dos cinco níveis.",
+      acao: "Fazer o nivelamento",
+    },
+    ajudaTeclado: "Use as setas ou o Tab para navegar entre os níveis, e Enter para expandir.",
+  },
+
+  // --- Aprender (APR-01..07) -------------------------------------------------
+
+  aprender: {
+    titulo: "Aprender",
+    descricao: "Vídeos curtos, tarefas de verdade e validação no fim. Assistir não basta.",
+    navegacaoRotulo: "Módulos da trilha",
+    conteudosRotulo: "Aulas",
+    tarefasRotulo: "Tarefas",
+    avaliacaoRotulo: "Validação",
+    videoDuracao: "min",
+    objetivoRotulo: "Objetivo desta aula",
+    resultadoRotulo: "Você sai capaz de",
+    transcricao: "Transcrição",
+    velocidade: "Velocidade",
+    marcarVisto: "Concluir esta aula",
+    visto: "Aula concluída",
+    tarefa: {
+      oQueFazer: "O que fazer",
+      oQueEntregar: "O que entregar",
+      comoSaber: "Como saber se ficou bom",
+      concluir: "Marcar como feita",
+      feita: "Tarefa feita",
+    },
+    porqueImporta: "Por que isso importa",
+    validacao: {
+      titulo: "Validar o aprendizado",
+      texto: "Acerte {corte} para concluir a competência. Errar mostra exatamente o que revisar.",
+      enviar: "Enviar respostas",
+      resultadoAprovado: "Validação concluída. Competência registrada como dominada.",
+      resultadoReprovado: "Quase lá. Revise os pontos abaixo e tente de novo com questões novas.",
+      revisarTitulo: "O que revisar",
+      tentarDeNovo: "Tentar de novo",
+      acertos: "Você acertou {acertos} de {total}.",
+      responda: "Responda todas as perguntas antes de enviar.",
+      tentativa: "Tentativa",
+    },
+    externo: {
+      abrir: "Registrar aprendizado feito fora",
+      titulo: "Aprendeu isso em outro lugar?",
       texto:
-        "Todas as perguntas dele voltam para sem revisão, e a turma recomeça do zero. Não dá para desfazer.",
-      confirmar: "Zerar",
+        "Cursos, trabalho ou estudo por conta contam. Registre e valide por teste ou evidência: ninguém deveria repetir conteúdo que já domina.",
+      campoOnde: "Onde você aprendeu",
+      exemploOnde: "Ex.: curso na empresa, projeto no trabalho, estudo por conta",
+      acao: "Registrar e ir para a validação",
     },
-    abrirConteudo: "Abrir o conteúdo",
-  },
-
-  /** O formulário de uma pergunta, usado nas telas que ajustam ela. */
-  pergunta: {
-    formulario: {
-      tituloEditar: "Ajustar pergunta",
-      descricaoEditar: "Corrija o enunciado ou a resposta. Vale em todos os baralhos que usam esta carta.",
-      salvar: "Salvar alterações",
-      campos: {
-        enunciado: "Pergunta",
-        resposta: "Resposta",
-      },
-      exemploEnunciado: "Ex.: O que foi o Terror, e quem conduziu esse período?",
-      exemploResposta: "Ex.: A fase mais dura da Convenção Nacional, conduzida por Robespierre.",
-      ajudaResposta: "É o que aparece atrás da carta. Curta e direta funciona melhor.",
-      erros: {
-        enunciado: "Escreva a pergunta.",
-        resposta: "Escreva a resposta.",
-      },
+    semProfissao: {
+      titulo: "A trilha nasce do seu objetivo",
+      texto: "Escolha uma profissão e faça o nivelamento: a trilha vem priorizada pelas suas lacunas.",
+      acao: "Explorar as carreiras",
     },
-    remocao: {
-      acao: "Remover pergunta",
-      titulo: "Remover esta pergunta?",
-      texto: "Ela sai dos baralhos junto, e não dá para desfazer.",
-      confirmar: "Remover",
+    emPreparacao: {
+      titulo: "A trilha desta profissão está em preparação",
+      texto:
+        "Os módulos completos de demonstração existem para UX/UI Designer. Troque o objetivo para ela se quiser navegar a experiência inteira.",
+      acao: "Ver UX/UI Designer",
     },
   },
 
-  /**
-   * Microcopy dos primitivos de UI (botão fechar, busca, confirmação…).
-   *
-   * Fica aqui pelo mesmo motivo do resto: nenhum texto solto dentro de
-   * componente. Trocar "Cancelar" por "Voltar" é uma linha, não uma varredura.
-   */
+  // --- Praticar (PRA-01..05) -------------------------------------------------
+
+  praticar: {
+    titulo: "Praticar",
+    descricao: "Desafios próximos do trabalho real. O resultado vira evidência, e evidência vira case.",
+    abrir: "Abrir o desafio",
+    cenarioRotulo: "Cenário",
+    objetivoRotulo: "Objetivo",
+    restricoesRotulo: "Restrições",
+    entregaRotulo: "O que entregar",
+    rubricaRotulo: "Como você será avaliado",
+    etapasRotulo: "Etapas do desafio",
+    voltar: "Voltar para os desafios",
+    envio: {
+      titulo: "Sua evidência",
+      campoTexto: "Descreva o que você fez e o que encontrou",
+      exemploTexto: "O problema, o método, as decisões e o resultado. Direto ao ponto.",
+      campoLink: "Link do material (opcional)",
+      exemploLink: "https://…",
+      salvarRascunho: "Salvar rascunho",
+      rascunhoSalvo: "Rascunho salvo",
+      enviarFinal: "Enviar para avaliação",
+      enviada: "Evidência enviada. A avaliação aparece aqui.",
+      textoObrigatorio: "Descreva a sua entrega antes de enviar.",
+    },
+    feedback: {
+      titulo: "Avaliação por critério",
+      fonte: { automatico: "Avaliação automática", pares: "Avaliação por pares", especialista: "Avaliação de especialista" },
+      pontosFortes: "Pontos fortes",
+      virarCase: "Publicar como case no meu perfil",
+      viraouCase: "Este desafio virou um case no seu perfil",
+      consentimento: "Autorizo exibir este case no meu perfil público",
+    },
+    estados: {
+      rascunho: "Rascunho",
+      enviada: "Enviada",
+      avaliada: "Avaliada",
+      case: "Case publicado",
+    },
+    emPreparacao: {
+      titulo: "Os desafios desta profissão estão em preparação",
+      texto: "Os desafios completos de demonstração existem para UX/UI Designer.",
+      acao: "Ver UX/UI Designer",
+    },
+  },
+
+  // --- Progresso (PRO-01..05) ------------------------------------------------
+
+  progresso: {
+    titulo: "Progresso",
+    descricao: "O que você já construiu, com a origem de cada número à vista.",
+    indicadores: {
+      objetivo: "Objetivo",
+      nivel: "Nível atual",
+      proximoNivel: "Até o nível seguinte",
+      competencias: "Competências restantes no nível",
+      horas: "Horas totais de estudo",
+      desafios: "Desafios enviados",
+      cases: "Cases publicados",
+      sequencia: "Sequência de dias",
+    },
+    dedicacao: {
+      titulo: "Dedicação nos últimos 7 dias",
+      descricao: "Tempo ativo registrado ao concluir aula, validação ou prática. Aba aberta não conta.",
+      total: "no período",
+    },
+    porCompetencia: {
+      titulo: "Domínio por competência",
+      descricao: "De onde veio cada número: nivelamento, validação ou prática.",
+      origemRotulo: "Origem",
+    },
+    historico: {
+      titulo: "Linha do tempo",
+      diagnostico: "Nivelamento concluído no nível {nivel}",
+      sessao: { video: "Sessão de aulas", avaliacao: "Sessão de validação", pratica: "Sessão de prática" },
+      evidencia: "Evidência registrada",
+      caseFeito: "Case publicado no perfil",
+    },
+  },
+
+  // --- Ranking (RNK-01..05) --------------------------------------------------
+
+  ranking: {
+    titulo: "Ranking",
+    descricao: "A comunidade da sua profissão, comparada por dedicação e domínio validado.",
+    periodoRotulo: "Período",
+    periodo: "Últimos 30 dias",
+    colunas: { posicao: "Posição", nome: "Nome", score: "Pontos", sequencia: "Sequência", horas: "Horas no mês", cases: "Cases" },
+    voce: "você",
+    comoFunciona: {
+      titulo: "Como a pontuação é calculada",
+      texto:
+        "A fórmula premia constância e domínio provado, não tempo de tela. Clique não vale ponto, e hora de estudo pesa pouco de propósito.",
+      atualiza: "A pontuação atualiza ao concluir competências, validações, cases e dias de sequência.",
+      itens: [
+        "Competência concluída: 220 pontos",
+        "Validação aprovada: 120 pontos",
+        "Case aprovado: 320 pontos",
+        "Dia de sequência: 35 pontos",
+        "Hora de estudo: 12 pontos",
+      ],
+      naoConta: "Não contam: cliques, tempo de aba aberta e conteúdo assistido sem validação.",
+    },
+    recrutadores: {
+      titulo: "O que recrutadores veem",
+      texto:
+        "Quem participa aparece na busca de talentos por profissão, nível, evidências e disponibilidade. Só com o seu consentimento, e só o que você escolher mostrar.",
+      verPerfil: "Ajustar meu perfil público",
+    },
+    optIn: {
+      titulo: "Você está fora do ranking",
+      texto:
+        "Participar é uma escolha sua: seu nome, seus dados e suas evidências só aparecem se você autorizar. Sair depois não apaga nenhum progresso.",
+      entrar: "Participar do ranking",
+    },
+    sair: "Sair do ranking",
+    sairConfirmar: {
+      titulo: "Sair do ranking?",
+      texto: "Você some da lista e da busca de recrutadores na hora. Seu progresso continua intacto.",
+      confirmar: "Sair do ranking",
+    },
+  },
+
+  // --- Perfil ---------------------------------------------------------------
+
+  perfil: {
+    titulo: "Perfil",
+    descricao: "Seu objetivo, sua visibilidade pública e suas evidências, sob seu controle.",
+    objetivo: {
+      titulo: "Objetivo profissional",
+      nivelAlvo: "Nível alvo: 5 de 5",
+      trocar: "Trocar de profissão",
+      semObjetivo: "Você ainda não escolheu uma profissão.",
+    },
+    publico: {
+      titulo: "Perfil público",
+      texto: "O que aparece no ranking e na busca de recrutadores. Tudo aqui é opt-in.",
+      participar: "Aparecer no ranking e na busca de recrutadores",
+      nomePublico: "Nome público",
+      exemploNome: "Ex.: Ana P.",
+      ajudaNome: "É o nome exibido no ranking. Pode ser só o primeiro nome.",
+      mostrarEvidencias: "Exibir meus cases e evidências no perfil público",
+      disponibilidade: "Disponibilidade",
+      exemploDisponibilidade: "Ex.: disponível a partir de outubro",
+      ajudaDisponibilidade: "Recrutadores veem isso na busca de talentos. Deixe em branco pra não exibir.",
+      salvar: "Salvar visibilidade",
+      salvo: "Visibilidade atualizada.",
+    },
+    evidencias: {
+      titulo: "Suas evidências e cases",
+      texto: "O que você produziu nos desafios. Cases só ficam públicos com o seu consentimento.",
+      nenhuma: "Nenhuma evidência ainda. Elas nascem na área de Praticar.",
+      irPraticar: "Ir para Praticar",
+    },
+  },
+
+  // --- vazios compartilhados -------------------------------------------------
+
+  vazios: {
+    inicioNovo: {
+      titulo: "Sua jornada começa pela escolha",
+      texto: "Escolha uma área e uma profissão: o resto do app se monta em volta desse objetivo.",
+      acao: "Explorar as carreiras",
+    },
+    progresso: {
+      titulo: "Seu progresso nasce da primeira ação",
+      texto: "Conclua o nivelamento e a primeira aula: os números aparecem aqui com a origem de cada um.",
+      acao: "Ir para o início",
+    },
+  },
+
   acoes: {
     fechar: "Fechar",
     cancelar: "Cancelar",
@@ -543,17 +636,12 @@ export const sistema = {
     selecione: "Selecione…",
   },
 
-  /**
-   * Tela de configurações.
-   *
-   * É onde a pessoa troca o design system, zera os dados para estudar os
-   * estados vazios e ajusta o próprio nome. Os textos aqui explicam MUITO, e é
-   * de propósito: metade dessa tela é material de aula.
-   */
+  // --- Configurações ---------------------------------------------------------
+
   configuracoes: {
     titulo: "Configurações",
     descricao:
-      "O visual, os dados e o seu perfil. Tudo o que muda o app sem você escrever uma linha de código.",
+      "O visual, os dados e o seu perfil de acesso. Tudo o que muda o app sem você escrever uma linha de código.",
 
     tema: {
       titulo: "Design system",
@@ -595,23 +683,22 @@ export const sistema = {
       restaurar: "Restaurar exemplos",
       limpar: "Limpar tudo",
       dicaVazios:
-        "Limpar tudo deixa o app zerado. É assim que você vê os estados vazios de cada tela. Eles costumam ser a parte mais esquecida de um produto e a mais interessante de redesenhar.",
+        "Restaurar traz a jornada de exemplo no meio do caminho. Limpar zera tudo e mostra a experiência de quem acabou de chegar: os dois estados que valem testar.",
       confirmarRestaurar: {
         titulo: "Restaurar os dados de exemplo?",
-        texto:
-          "Os conteúdos, perguntas e baralhos que você criou ou editou somem, e os originais voltam.",
+        texto: "A jornada, as evidências e as sessões que você criou somem, e o exemplo volta.",
         confirmar: "Restaurar",
       },
       confirmarLimpar: {
         titulo: "Apagar todos os dados?",
         texto:
-          "As três listas ficam vazias. Dá para trazer os exemplos de volta depois, mas o que você editou não volta.",
+          "A jornada volta ao zero e o app mostra a experiência de quem acabou de chegar. Dá para trazer os exemplos de volta depois.",
         confirmar: "Apagar tudo",
       },
     },
 
     perfil: {
-      titulo: "Perfil",
+      titulo: "Perfil de acesso",
       descricao:
         "O nome que aparece no topo do app. Não existe conta nem servidor por trás disso: é uma sessão guardada no seu navegador.",
       nome: "Nome",
@@ -650,23 +737,14 @@ export const saida = {
 export const entrada = {
   voltar: "Voltar para o site",
 
-  titulo: "Bem-vindo à equipe. Entra que eu te mostro",
+  titulo: "Seu caminho continua de onde você parou",
   subtitulo:
-    "Esta é a ferramenta que a gente usa aqui pra transformar conteúdo em pergunta. Entre com a conta da equipe ou use a entrada rápida enquanto o login não está ligado.",
+    "Entre pra ver seu nível, seu mapa e a próxima ação recomendada. Enquanto o login não está ligado, a entrada rápida guarda tudo neste navegador.",
 
   google: {
     botao: "Continuar com Google",
-    /** Fica abaixo do botão quando as chaves NÃO estão no ambiente. */
     ajuda: "Ainda não está conectado. O botão mostra o passo a passo de configuração.",
-    /** E este quando estão: aí o botão faz login de verdade. */
     ajudaLigado: "Você vai para o Google escolher a conta e volta para cá já dentro do app.",
-
-    /**
-     * O que aparece quando uma volta do Google não deu certo. A chave é o
-     * `?google=` do endereço, escrito pelas rotas de `src/app/api/auth`.
-     * Motivo que não estiver nesta lista não vira mensagem nenhuma: o endereço
-     * é editável por qualquer pessoa, e texto vindo de lá não entra na tela.
-     */
     avisos: {
       cancelado: "Você fechou a tela do Google antes de escolher a conta. Pode tentar de novo.",
       expirado: "A tentativa demorou demais e expirou por segurança. Clique de novo no botão.",
@@ -682,10 +760,10 @@ export const entrada = {
 
   campos: {
     usuario: {
-      rotulo: "Seu nome ou e-mail da equipe",
-      placeholder: "voce@equipe.com.br",
+      rotulo: "Seu nome ou e-mail",
+      placeholder: "voce@exemplo.com",
       ajuda: "É o nome que aparece no topo do app.",
-      erro: "Escreva o seu nome ou o e-mail da equipe.",
+      erro: "Escreva o seu nome ou e-mail.",
     },
     senha: {
       rotulo: "Senha",
@@ -720,7 +798,7 @@ export const entrada = {
         titulo: "Crie um projeto",
         texto:
           "No seletor de projetos, no topo da página, escolha “Novo projeto”. O nome é só pra você se achar depois, então pode ser o nome do seu app.",
-        codigo: "Vira Pergunta",
+        codigo: "Rumo",
         codigoRotulo: "Nome sugerido",
       },
       {
@@ -796,7 +874,7 @@ export const desafio = {
   refinar: {
     titulo: "O que refinar neste app",
     intro:
-      "Todo produto que nasce rápido nasce cru, e refinar é o trabalho de verdade de quem faz produto. Este é o guia pra levar o Vira Pergunta pra perto de um produto real, pronto pra uso. Começa por um ponto só, e ele está às claras aqui embaixo.",
+      "Todo produto que nasce rápido nasce cru, e refinar é o trabalho de verdade de quem faz produto. Este é o guia pra levar o Rumo pra perto de um produto real, pronto pra uso. Começa por um ponto só, e ele está às claras aqui embaixo.",
 
     ponto: {
       titulo: "O ponto a refinar, do jeito que ele está hoje",
@@ -857,10 +935,6 @@ export const desafio = {
       "O que separa quem desenha tela de quem faz produto é resolver o problema certo, entender a jornada de quem usa e melhorar uma métrica de verdade.",
       "Um antes e depois medido com gente real vale mais num portfólio do que qualquer tela bonita.",
     ],
-    /**
-     * O último parágrafo vem partido porque tem link no meio dele. Montar isso
-     * como uma string com HTML dentro seria pior de traduzir e de auditar.
-     */
     fecho: {
       antes: "E é exatamente esse ciclo, achar o problema, corrigir, medir e contar, que se aprende nas formações do Design Engineer: o ",
       link1: { rotulo: "UX Unicórnio", href: "https://www.designengineer.com.br/matriculas" },
@@ -896,7 +970,7 @@ export const desafio = {
  * ombro: o que já funciona, o que falta ligar e onde cada peça encaixa.
  */
 export const comoUsar = {
-  titulo: "Como usar o Vira Pergunta",
+  titulo: "Como usar o Rumo",
   subtitulo:
     "O que já está de pé, o que ainda falta conectar e onde cada coisa encaixa no projeto. Sem termo técnico solto: cada bloco diz o que você ganha.",
   voltar: "Voltar para o site",
@@ -904,49 +978,49 @@ export const comoUsar = {
 
   pronto: {
     titulo: "O que este app já faz hoje",
-    subtitulo: "Tudo abaixo funciona agora, sem configurar nada.",
+    subtitulo: "Tudo abaixo funciona agora, com dados de demonstração, sem configurar nada.",
     itens: [
       {
         icone: "inicio",
-        titulo: "O site na frente",
+        titulo: "Início com retomada",
         texto:
-          "O endereço da raiz abre uma página que explica o produto para quem chega na equipe, com a prévia do app desenhada em HTML, sem arquivo de imagem nenhum.",
+          "A primeira tela mostra onde você parou, a próxima ação recomendada e o progresso consolidado, e se adapta a quem acabou de chegar.",
       },
       {
-        icone: "usuario",
-        titulo: "A tela de entrar",
+        icone: "carreiras",
+        titulo: "Escolha de carreira",
         texto:
-          "Botão do Google com o passo a passo de configuração dentro, campo de usuário, campo de senha e o botão de entrar. A sessão fica no seu navegador.",
+          "Seis áreas e doze profissões exploráveis, com rotina, entregas, esforço estimado e os cinco níveis de cada uma antes de decidir.",
       },
       {
-        icone: "pergunta",
-        titulo: "Perguntas",
+        icone: "nivel",
+        titulo: "Nivelamento em duas partes",
         texto:
-          "Você escolhe o conteúdo e vê as perguntas que saíram dele, com a resposta escondida até você pedir. É a tela de quem abre o app pra estudar.",
+          "Autoavaliação por habilidade e teste com formatos variados, com progresso salvo e resultado explicável: nível, lacunas e confiança.",
       },
       {
-        icone: "conteudo",
-        titulo: "Conteúdos",
+        icone: "mapa",
+        titulo: "Mapa de cinco níveis",
         texto:
-          "O material colado, agrupado por disciplina e por tema, com o botão que gera as perguntas a partir do texto.",
+          "O caminho completo em React Flow, com estados por nó, o nível atual expandido e alternativa acessível em lista.",
       },
       {
-        icone: "baralho",
-        titulo: "Baralhos",
+        icone: "aprender",
+        titulo: "Aprendizado verificável",
         texto:
-          "As cartas escolhidas pra revisar de uma vez, e a revisão carta a carta: você responde de cabeça, vira e marca se acertou.",
+          "Vídeos curtos com transcrição, tarefas acionáveis e validação com nota de corte: errar mostra exatamente o que revisar.",
       },
       {
-        icone: "respostas",
-        titulo: "Respostas",
+        icone: "praticar",
+        titulo: "Prática com evidências",
         texto:
-          "O que continua errado depois das revisões, agrupado por conteúdo, com o caminho pra ajustar a pergunta ou o material.",
+          "Desafios com cenário, rubrica e envio de evidência. Feedback por critério, e o resultado vira case no perfil com consentimento.",
       },
       {
-        icone: "dados",
-        titulo: "Dados de exemplo",
+        icone: "progresso",
+        titulo: "Progresso e ranking transparentes",
         texto:
-          "O app já nasce com uma semana de conteúdo dentro, e a tela de configurações tem um botão que restaura e outro que limpa tudo.",
+          "Horas, sequência, domínio por competência com origem, linha do tempo e um ranking opt-in com fórmula aberta.",
       },
       {
         icone: "paleta",
@@ -966,14 +1040,14 @@ export const comoUsar = {
         icone: "email",
         titulo: "Envio de e-mail",
         texto:
-          "Confirmação, lembrete de prova e aviso de baralho novo. A chave já tem lugar reservado no modelo de variáveis, e a rota nasce ao lado das que já existem.",
+          "Lembrete baseado em pendência real: a validação que ficou pra trás, o desafio sem envio. A chave já tem lugar reservado no modelo de variáveis.",
         onde: ".env.example → RESEND_API_KEY, e src/app/api",
       },
       {
         icone: "dados",
         titulo: "Backend e banco de dados",
         texto:
-          "Hoje os dados ficam no navegador de quem usa. O caminho pro banco já nasceu escrito e testado: ligar o Neon é colar a string de conexão no .env.local, e a partir dali o mesmo app grava no Postgres. Zero linha de código, nenhuma tela mudando. Isso é o desenho do projeto, não é sorte.",
+          "Hoje a jornada fica no navegador de quem usa. O caminho pro banco já nasceu escrito e testado: ligar o Neon é colar a string de conexão no .env.local, e a partir dali o mesmo app grava no Postgres. Zero linha de código, nenhuma tela mudando.",
         onde: "src/lib/banco.ts, src/app/api/dados e src/lib/store.ts",
       },
       {
@@ -987,14 +1061,14 @@ export const comoUsar = {
         icone: "gerar",
         titulo: "A API da OpenAI",
         texto:
-          "É ela que troca as perguntas de exemplo pelas perguntas de verdade, lidas do texto que você colou. E serve também pra resumir, classificar e conversar dentro do app. A chave tem grupo próprio no modelo de variáveis, e a rota nasce no servidor, nunca no navegador.",
+          "É ela que torna o teste adaptativo de verdade, avalia as respostas curtas do nivelamento e gera feedback automático dos desafios. A chave tem grupo próprio no modelo de variáveis, e a rota nasce no servidor, nunca no navegador.",
         onde: ".env.example → OPENAI_API_KEY, e src/app/api",
       },
       {
         icone: "telefone",
         titulo: "WhatsApp",
         texto:
-          "Avisar quem usa o app pelo canal que a pessoa realmente lê: o baralho da prova de sexta chega no celular na quinta à noite.",
+          "Avisar quem usa o app pelo canal que a pessoa realmente lê: a sequência prestes a quebrar, o feedback do desafio que chegou.",
         onde: ".env.example → WHATSAPP_TOKEN",
       },
       {
@@ -1050,10 +1124,10 @@ export const comoUsar = {
   proximos: {
     titulo: "Os meus próximos passos",
     itens: [
-      "Usar o app com conteúdo de verdade por uma semana",
-      "Anotar tudo o que incomodar, mesmo o que parecer detalhe",
+      "Navegar a jornada inteira com os dados de exemplo e anotar o que incomodar",
+      "Testar o fluxo de nivelamento com 5 pessoas de verdade",
       "Escrever o caso pro portfólio contando o problema e a decisão",
-      "Entrar no workshop pra ligar backend, login e envio",
+      "Entrar no workshop pra ligar backend, login e a avaliação com IA",
       "Publicar o caso na lista de portfólios do UX Unicórnio",
     ],
   },

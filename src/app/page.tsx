@@ -1,4 +1,4 @@
-import { Amostra } from "@/components/marketing/amostra"
+import { Caminho } from "@/components/marketing/caminho"
 import { Beneficios } from "@/components/marketing/beneficios"
 import { CabecalhoMarketing } from "@/components/marketing/cabecalho-marketing"
 import { ComoFunciona } from "@/components/marketing/como-funciona"
@@ -8,7 +8,7 @@ import { RodapeMarketing } from "@/components/marketing/rodape-marketing"
 import { Tour } from "@/components/onboarding/tour"
 
 /**
- * O site do Vira Pergunta, na raiz.
+ * O site do Rumo, na raiz.
  *
  * Ele é 100% servidor: nenhuma dobra tem estado, então nada aqui carrega
  * JavaScript para o navegador além do que o Next já manda. As âncoras do
@@ -16,7 +16,7 @@ import { Tour } from "@/components/onboarding/tour"
  * listener, sem piscar. Até o cenário da dobra de abertura é CSS.
  *
  * Cada dobra vive em `src/components/marketing/`, uma por arquivo: para mexer
- * nas cartas de amostra você abre `amostra.tsx` e não precisa entender o resto
+ * no caminho de níveis você abre `caminho.tsx` e não precisa entender o resto
  * da página.
  *
  * A separação entre dobras é o `Divisor`, e não uma borda na própria seção: o
@@ -40,7 +40,7 @@ export default function PaginaInicial() {
         <Divisor />
         <ComoFunciona />
         <Divisor />
-        <Amostra />
+        <Caminho />
         <Divisor />
         <Beneficios />
       </main>

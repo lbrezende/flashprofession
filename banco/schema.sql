@@ -12,8 +12,8 @@
 -- =============================================================================
 
 CREATE TABLE IF NOT EXISTS registros (
-  colecao    text        NOT NULL,   -- 'conteudos', 'perguntas', 'baralhos'
-  id         text        NOT NULL,   -- o mesmo id que o app já usa (con-a1b2c3)
+  colecao    text        NOT NULL,   -- 'jornadas', 'evidencias', 'sessoes'
+  id         text        NOT NULL,   -- o mesmo id que o app já usa (jor-a1b2c3)
   dados      jsonb       NOT NULL,   -- o registro inteiro, do jeito que a tela lê
   criado_em  timestamptz NOT NULL DEFAULT now(),
   PRIMARY KEY (colecao, id)
@@ -29,43 +29,36 @@ CREATE INDEX IF NOT EXISTS registros_colecao_criado_em
 --
 -- Uma tabela com jsonb aguenta o app inteiro e sobrevive a você trocar os
 -- campos de ideia. O que ela não te dá é o banco conferindo as suas regras:
--- hoje nada impede uma pergunta apontar pra um conteúdo que não existe, e
--- "quantas perguntas de Biologia continuam erradas" vira uma consulta feia.
+-- hoje nada impede uma evidência apontar pra uma jornada que não existe, e
+-- "quantas horas por semana cada pessoa estudou" vira uma consulta feia.
 --
 -- Quando fizer sentido trocar, o desenho é este. Repare no que ele ganha: o
--- REFERENCES não deixa pergunta órfã existir, o ON DELETE CASCADE apaga as
--- filhas sozinho (hoje isso é código nosso, em dois lugares), e cada campo
--- ganha tipo de verdade.
+-- REFERENCES não deixa evidência órfã existir, o ON DELETE CASCADE apaga as
+-- filhas sozinho, e cada campo ganha tipo de verdade.
 --
--- CREATE TABLE conteudos (
---   id         text PRIMARY KEY,
---   titulo     text NOT NULL,
---   disciplina text NOT NULL DEFAULT '',
---   tema       text NOT NULL DEFAULT '',
---   texto      text NOT NULL DEFAULT '',
---   criado_em  timestamptz NOT NULL DEFAULT now()
+-- CREATE TABLE jornadas (
+--   id           text PRIMARY KEY,
+--   profissao_id text,
+--   etapa        text NOT NULL DEFAULT 'novo',
+--   resultado    jsonb,               -- nível, confiança, domínio por competência
+--   publico      jsonb,               -- opt-in de ranking e visibilidade
+--   criado_em    timestamptz NOT NULL DEFAULT now()
 -- );
 --
--- CREATE TABLE perguntas (
+-- CREATE TABLE evidencias (
 --   id          text PRIMARY KEY,
---   conteudo_id text NOT NULL REFERENCES conteudos(id) ON DELETE CASCADE,
---   enunciado   text NOT NULL,
---   resposta    text NOT NULL DEFAULT '',
---   resultado   text,                 -- 'acertei', 'errei' ou nulo (não revisada)
+--   jornada_id  text REFERENCES jornadas(id) ON DELETE CASCADE,
+--   desafio_id  text,
+--   origem      text NOT NULL,        -- autodeclaração, teste, tarefa, revisão humana
+--   estado      text NOT NULL DEFAULT 'rascunho',
+--   artefato    jsonb,
 --   criado_em   timestamptz NOT NULL DEFAULT now()
 -- );
 --
--- CREATE TABLE baralhos (
---   id        text PRIMARY KEY,
---   nome      text NOT NULL,
---   criado_em timestamptz NOT NULL DEFAULT now()
--- );
---
--- -- A carta é a ligação entre um baralho e uma pergunta, com a ordem dentro do
--- -- baralho. Hoje isso é o array `perguntaIds` dentro do próprio baralho.
--- CREATE TABLE cartas (
---   baralho_id  text NOT NULL REFERENCES baralhos(id)  ON DELETE CASCADE,
---   pergunta_id text NOT NULL REFERENCES perguntas(id) ON DELETE CASCADE,
---   posicao     integer NOT NULL DEFAULT 0,
---   PRIMARY KEY (baralho_id, pergunta_id)
+-- CREATE TABLE sessoes (
+--   id         text PRIMARY KEY,
+--   jornada_id text REFERENCES jornadas(id) ON DELETE CASCADE,
+--   tipo       text NOT NULL,         -- video, avaliacao, pratica
+--   minutos    integer NOT NULL,
+--   data       date NOT NULL
 -- );

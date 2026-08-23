@@ -3,7 +3,7 @@ import { FileText, Tag } from "lucide-react"
 import { sistema } from "@/content/site"
 import { Input } from "./input"
 
-const campos = sistema.conteudos.formulario
+const campos = sistema.perfil.publico
 
 const meta = {
   title: "Primitivos/Input",
@@ -20,8 +20,8 @@ const meta = {
     iconeDireita: { control: false },
   },
   args: {
-    rotulo: campos.campos.titulo,
-    placeholder: campos.exemploTitulo,
+    rotulo: campos.nomePublico,
+    placeholder: campos.exemploNome,
     obrigatorio: false,
     ocultarRotulo: false,
     disabled: false,
@@ -47,27 +47,27 @@ export const Obrigatorio: Story = {
 /** A ajuda some quando aparece um erro. Duas mensagens ao mesmo tempo viram ruído. */
 export const ComAjuda: Story = {
   args: {
-    rotulo: campos.campos.texto,
-    placeholder: campos.exemploTexto,
-    ajuda: campos.ajudaDisciplina,
+    rotulo: campos.disponibilidade,
+    placeholder: campos.exemploDisponibilidade,
+    ajuda: campos.ajudaDisponibilidade,
     iconeEsquerda: <FileText />,
   },
 }
 
 export const ComErro: Story = {
   args: {
-    rotulo: campos.campos.tema,
-    placeholder: campos.exemploTema,
-    erro: campos.erros.disciplina,
-    defaultValue: "Histó",
+    rotulo: sistema.praticar.envio.campoLink,
+    placeholder: sistema.praticar.envio.exemploLink,
+    erro: sistema.praticar.envio.textoObrigatorio,
+    defaultValue: "Ana",
     iconeEsquerda: <Tag />,
   },
 }
 
 export const ComIcone: Story = {
   args: {
-    rotulo: campos.campos.tema,
-    placeholder: campos.exemploTema,
+    rotulo: sistema.praticar.envio.campoLink,
+    placeholder: sistema.praticar.envio.exemploLink,
     iconeEsquerda: <Tag />,
   },
 }
@@ -75,7 +75,7 @@ export const ComIcone: Story = {
 export const Desabilitado: Story = {
   args: {
     disabled: true,
-    defaultValue: "Revolução Francesa: as três fases",
+    defaultValue: "Ana P.",
   },
 }
 
@@ -83,23 +83,23 @@ export const Desabilitado: Story = {
 export const Estados: Story = {
   render: (args) => (
     <div className="flex flex-col gap-5">
-      <Input {...args} rotulo={campos.campos.titulo} placeholder={campos.exemploTitulo} />
+      <Input {...args} rotulo={campos.nomePublico} placeholder={campos.exemploNome} />
       <Input
         {...args}
-        rotulo={campos.campos.texto}
-        placeholder={campos.exemploTexto}
-        ajuda={campos.ajudaDisciplina}
+        rotulo={campos.disponibilidade}
+        placeholder={campos.exemploDisponibilidade}
+        ajuda={campos.ajudaDisponibilidade}
       />
       <Input
         {...args}
-        rotulo={campos.campos.tema}
-        defaultValue="Histó"
-        erro={campos.erros.disciplina}
+        rotulo={sistema.praticar.envio.campoLink}
+        defaultValue="Ana"
+        erro={sistema.praticar.envio.textoObrigatorio}
       />
       <Input
         {...args}
-        rotulo={campos.campos.disciplina}
-        defaultValue="História"
+        rotulo={campos.disponibilidade}
+        defaultValue="Ana P."
         disabled
       />
     </div>

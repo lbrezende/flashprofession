@@ -1,199 +1,136 @@
 import type { Dados } from "./types"
 
 /**
- * O material de exemplo que aparece no primeiro acesso.
+ * O estado de exemplo carregado no primeiro acesso.
  *
- * Existe por um motivo de uso: um app de estudo vazio na primeira abertura
- * parece quebrado, e ninguém entende o que é um baralho de perguntas sem ver um
- * baralho de perguntas. Com conteúdo dentro, dá pra abrir uma carta, responder
- * e entender o app em dez segundos.
+ * Ele coloca a pessoa NO MEIO da jornada de propósito: profissão escolhida
+ * (UX/UI Designer), diagnóstico concluído no nível 2, trilha começada, uma
+ * evidência em rascunho e um case aprovado. É esse estado que deixa toda tela
+ * do app cheia e navegável no primeiro minuto.
  *
- * A quantidade é a de uma semana de verdade deste app: cinco conteúdos, as
- * perguntas que saíram deles e dois baralhos montados pra provas próximas. Na
- * tela de configurações tem um botão que devolve tudo a este estado, e outro
- * que limpa pra ver as telas vazias.
+ * O botão "Limpar tudo" em Configurações zera isso e mostra o outro extremo:
+ * o estado de quem acabou de chegar, com a escolha de carreira na frente.
+ * Os dois estados que o documento de requisitos pede (ONB-03) ficam testáveis
+ * sem mexer em código.
  */
 export const SEED: Dados = {
-  conteudos: [
+  jornadas: [
     {
-      id: "con-1",
-      titulo: "Revolução Francesa: as três fases",
-      disciplina: "História",
-      tema: "Idade Contemporânea",
-      texto:
-        "A Revolução Francesa começa em 1789 com a convocação dos Estados Gerais e a queda da Bastilha em 14 de julho. A primeira fase, a Assembleia Nacional Constituinte, acaba com os privilégios feudais e aprova a Declaração dos Direitos do Homem e do Cidadão. A segunda fase é a Convenção Nacional, marcada pela execução de Luís XVI, pela República e pelo Terror conduzido por Robespierre e pelo Comitê de Salvação Pública. A terceira fase é o Diretório, governo de maioria girondina, corrupto e instável, derrubado pelo Golpe do 18 Brumário, em 1799, que leva Napoleão Bonaparte ao poder.",
-      criadoEm: "2026-08-10T08:15:00.000Z",
-    },
-    {
-      id: "con-2",
-      titulo: "Fotossíntese e respiração celular",
-      disciplina: "Biologia",
-      tema: "Metabolismo energético",
-      texto:
-        "Na fotossíntese, a planta usa luz, gás carbônico e água para produzir glicose e liberar oxigênio. Ela acontece no cloroplasto e tem duas etapas: a fase clara, nos tilacoides, onde a luz quebra a molécula de água e forma ATP e NADPH; e a fase escura, no estroma, onde o ciclo de Calvin fixa o carbono e monta a glicose. A respiração celular faz o caminho contrário: quebra a glicose na presença de oxigênio e libera energia. Ela ocorre em três etapas, glicólise no citoplasma, ciclo de Krebs e cadeia respiratória na mitocôndria, e o saldo é de cerca de 30 a 32 moléculas de ATP por glicose.",
-      criadoEm: "2026-08-11T13:40:00.000Z",
-    },
-    {
-      id: "con-3",
-      titulo: "Função do segundo grau",
-      disciplina: "Matemática",
-      tema: "Funções",
-      texto:
-        "Uma função do segundo grau tem a forma f(x) = ax² + bx + c, com a diferente de zero. O gráfico é uma parábola: ela abre para cima quando a é positivo e para baixo quando a é negativo. As raízes são os valores de x em que a função vale zero, e saem da fórmula de Bhaskara, com delta igual a b² menos 4ac. Se delta é maior que zero há duas raízes reais distintas; se é igual a zero há uma raiz dupla; se é menor que zero não há raiz real. O vértice fica em x igual a menos b sobre 2a, e é ele que dá o valor máximo ou mínimo da função.",
-      criadoEm: "2026-08-12T09:05:00.000Z",
-    },
-    {
-      id: "con-4",
-      titulo: "Climas do Brasil",
-      disciplina: "Geografia",
-      tema: "Climatologia",
-      texto:
-        "O Brasil tem seis tipos climáticos principais. O equatorial, na Amazônia, é quente e úmido o ano inteiro, com chuva acima de 2000 mm. O tropical, no Centro-Oeste e em boa parte do Sudeste, tem verão chuvoso e inverno seco. O tropical de altitude aparece nas áreas mais altas do Sudeste e tem temperaturas mais amenas. O tropical atlântico acompanha o litoral e tem chuvas trazidas pela massa Tropical Atlântica. O semiárido, no sertão nordestino, tem chuva escassa e irregular. E o subtropical, no Sul, tem as quatro estações bem definidas e chuva distribuída o ano todo.",
-      criadoEm: "2026-08-13T15:20:00.000Z",
-    },
-    {
-      id: "con-5",
-      titulo: "Modernismo brasileiro: a primeira geração",
-      disciplina: "Português",
-      tema: "Literatura",
-      texto:
-        "A primeira geração modernista vai de 1922, com a Semana de Arte Moderna, até 1930. É a fase mais radical, de ruptura com o parnasianismo e com a linguagem rebuscada: verso livre, humor, paródia e o português falado no Brasil entram na literatura. Mário de Andrade escreve Pauliceia Desvairada e Macunaíma; Oswald de Andrade lança o Manifesto Pau-Brasil e o Manifesto Antropófago, que propõe devorar a cultura estrangeira e transformá-la em algo brasileiro. Manuel Bandeira, com Libertinagem, e Alcântara Machado completam o grupo.",
-      criadoEm: "2026-08-14T10:00:00.000Z",
-    },
-  ],
-
-  perguntas: [
-    {
-      id: "per-1",
-      conteudoId: "con-1",
-      enunciado: "Que acontecimento de 14 de julho de 1789 virou o símbolo do início da Revolução Francesa?",
-      resposta: "A queda da Bastilha, a prisão que representava o poder absoluto do rei.",
-      resultado: "acertei",
-      criadoEm: "2026-08-10T08:16:00.000Z",
-    },
-    {
-      id: "per-2",
-      conteudoId: "con-1",
-      enunciado: "O que foi o Terror, e quem conduziu esse período?",
-      resposta:
-        "A fase mais dura da Convenção Nacional, com execuções em massa de opositores, conduzida por Robespierre à frente do Comitê de Salvação Pública.",
-      resultado: "errei",
-      criadoEm: "2026-08-10T08:16:00.000Z",
-    },
-    {
-      id: "per-3",
-      conteudoId: "con-1",
-      enunciado: "Como termina o Diretório, e o que vem depois dele?",
-      resposta: "Termina no Golpe do 18 Brumário, em 1799, que leva Napoleão Bonaparte ao poder.",
-      resultado: null,
-      criadoEm: "2026-08-10T08:16:00.000Z",
-    },
-    {
-      id: "per-4",
-      conteudoId: "con-2",
-      enunciado: "Onde acontece a fase clara da fotossíntese, e o que sai dela?",
-      resposta: "Nos tilacoides do cloroplasto. A luz quebra a água e a etapa produz ATP e NADPH, liberando oxigênio.",
-      resultado: "acertei",
-      criadoEm: "2026-08-11T13:41:00.000Z",
-    },
-    {
-      id: "per-5",
-      conteudoId: "con-2",
-      enunciado: "Quais são as três etapas da respiração celular e onde cada uma ocorre?",
-      resposta:
-        "Glicólise, no citoplasma; ciclo de Krebs e cadeia respiratória, na mitocôndria.",
-      resultado: "errei",
-      criadoEm: "2026-08-11T13:41:00.000Z",
-    },
-    {
-      id: "per-6",
-      conteudoId: "con-2",
-      enunciado: "Qual é o saldo aproximado de ATP na respiração celular de uma molécula de glicose?",
-      resposta: "Cerca de 30 a 32 moléculas de ATP.",
-      resultado: null,
-      criadoEm: "2026-08-11T13:41:00.000Z",
-    },
-    {
-      id: "per-7",
-      conteudoId: "con-3",
-      enunciado: "O que o sinal do coeficiente a diz sobre a parábola?",
-      resposta: "Se a é positivo a parábola abre para cima; se a é negativo, abre para baixo.",
-      resultado: "acertei",
-      criadoEm: "2026-08-12T09:06:00.000Z",
-    },
-    {
-      id: "per-8",
-      conteudoId: "con-3",
-      enunciado: "O que cada valor de delta indica sobre as raízes?",
-      resposta:
-        "Delta maior que zero: duas raízes reais distintas. Delta igual a zero: uma raiz dupla. Delta menor que zero: nenhuma raiz real.",
-      resultado: "errei",
-      criadoEm: "2026-08-12T09:06:00.000Z",
-    },
-    {
-      id: "per-9",
-      conteudoId: "con-3",
-      enunciado: "Como se acha a coordenada x do vértice, e para que ela serve?",
-      resposta: "x igual a menos b sobre 2a. É nela que a função atinge o valor máximo ou mínimo.",
-      resultado: null,
-      criadoEm: "2026-08-12T09:06:00.000Z",
-    },
-    {
-      id: "per-10",
-      conteudoId: "con-4",
-      enunciado: "Qual clima brasileiro tem verão chuvoso e inverno seco, e onde ele predomina?",
-      resposta: "O tropical, no Centro-Oeste e em boa parte do Sudeste.",
-      resultado: null,
-      criadoEm: "2026-08-13T15:21:00.000Z",
-    },
-    {
-      id: "per-11",
-      conteudoId: "con-4",
-      enunciado: "O que caracteriza o clima semiárido e em que região ele aparece?",
-      resposta: "Chuva escassa e irregular, no sertão nordestino.",
-      resultado: null,
-      criadoEm: "2026-08-13T15:21:00.000Z",
-    },
-    {
-      id: "per-12",
-      conteudoId: "con-4",
-      enunciado: "Por que o Sul é o único lugar do país com as quatro estações bem definidas?",
-      resposta:
-        "Porque o clima de lá é o subtropical, com chuva distribuída o ano todo e variação clara de temperatura entre as estações.",
-      resultado: null,
-      criadoEm: "2026-08-13T15:21:00.000Z",
-    },
-    {
-      id: "per-13",
-      conteudoId: "con-5",
-      enunciado: "Que marco abre a primeira geração modernista, e em que ano?",
-      resposta: "A Semana de Arte Moderna, em 1922.",
-      resultado: "acertei",
-      criadoEm: "2026-08-14T10:01:00.000Z",
-    },
-    {
-      id: "per-14",
-      conteudoId: "con-5",
-      enunciado: "O que o Manifesto Antropófago propõe?",
-      resposta:
-        "Devorar a cultura estrangeira e transformá-la em algo brasileiro, em vez de copiá-la.",
-      resultado: "errei",
-      criadoEm: "2026-08-14T10:01:00.000Z",
+      id: "jor-1",
+      profissaoId: "ux-ui-designer",
+      etapa: "trilha",
+      autopercepcao: {
+        "hab-processo": "domino",
+        "hab-heuristicas": "conheco",
+        "hab-entrevista": "conheco",
+        "hab-sintese": "nunca-vi",
+        "hab-fluxo": "conheco",
+        "hab-wireframe": "conheco",
+        "hab-figma": "domino",
+        "hab-prototipagem": "conheco",
+        "hab-plano-teste": "nunca-vi",
+        "hab-conducao": "nunca-vi",
+        "hab-storytelling": "conheco",
+        "hab-especificacao": "nunca-vi",
+        "hab-metricas": "nunca-vi",
+        "hab-experimentos": "nunca-vi",
+        "hab-discovery": "nunca-vi",
+        "hab-priorizacao": "nunca-vi",
+        "hab-mentoria": "nunca-vi",
+        "hab-visao": "nunca-vi",
+      },
+      respostasDoTeste: {
+        "q-ux-1": "1",
+        "q-ux-2": "1",
+        "q-ux-3": "1",
+        "q-ux-4": "0",
+        "q-ux-5":
+          "Agruparia as anotações por tema, separando o que a pessoa disse do que eu interpretei, e escreveria cada padrão como um achado com a fala que o comprova.",
+      },
+      questaoAtual: 5,
+      resultado: {
+        nivel: 2,
+        confianca: "média",
+        dominioPorCompetencia: {
+          "ux-processo": 82,
+          "ux-pesquisa": 45,
+          "ux-wireframe": 58,
+          "ux-prototipo": 70,
+          "ux-teste": 15,
+          "ux-comunicacao": 40,
+          "ux-metricas": 10,
+          "ux-discovery": 5,
+          "ux-lideranca": 0,
+        },
+        pontosFortes: ["Processo de UX", "Prototipação"],
+        lacunasCriticas: ["Pesquisa com usuários", "Testes de usabilidade"],
+        aproveitadas: ["Comunicação com times, da sua experiência anterior"],
+        primeiroPasso:
+          "Comece pelo módulo Pesquisa com usuários: é a lacuna que mais segura o seu avanço para o nível 3.",
+        data: "2026-08-16",
+      },
+      competenciasConcluidas: ["ux-processo"],
+      conteudosVistos: ["vid-pesquisa-1", "vid-pesquisa-2"],
+      tarefasFeitas: ["tar-roteiro"],
+      avaliacoes: {},
+      retomada: { moduloId: "mod-pesquisa", conteudoId: "vid-pesquisa-3" },
+      publico: {
+        participaRanking: true,
+        nomePublico: "Ana P.",
+        mostrarEvidencias: true,
+        disponibilidade: "Disponível a partir de outubro",
+      },
+      criadoEm: "2026-08-14T09:10:00.000Z",
     },
   ],
 
-  baralhos: [
+  evidencias: [
     {
-      id: "bar-1",
-      nome: "Prova de Humanas de sexta",
-      perguntaIds: ["per-1", "per-2", "per-3", "per-13", "per-14"],
-      criadoEm: "2026-08-14T11:30:00.000Z",
+      id: "evi-1",
+      desafioId: "des-onboarding",
+      habilidade: "Pesquisa com usuários",
+      origem: "tarefa",
+      estado: "case",
+      texto:
+        "Investiguei o abandono do onboarding de um app de estudos com 5 entrevistas. O achado central: as pessoas não entendiam o que fazer primeiro. Recomendei reduzir o primeiro formulário e destacar a primeira ação de valor.",
+      link: "https://exemplo.com/case-onboarding",
+      feedback: [
+        { criterio: "Método", nota: "Ótimo", comentario: "Escolha de entrevistas bem justificada pelo tipo de pergunta." },
+        { criterio: "Condução", nota: "Bom", comentario: "Roteiro sólido. Numa próxima, grave as sessões pra citar falas exatas." },
+        { criterio: "Síntese", nota: "Ótimo", comentario: "Achados com evidência e implicação clara." },
+        { criterio: "Recomendações", nota: "Bom", comentario: "Acionáveis. Faltou estimar o esforço de cada uma." },
+      ],
+      fonteFeedback: "especialista",
+      consentimentoCase: true,
+      criadoEm: "2026-08-19T15:30:00.000Z",
     },
     {
-      id: "bar-2",
-      nome: "Recuperação de Biologia",
-      perguntaIds: ["per-4", "per-5", "per-6"],
-      criadoEm: "2026-08-15T09:00:00.000Z",
+      id: "evi-2",
+      desafioId: "des-cadastro",
+      habilidade: "Testes de usabilidade",
+      origem: "tarefa",
+      estado: "rascunho",
+      texto:
+        "Comecei analisando o fluxo atual: 9 campos na primeira tela, sem indicação de progresso. Hipóteses levantadas, falta rodar o teste com os 5 usuários.",
+      link: "",
+      feedback: null,
+      fonteFeedback: null,
+      consentimentoCase: false,
+      criadoEm: "2026-08-22T10:05:00.000Z",
     },
+  ],
+
+  sessoes: [
+    { id: "ses-1", tipo: "video", minutos: 25, data: "2026-08-16", criadoEm: "2026-08-16T20:10:00.000Z" },
+    { id: "ses-2", tipo: "avaliacao", minutos: 20, data: "2026-08-16", criadoEm: "2026-08-16T20:40:00.000Z" },
+    { id: "ses-3", tipo: "video", minutos: 30, data: "2026-08-17", criadoEm: "2026-08-17T19:30:00.000Z" },
+    { id: "ses-4", tipo: "pratica", minutos: 45, data: "2026-08-18", criadoEm: "2026-08-18T21:00:00.000Z" },
+    { id: "ses-5", tipo: "video", minutos: 20, data: "2026-08-19", criadoEm: "2026-08-19T20:15:00.000Z" },
+    { id: "ses-6", tipo: "pratica", minutos: 50, data: "2026-08-19", criadoEm: "2026-08-19T21:00:00.000Z" },
+    { id: "ses-7", tipo: "video", minutos: 15, data: "2026-08-20", criadoEm: "2026-08-20T19:45:00.000Z" },
+    { id: "ses-8", tipo: "pratica", minutos: 40, data: "2026-08-21", criadoEm: "2026-08-21T20:30:00.000Z" },
+    { id: "ses-9", tipo: "video", minutos: 25, data: "2026-08-22", criadoEm: "2026-08-22T09:20:00.000Z" },
+    { id: "ses-10", tipo: "avaliacao", minutos: 15, data: "2026-08-22", criadoEm: "2026-08-22T10:00:00.000Z" },
+    { id: "ses-11", tipo: "video", minutos: 20, data: "2026-08-23", criadoEm: "2026-08-23T08:30:00.000Z" },
   ],
 }

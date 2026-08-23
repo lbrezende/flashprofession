@@ -34,4 +34,5 @@ export { Drawer, type DrawerProps, type LarguraDrawer } from "./drawer"
 export { Confirmar, type ConfirmarProps } from "./confirmar"
 
 export { EstadoVazio, type EstadoVazioProps } from "./estado-vazio"
+export { BarraProgresso, type BarraProgressoProps } from "./barra-progresso"
 export { CampoBusca, type CampoBuscaProps } from "./campo-busca"

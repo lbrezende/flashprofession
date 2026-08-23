@@ -88,9 +88,9 @@ export async function PUT(requisicao: Request) {
   const dados = corpo.dados
   if (
     !dados ||
-    !Array.isArray(dados.conteudos) ||
-    !Array.isArray(dados.perguntas) ||
-    !Array.isArray(dados.baralhos)
+    !Array.isArray(dados.jornadas) ||
+    !Array.isArray(dados.evidencias) ||
+    !Array.isArray(dados.sessoes)
   ) {
     return NextResponse.json({ erro: "requisição inválida" }, { status: 400 })
   }

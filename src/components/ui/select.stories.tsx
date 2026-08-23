@@ -1,18 +1,19 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite"
-import { sistema } from "@/content/site"
-import { SEED } from "@/lib/seed"
+import { estadosDeNo, sistema } from "@/content/site"
+import { PROFISSOES } from "@/lib/catalogo"
 import { Select, type OpcaoSelect } from "./select"
 
 const situacoes: OpcaoSelect[] = [
-  { valor: "ativo", rotulo: sistema.perguntas.resultados.acertei },
-  { valor: "pendente", rotulo: sistema.perguntas.resultados.pendente },
-  { valor: "inativo", rotulo: sistema.perguntas.resultados.errei },
+  { valor: "ativo", rotulo: estadosDeNo.concluido.rotulo },
+  { valor: "pendente", rotulo: estadosDeNo["nao-iniciado"].rotulo },
+  { valor: "inativo", rotulo: estadosDeNo["aguardando-validacao"].rotulo },
 ]
 
 /** Os conteúdos de exemplo do próprio app: opção de verdade, não texto inventado. */
-const conteudos: OpcaoSelect[] = SEED.conteudos
-  .slice(0, 3)
-  .map((conteudo) => ({ valor: conteudo.id, rotulo: conteudo.titulo }))
+const profissoes: OpcaoSelect[] = PROFISSOES.slice(0, 4).map((profissao) => ({
+  valor: profissao.id,
+  rotulo: profissao.nome,
+}))
 
 const meta = {
   title: "Primitivos/Select",
@@ -28,7 +29,7 @@ const meta = {
     opcoes: { control: false },
   },
   args: {
-    rotulo: sistema.perguntas.seletor,
+    rotulo: sistema.carreiras.filtroTrabalho,
     opcoes: situacoes,
     defaultValue: "",
     obrigatorio: false,
@@ -55,25 +56,25 @@ export const ComValor: Story = {
 
 export const ComErro: Story = {
   args: {
-    rotulo: sistema.perguntas.seletor,
-    erro: sistema.baralhos.formulario.erros.perguntas,
+    rotulo: sistema.carreiras.filtroTrabalho,
+    erro: sistema.praticar.envio.textoObrigatorio,
     obrigatorio: true,
   },
 }
 
 export const ComAjuda: Story = {
   args: {
-    rotulo: sistema.conteudos.formulario.campos.disciplina,
-    opcoes: conteudos,
+    rotulo: sistema.perfil.publico.disponibilidade,
+    opcoes: profissoes,
     defaultValue: "media",
-    ajuda: sistema.conteudos.formulario.ajudaDisciplina,
+    ajuda: sistema.perfil.publico.ajudaDisponibilidade,
   },
 }
 
 /** Sem placeholder quando toda escolha é válida e uma já vem marcada. */
 export const SemPlaceholder: Story = {
   args: {
-    rotulo: sistema.perguntas.seletor,
+    rotulo: sistema.carreiras.filtroTrabalho,
     opcoes: situacoes,
     placeholder: null,
     defaultValue: "pendente",

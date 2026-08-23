@@ -1,6 +1,6 @@
 # Sobre este arquivo
 
-Este projeto **já é o app do Vira Pergunta**. Não é um esqueleto genérico
+Este projeto **já é o app do Rumo**, a plataforma de preparação de carreira. Não é um esqueleto genérico
 esperando personalização, e não é material de aula.
 
 O roteiro de personalização que morava aqui **já foi aplicado**: o modelo de

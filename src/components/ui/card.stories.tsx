@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite"
-import { palavras, sistema } from "@/content/site"
+import { estadosDeNo, palavras, sistema } from "@/content/site"
 import { Badge } from "./badge"
 import { Button } from "./button"
 import {
@@ -34,26 +34,26 @@ export const Padrao: Story = {
     <div className="w-full max-w-md">
       <Card {...args}>
         <CardCabecalho>
-          <CardTitulo>{sistema.conteudos.titulo}</CardTitulo>
-          <CardDescricao>{sistema.conteudos.descricao}</CardDescricao>
+          <CardTitulo>{sistema.carreiras.titulo}</CardTitulo>
+          <CardDescricao>{sistema.carreiras.descricao}</CardDescricao>
         </CardCabecalho>
         <CardConteudo>
           <dl className="grid gap-3 text-sm sm:grid-cols-2">
             <div>
-              <dt className="text-muted">{sistema.conteudos.formulario.campos.titulo}</dt>
-              <dd className="text-ink">Revolução Francesa: as três fases</dd>
+              <dt className="text-muted">{sistema.perfil.publico.nomePublico}</dt>
+              <dd className="text-ink">Ana P.</dd>
             </div>
             <div>
-              <dt className="text-muted">{sistema.conteudos.formulario.campos.disciplina}</dt>
-              <dd className="text-ink">História</dd>
+              <dt className="text-muted">{sistema.perfil.publico.disponibilidade}</dt>
+              <dd className="text-ink">Disponível a partir de outubro</dd>
             </div>
             <div>
-              <dt className="text-muted">{sistema.conteudos.formulario.campos.tema}</dt>
-              <dd className="text-ink">Idade Contemporânea</dd>
+              <dt className="text-muted">{sistema.praticar.envio.campoLink}</dt>
+              <dd className="text-ink">https://exemplo.com/case-onboarding</dd>
             </div>
             <div>
-              <dt className="text-muted">{sistema.conteudos.formulario.campos.texto}</dt>
-              <dd className="text-ink">A Revolução Francesa começa em 1789…</dd>
+              <dt className="text-muted">{sistema.praticar.envio.campoTexto}</dt>
+              <dd className="text-ink">Investiguei o abandono do onboarding com 5 entrevistas…</dd>
             </div>
           </dl>
         </CardConteudo>
@@ -97,15 +97,15 @@ export const Interativo: Story = {
       <Card {...args}>
         <CardCabecalho>
           <div className="flex items-start justify-between gap-3">
-            <CardTitulo>Fotossíntese e respiração celular</CardTitulo>
+            <CardTitulo>Pesquisa com usuários</CardTitulo>
             <Badge variante="sucesso" ponto>
-              {sistema.perguntas.resultados.acertei}
+              {estadosDeNo.concluido.rotulo}
             </Badge>
           </div>
-          <CardDescricao>Biologia · Metabolismo energético</CardDescricao>
+          <CardDescricao>Competência do nível 2 · UX/UI Designer</CardDescricao>
         </CardCabecalho>
         <CardConteudo className="pt-3 text-sm text-muted">
-          3 {palavras.pergunta.plural} · 1 {palavras.baralho.singular}
+          4 aulas · 3 tarefas · 1 {palavras.caseDePortfolio.singular}
         </CardConteudo>
       </Card>
     </div>
@@ -116,7 +116,10 @@ export const Interativo: Story = {
 export const EmGrade: Story = {
   render: (args) => (
     <div className="grid w-full max-w-3xl gap-4 sm:grid-cols-2">
-      {[sistema.conteudos, sistema.baralhos].map((secao) => (
+      {[
+        { titulo: sistema.carreiras.titulo, descricao: sistema.carreiras.descricao, novo: sistema.carreiras.abrir },
+        { titulo: sistema.praticar.titulo, descricao: sistema.praticar.descricao, novo: sistema.praticar.abrir },
+      ].map((secao) => (
         <Card key={secao.titulo} {...args}>
           <CardCabecalho>
             <CardTitulo>{secao.titulo}</CardTitulo>

@@ -9,7 +9,7 @@ type PropsCabecalhoPagina = {
 
 /**
  * O topo de toda página interna. Existe para que o `h1`, o espaçamento e a
- * linha divisória sejam idênticos em Início, Perguntas, Conteúdos e Baralhos. É
+ * linha divisória sejam idênticos em Início, Carreiras, Mapa e Progresso. É
  * consistência que ninguém precisa lembrar de reproduzir.
  */
 export function CabecalhoPagina({ titulo, descricao, acoes }: PropsCabecalhoPagina) {

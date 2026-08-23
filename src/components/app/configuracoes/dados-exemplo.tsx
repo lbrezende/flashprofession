@@ -23,9 +23,9 @@ export function DadosExemplo() {
   const [pendente, setPendente] = useState<Pendente>(null)
 
   const contagens = [
-    { rotulo: palavras.conteudo.plural, valor: dados.conteudos.length },
-    { rotulo: palavras.pergunta.plural, valor: dados.perguntas.length },
-    { rotulo: palavras.baralho.plural, valor: dados.baralhos.length },
+    { rotulo: palavras.jornada.plural, valor: dados.jornadas.length },
+    { rotulo: palavras.evidencia.plural, valor: dados.evidencias.length },
+    { rotulo: palavras.sessao.plural, valor: dados.sessoes.length },
   ]
 
   function confirmar() {

@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/nextjs-vite"
 import { useEffect, useState } from "react"
 import { fn } from "storybook/test"
 import { sistema } from "@/content/site"
-import { SEED } from "@/lib/seed"
+import { PROFISSOES } from "@/lib/catalogo"
 import { CampoBusca, type CampoBuscaProps } from "./campo-busca"
 import { EstadoVazio } from "./estado-vazio"
 
@@ -27,7 +27,7 @@ function BuscaComEstado({ valor, aoMudar, ...props }: CampoBuscaProps) {
   )
 }
 
-const CONTEUDOS = SEED.conteudos.map((conteudo) => conteudo.titulo)
+const PROFISSOES_NOMES = PROFISSOES.slice(0, 5).map((profissao) => profissao.nome)
 
 const meta = {
   title: "Primitivos/CampoBusca",
@@ -66,7 +66,7 @@ export const Padrao: Story = {}
 
 /** Com texto aparece o botão de limpar, que devolve o foco ao campo. */
 export const ComTexto: Story = {
-  args: { valor: "fotossíntese" },
+  args: { valor: "designer" },
 }
 
 /** O rótulo pode aparecer quando a busca tem peso de campo, não de filtro rápido. */
@@ -82,7 +82,7 @@ export const ComRotuloVisivel: Story = {
 export const FiltrandoUmaLista: Story = {
   render: function ListaFiltrada(args) {
     const [texto, setTexto] = useState(args.valor)
-    const encontrados = CONTEUDOS.filter((nome) =>
+    const encontrados = PROFISSOES_NOMES.filter((nome) =>
       nome.toLowerCase().includes(texto.trim().toLowerCase())
     )
 
@@ -102,8 +102,8 @@ export const FiltrandoUmaLista: Story = {
           <div className="rounded-ds border border-hairline bg-surface">
             <EstadoVazio
               tamanho="sm"
-              titulo={sistema.perguntas.semResultado.titulo}
-              texto={sistema.perguntas.semResultado.texto}
+              titulo={sistema.carreiras.semResultado.titulo}
+              texto={sistema.carreiras.semResultado.texto}
             />
           </div>
         )}

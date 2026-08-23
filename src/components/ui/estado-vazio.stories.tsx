@@ -17,8 +17,8 @@ const meta = {
     acao: { control: false },
   },
   args: {
-    titulo: sistema.vazios.conteudos.titulo,
-    texto: sistema.vazios.conteudos.texto,
+    titulo: sistema.vazios.inicioNovo.titulo,
+    texto: sistema.vazios.inicioNovo.texto,
     tamanho: "md",
   },
   decorators: [
@@ -42,28 +42,28 @@ export default meta
 type Story = StoryObj<typeof meta>
 
 /** Vazio sem saída é beco: todo estado vazio de lista carrega a ação que o resolve. */
-export const Conteudos: Story = {
+export const InicioNovo: Story = {
   args: {
     icone: <FileText />,
-    acao: <Button iconeEsquerda={<Plus />}>{sistema.vazios.conteudos.acao}</Button>,
+    acao: <Button iconeEsquerda={<Plus />}>{sistema.vazios.inicioNovo.acao}</Button>,
   },
 }
 
-export const Perguntas: Story = {
+export const SemProfissao: Story = {
   args: {
-    titulo: sistema.vazios.perguntas.titulo,
-    texto: sistema.vazios.perguntas.texto,
+    titulo: sistema.aprender.semProfissao.titulo,
+    texto: sistema.aprender.semProfissao.texto,
     icone: <MessageCircleQuestionMark />,
-    acao: <Button iconeEsquerda={<Plus />}>{sistema.vazios.perguntas.acao}</Button>,
+    acao: <Button iconeEsquerda={<Plus />}>{sistema.aprender.semProfissao.acao}</Button>,
   },
 }
 
-export const Baralhos: Story = {
+export const Progresso: Story = {
   args: {
-    titulo: sistema.vazios.baralhos.titulo,
-    texto: sistema.vazios.baralhos.texto,
+    titulo: sistema.vazios.progresso.titulo,
+    texto: sistema.vazios.progresso.texto,
     icone: <Layers />,
-    acao: <Button iconeEsquerda={<Plus />}>{sistema.vazios.baralhos.acao}</Button>,
+    acao: <Button iconeEsquerda={<Plus />}>{sistema.vazios.progresso.acao}</Button>,
   },
 }
 
@@ -73,8 +73,8 @@ export const Baralhos: Story = {
  */
 export const SemResultado: Story = {
   args: {
-    titulo: sistema.perguntas.semResultado.titulo,
-    texto: sistema.perguntas.semResultado.texto,
+    titulo: sistema.carreiras.semResultado.titulo,
+    texto: sistema.carreiras.semResultado.texto,
     icone: <SearchX />,
     acao: <Button variante="secundaria">{sistema.acoes.limpar}</Button>,
   },
@@ -84,7 +84,7 @@ export const SemResultado: Story = {
 export const Pequeno: Story = {
   args: {
     tamanho: "sm",
-    titulo: sistema.conteudos.semPerguntas,
+    titulo: sistema.perfil.evidencias.nenhuma,
     texto: undefined,
     icone: <MessageCircleQuestionMark />,
   },
@@ -92,7 +92,7 @@ export const Pequeno: Story = {
 
 export const SemAcao: Story = {
   args: {
-    titulo: sistema.conteudos.detalhe.semPerguntas,
+    titulo: sistema.perfil.evidencias.nenhuma,
     texto: undefined,
     tamanho: "sm",
   },

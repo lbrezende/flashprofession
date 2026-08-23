@@ -464,44 +464,6 @@ h4 {
   }
 
   /*
-    A CARTA DO BARALHO, com dois lados.
-
-    A pergunta fica na frente e a resposta no verso, no mesmo retângulo, e virar
-    é uma rotação de meia volta. Não é enfeite: é a explicação visual de que a
-    resposta estava ali o tempo todo, atrás da pergunta, que é como um baralho
-    de estudo funciona no papel.
-
-    Só `transform` no caminho crítico, então roda no compositor e não recalcula
-    layout. A regra global de `prefers-reduced-motion` zera a duração, e aí a
-    troca é instantânea: o conteúdo continua inteiro, só sem o giro.
-  */
-  .carta {
-    perspective: 1400px;
-  }
-
-  .carta-giro {
-    position: relative;
-    transform-style: preserve-3d;
-    transition: transform 320ms cubic-bezier(0.2, 0.7, 0.3, 1);
-  }
-
-  .carta-virada .carta-giro {
-    transform: rotateY(180deg);
-  }
-
-  .carta-frente,
-  .carta-verso {
-    backface-visibility: hidden;
-    -webkit-backface-visibility: hidden;
-  }
-
-  .carta-verso {
-    position: absolute;
-    inset: 0;
-    transform: rotateY(180deg);
-  }
-
-  /*
     Halo curto atrás do símbolo da marca.
 
     Vai no `filter` do próprio SVG, então acompanha o desenho em vez de virar um

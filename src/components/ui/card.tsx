@@ -11,7 +11,7 @@ import { cn } from "@/lib/cn"
  */
 
 export type CardProps = ComponentPropsWithRef<"div"> & {
-  /** Sinaliza que o card inteiro leva para algum lugar (o cartão de um conteúdo, o de um baralho). */
+  /** Sinaliza que o card inteiro leva para algum lugar (o cartão de uma profissão, o de um desafio). */
   interativo?: boolean
 }
 

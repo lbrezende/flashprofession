@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/nextjs-vite"
 import { TriangleAlert, UserPlus } from "lucide-react"
 import { useEffect, useState } from "react"
 import { fn } from "storybook/test"
-import { sistema } from "@/content/site"
+import { estadosDeNo, sistema } from "@/content/site"
 import { Button } from "./button"
 import { Input } from "./input"
 import { Modal, type ModalProps, type TamanhoModal } from "./modal"
@@ -41,7 +41,7 @@ function ModalComGatilho({ aberto, aoFechar, ...props }: ModalProps) {
 
 const TAMANHOS: TamanhoModal[] = ["sm", "md", "lg"]
 
-const formulario = sistema.conteudos.formulario
+const formulario = sistema.praticar.envio
 
 const meta = {
   title: "Primitivos/Modal",
@@ -65,8 +65,8 @@ const meta = {
     // `fn()` deixa cada fechamento aparecer na aba Actions. Dá pra ver o
     // Esc, o clique no fundo e o botão de fechar chamando a mesma coisa.
     aoFechar: fn(),
-    titulo: formulario.tituloCriar,
-    descricao: formulario.descricaoCriar,
+    titulo: formulario.titulo,
+    descricao: formulario.exemploTexto,
     tamanho: "md",
     papel: "dialog",
     mostrarFechar: true,
@@ -81,12 +81,12 @@ type Story = StoryObj<typeof meta>
 export const Padrao: Story = {
   args: {
     children: (
-      <p className="text-sm leading-relaxed text-muted">{sistema.conteudos.descricao}</p>
+      <p className="text-sm leading-relaxed text-muted">{sistema.carreiras.descricao}</p>
     ),
     rodape: (
       <>
         <Button variante="secundaria">{sistema.acoes.cancelar}</Button>
-        <Button>{formulario.criar}</Button>
+        <Button>{formulario.enviarFinal}</Button>
       </>
     ),
   },
@@ -105,24 +105,24 @@ export const ComFormulario: Story = {
     icone: <UserPlus className="text-primary" />,
     children: (
       <div className="flex flex-col gap-4">
-        <Input rotulo={formulario.campos.titulo} placeholder={formulario.exemploTitulo} obrigatorio />
+        <Input rotulo={formulario.campoTexto} placeholder={formulario.exemploTexto} obrigatorio />
         <Input
-          rotulo={formulario.campos.tema}
-          placeholder={formulario.exemploTema}
+          rotulo={formulario.campoLink}
+          placeholder={formulario.exemploLink}
           type="email"
           obrigatorio
         />
         <Select
-          rotulo={formulario.campos.disciplina}
+          rotulo={formulario.campoLink}
           opcoes={[
-            { valor: "ativo", rotulo: sistema.perguntas.resultados.acertei },
-            { valor: "pendente", rotulo: sistema.perguntas.resultados.pendente },
-            { valor: "inativo", rotulo: sistema.perguntas.resultados.errei },
+            { valor: "ativo", rotulo: estadosDeNo.concluido.rotulo },
+            { valor: "pendente", rotulo: estadosDeNo["nao-iniciado"].rotulo },
+            { valor: "inativo", rotulo: estadosDeNo["aguardando-validacao"].rotulo },
           ]}
           defaultValue="ativo"
         />
         <Textarea
-          rotulo={formulario.campos.texto}
+          rotulo={formulario.campoTexto}
           placeholder={formulario.exemploTexto}
           rows={3}
         />
@@ -131,7 +131,7 @@ export const ComFormulario: Story = {
     rodape: (
       <>
         <Button variante="secundaria">{sistema.acoes.cancelar}</Button>
-        <Button>{formulario.criar}</Button>
+        <Button>{formulario.enviarFinal}</Button>
       </>
     ),
   },
@@ -147,7 +147,7 @@ export const Tamanhos: Story = {
           {...args}
           tamanho={tamanho}
           titulo={tamanho}
-          descricao={formulario.descricaoCriar}
+          descricao={formulario.exemploTexto}
         />
       ))}
     </div>
@@ -188,13 +188,13 @@ export const Alerta: Story = {
     papel: "alertdialog",
     tamanho: "sm",
     mostrarFechar: false,
-    titulo: sistema.conteudos.remocao.confirmarTitulo,
-    descricao: sistema.conteudos.remocao.confirmarTexto,
+    titulo: sistema.ranking.sairConfirmar.titulo,
+    descricao: sistema.ranking.sairConfirmar.texto,
     icone: <TriangleAlert className="text-danger" />,
     rodape: (
       <>
         <Button variante="secundaria">{sistema.acoes.cancelar}</Button>
-        <Button variante="perigo">{sistema.conteudos.remocao.confirmar}</Button>
+        <Button variante="perigo">{sistema.ranking.sairConfirmar.confirmar}</Button>
       </>
     ),
   },
