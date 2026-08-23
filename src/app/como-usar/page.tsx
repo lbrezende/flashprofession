@@ -130,7 +130,7 @@ export default function PaginaComoUsar() {
                   href={comoUsar.workshop.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="preenchimento-acao mt-2 inline-flex h-12 w-fit items-center justify-center gap-2 rounded-ds px-6 text-[15px] font-medium text-primary-ink transition-[filter] duration-150 hover:brightness-[1.08] pointer-coarse:min-h-11"
+                  className="preenchimento-acao mt-2 inline-flex h-12 w-fit items-center justify-center gap-2 rounded-full px-6 text-[15px] font-medium text-primary-ink transition-[filter] duration-150 hover:brightness-[1.08] pointer-coarse:min-h-11"
                 >
                   {comoUsar.workshop.acao}
                   <Icone nome="link-externo" className="size-4" />
@@ -176,7 +176,7 @@ export default function PaginaComoUsar() {
                         href={item.href}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="superficie mt-auto inline-flex h-11 w-fit items-center justify-center gap-2 rounded-ds border border-hairline px-5 text-sm font-medium text-ink transition-colors duration-150 hover:bg-elevated pointer-coarse:min-h-11"
+                        className="superficie mt-auto inline-flex h-11 w-fit items-center justify-center gap-2 rounded-full border border-hairline px-5 text-sm font-medium text-ink transition-colors duration-150 hover:bg-elevated pointer-coarse:min-h-11"
                       >
                         {item.acao}
                         <Icone nome="link-externo" className="size-4" />

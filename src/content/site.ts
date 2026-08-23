@@ -68,7 +68,6 @@ export const landing = {
     subtitulo:
       "Você escolhe a profissão, descobre em que nível está de verdade e recebe o caminho completo até chegar lá: o que aprender, o que praticar e como provar.",
     ctaPrimario: "Descobrir meu nível",
-    ctaSecundario: "Ver como funciona",
   },
 
   /**

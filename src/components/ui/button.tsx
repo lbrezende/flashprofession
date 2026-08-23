@@ -27,7 +27,10 @@ export type ButtonProps = ComponentPropsWithRef<"button"> & {
 }
 
 const BASE =
-  "inline-flex select-none items-center justify-center rounded-ds font-medium whitespace-nowrap " +
+  // Pílula por decisão de design: todo botão do sistema é o retângulo com os
+  // dois lados em semicírculo. `rounded-full` em vez de um raio numérico
+  // porque o navegador fecha o semicírculo em qualquer altura de botão.
+  "inline-flex select-none items-center justify-center rounded-full font-medium whitespace-nowrap " +
   "transition-[background-color,border-color,color,opacity,filter] duration-150 " +
   "active:translate-y-px disabled:pointer-events-none disabled:opacity-50 " +
   // 44px é o mínimo confortável para o dedo. Só onde o ponteiro é grosso, para

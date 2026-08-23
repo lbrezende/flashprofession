@@ -46,7 +46,9 @@ export function Heroi() {
             {hero.subtitulo}
           </p>
 
-          <div className="mt-8 flex w-full flex-col gap-3 sm:w-auto sm:flex-row">
+          {/* Um botão só, de propósito: a dobra tem uma decisão, e o caminho
+              de "entender antes" continua no menu, na âncora Como funciona. */}
+          <div className="mt-8 flex w-full flex-col sm:w-auto sm:flex-row">
             <BotaoLink
               href="/entrar"
               tamanho="lg"
@@ -59,10 +61,6 @@ export function Heroi() {
               }
             >
               {hero.ctaPrimario}
-            </BotaoLink>
-
-            <BotaoLink href="#como-funciona" variante="secundaria" tamanho="lg">
-              {hero.ctaSecundario}
             </BotaoLink>
           </div>
         </div>
