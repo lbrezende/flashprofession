@@ -16,6 +16,14 @@ import { cn } from "@/lib/cn"
  * variante lá, espelhe aqui.
  */
 
+/**
+ * REGRA DA CASA: UM `primaria` POR TELA.
+ *
+ * `primaria` é a ação principal da tela, e a tela tem uma. Todo outro botão
+ * visível ao mesmo tempo é `secundaria`, `fantasma` ou `perigo`, mesmo quando
+ * repete a mesma ação mais abaixo na página. A conta é da tela montada, não do
+ * componente isolado. Ver `DECISOES.md`, "Um CTA primário por tela".
+ */
 export type VarianteBotaoLink = "primaria" | "secundaria"
 export type TamanhoBotaoLink = "sm" | "md" | "lg"
 

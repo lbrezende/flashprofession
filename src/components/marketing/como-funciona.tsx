@@ -1,4 +1,6 @@
+import { Icone } from "@/components/app/icone"
 import { landing } from "@/content/site"
+import { BotaoLink } from "./botao-link"
 
 /**
  * Dobra 2. Um `<ol>` de verdade, porque a ordem dos passos é conteúdo, não
@@ -11,6 +13,10 @@ import { landing } from "@/content/site"
  *
  * São dois elementos e não um com classes responsivas porque o gradiente muda de
  * direção junto com o eixo, e direção de gradiente não cabe numa classe.
+ *
+ * No fim da lista, um CTA só: quem leu os três passos já entendeu o produto e
+ * está pronto pra decidir. Ele leva ao mesmo lugar do botão do herói, mas na
+ * variante secundária, porque a página já tem o primário dela lá em cima.
  *
  * Zero JavaScript: nada aqui espera rolagem pra aparecer.
  */
@@ -76,6 +82,27 @@ export function ComoFunciona() {
             )
           })}
         </ol>
+
+        {/* Repetição do CTA do herói no fim da dobra, e por isso secundário: o
+            primário da página já foi gasto lá em cima. Ver "Um CTA primário por
+            tela" em DECISOES.md. Sem `comChip` junto: o chip é a anatomia do CTA
+            primário, e o fundo dele é o mesmo `--ds-canvas` da superfície
+            secundária, então aqui ele sumiria dentro do botão. */}
+        <div className="mt-12 flex w-full flex-col sm:w-auto sm:flex-row md:mt-16">
+          <BotaoLink
+            href="/entrar"
+            variante="secundaria"
+            tamanho="lg"
+            iconeDireita={
+              <Icone
+                nome="seta-direita"
+                className="transition-transform duration-150 group-hover:translate-x-0.5"
+              />
+            }
+          >
+            {comoFunciona.cta}
+          </BotaoLink>
+        </div>
       </div>
     </section>
   )

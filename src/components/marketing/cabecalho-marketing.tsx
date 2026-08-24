@@ -61,8 +61,11 @@ export function CabecalhoMarketing() {
             {landing.cabecalho.comoUsar}
           </Link>
 
-          {/* O tour de boas-vindas começa aqui. Ver src/content/tour.ts. */}
-          <BotaoLink href="/entrar" tamanho="sm" data-tour="entrar">
+          {/* Secundário por regra da casa: o CTA primário da página é o do
+              herói, e uma tela só tem um. Ver "Um CTA primário por tela" em
+              DECISOES.md. O tour de boas-vindas começa aqui. Ver
+              src/content/tour.ts. */}
+          <BotaoLink href="/entrar" variante="secundaria" tamanho="sm" data-tour="entrar">
             {landing.cabecalho.entrar}
           </BotaoLink>
         </div>

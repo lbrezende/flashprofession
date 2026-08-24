@@ -110,6 +110,7 @@ export const landing = {
           "Aprenda com vídeos curtos, execute tarefas, valide o domínio e pratique em desafios reais que viram cases no seu perfil.",
       },
     ],
+    cta: "Quero comprar agora",
   },
 
   /** Dobra 3: a dobra viva, com os cinco níveis de verdade do catálogo. */

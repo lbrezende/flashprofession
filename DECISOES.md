@@ -167,6 +167,33 @@ em vez de um número porque o navegador fecha o semicírculo em qualquer altura.
 Campo, cartão e selo continuam nos três raios do design system: a pílula é do
 botão, não da interface inteira.
 
+## Um CTA primário por tela
+
+**Só a ação principal da tela é `primaria`.** Qualquer outro botão da mesma
+tela é `secundaria`, `fantasma` ou `perigo`. É regra do design system, não
+preferência de página: dois botões primários competindo pela mesma atenção
+viram zero botão primário, e a pessoa passa a decidir por posição em vez de
+hierarquia. A contagem é da TELA montada, não do componente isolado, porque é a
+tela que a pessoa vê.
+
+**O site da raiz saiu de três primários para um.** O CTA da página é o do
+herói ("Descobrir meu nível", com o chip de seta, a anatomia do CTA de
+referência).
+Viraram secundários o "Entrar" do cabeçalho, que é atalho de quem já tem conta,
+e o fecho da dobra Como funciona, que é a mesma ação repetida depois da
+explicação. O fecho também perdeu o `comChip`: o chip tem fundo `--ds-canvas`,
+que é praticamente a superfície do botão secundário, então ele sumiria dentro
+do próprio botão. Considerei e descartei manter o fecho primário com o
+argumento de que fica longe do herói: rolagem não cria uma tela nova, e a
+regra existe justamente para não ser negociada a cada dobra.
+
+**`planos.tsx` já nasce certo** (um primário no plano em destaque, os outros
+secundários), mas ele continua guardado. No dia em que a dobra de planos entrar
+na landing, o primário do herói ou o do plano destacado tem que ceder: dois na
+mesma página quebram a regra.
+
+---
+
 ## Storybook
 
 **Primitivo novo com story nova**: `BarraProgresso` nasceu com

@@ -63,6 +63,15 @@ moram em `src/lib/jornada.ts`, num lugar só.
 9. **Chave de API nunca no navegador**: `.env.local` + rota em `src/app/api`.
 10. **Toda tela central mostra UMA próxima ação clara** (regra RB-10): quem
     decide qual é `proximaAcao()` em `src/lib/jornada.ts`.
+11. **UM CTA primário por tela, e só um.** `variante="primaria"` (o padrão de
+    `Button` e de `BotaoLink`) é da ação principal da tela. Todo outro botão
+    visível na mesma tela é `secundaria`, `fantasma` ou `perigo`, inclusive
+    quando repete a mesma ação mais abaixo na página. Antes de deixar um botão
+    no padrão, procure na tela quem já é o primário: se já existe um, o seu é
+    secundário. Vale para a tela inteira montada, e não por componente, então
+    dobra de marketing e cartão dentro de lista contam junto. O que é feito
+    para chamar atenção só chama enquanto é um. Ver "Um CTA primário por tela"
+    em `DECISOES.md`.
 
 ## O que não se apaga
 
