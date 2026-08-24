@@ -300,7 +300,7 @@ export const stack = {
 export const paginaBanco = {
   titulo: "O banco, camada por camada",
   subtitulo:
-    "Um mapa pra estudar onde cada dado do Rumo mora: da tabela no Postgres até o campo dentro do jsonb. Clique num nó pra ler, no número pra abrir o que tem dentro.",
+    "Um mapa pra estudar onde cada dado do FlashProfession mora: da tabela no Postgres até o campo dentro do jsonb. Clique num nó pra ler, no número pra abrir o que tem dentro.",
   desenhos: { atual: "Desenho atual", seguinte: "Desenho seguinte" },
   abrirTudo: "Abrir tudo",
   recolher: "Recolher",

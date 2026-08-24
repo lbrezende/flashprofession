@@ -360,6 +360,9 @@ export function calcularResultado(jornada: Jornada) {
     primeiroPasso: primeiraLacuna
       ? `Comece por ${primeiraLacuna.nome}: é a lacuna que mais segura o seu avanço.`
       : "Comece pela primeira competência do seu nível no mapa.",
-    data: new Date().toISOString().slice(0, 10),
+    // Instante completo, e não só o dia: é ele que deixa o painel /admin
+    // medir "quanto tempo até concluir o nivelamento". Quem mostra o dia
+    // (a linha do tempo do Progresso) corta os 10 primeiros caracteres.
+    data: new Date().toISOString(),
   }
 }

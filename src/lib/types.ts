@@ -1,5 +1,5 @@
 /**
- * O modelo de dados do Rumo.
+ * O modelo de dados do FlashProfession.
  *
  * Ele segue o documento de requisitos da plataforma de preparação de carreira,
  * e se divide em duas metades que não se misturam:
@@ -254,5 +254,7 @@ export type Dados = {
 export type Sessao = {
   nome: string
   email: string
+  /** URL da foto da conta Google, se veio. Só endereço, nunca o arquivo. */
+  foto?: string
   entrouEm: string
 }

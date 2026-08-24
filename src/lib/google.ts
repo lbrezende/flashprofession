@@ -104,12 +104,15 @@ export async function perfilDoGoogle(
   })
 
   if (!perfil.ok) return null
-  const dados = (await perfil.json()) as { name?: string; email?: string }
+  const dados = (await perfil.json()) as { name?: string; email?: string; picture?: string }
   if (!dados.email) return null
 
   return {
     nome: dados.name?.trim() || dados.email.split("@")[0],
     email: dados.email,
+    // A URL da foto do perfil, que o próprio escopo `profile` já entrega.
+    // Vai pro cookie e pra tabela de usuários; o painel /admin mostra ela.
+    foto: dados.picture || undefined,
     entrouEm: new Date().toISOString(),
   }
 }

@@ -63,10 +63,13 @@ async function preparar(sql: NonNullable<ReturnType<typeof conexao>>) {
           id             text        PRIMARY KEY,
           email          text        NOT NULL,
           nome           text        NOT NULL,
+          foto           text,
           criado_em      timestamptz NOT NULL DEFAULT now(),
           ultimo_acesso  timestamptz NOT NULL DEFAULT now()
         )
       `
+      // O banco criado antes da coluna existe por aí: o IF NOT EXISTS iguala.
+      await sql`ALTER TABLE usuarios ADD COLUMN IF NOT EXISTS foto text`
       await sql`
         CREATE TABLE IF NOT EXISTS registros (
           usuario    text        NOT NULL REFERENCES usuarios(id) ON DELETE CASCADE,
@@ -122,10 +125,12 @@ export async function registrarUsuario(sessao: Sessao): Promise<void> {
   const sql = await pronto()
   if (!sql) return
   await sql`
-    INSERT INTO usuarios (id, email, nome)
-    VALUES (${idDoUsuario(sessao)}, ${sessao.email}, ${sessao.nome})
+    INSERT INTO usuarios (id, email, nome, foto)
+    VALUES (${idDoUsuario(sessao)}, ${sessao.email}, ${sessao.nome}, ${sessao.foto ?? null})
     ON CONFLICT (id) DO UPDATE
-      SET nome = EXCLUDED.nome, ultimo_acesso = now()
+      SET nome = EXCLUDED.nome,
+          foto = COALESCE(EXCLUDED.foto, usuarios.foto),
+          ultimo_acesso = now()
   `
 }
 
@@ -258,4 +263,51 @@ export async function contagens(): Promise<Record<string, number> | null> {
     console.error("[banco] contagens falharam", erro)
     return null
   }
+}
+
+// --- o que o painel /admin lê ----------------------------------------------
+
+export type UsuarioComDados = {
+  id: string
+  email: string
+  nome: string
+  foto: string | null
+  criadoEm: string
+  ultimoAcesso: string
+  dados: Dados
+}
+
+/**
+ * Todo mundo, com tudo que é de cada um. SÓ o /admin chama, e o /admin só
+ * abre pra quem está em ADMIN_EMAILS: esta função entrega dado de todas as
+ * pessoas de uma vez, e é exatamente por isso que ela não serve a nenhuma
+ * outra rota.
+ */
+export async function lerTodosParaAdmin(): Promise<UsuarioComDados[] | null> {
+  const sql = await pronto()
+  if (!sql) return null
+  const usuarios = (await sql`
+    SELECT id, email, nome, foto, criado_em, ultimo_acesso FROM usuarios
+    ORDER BY ultimo_acesso DESC
+  `) as Array<{ id: string; email: string; nome: string; foto: string | null; criado_em: string; ultimo_acesso: string }>
+  const linhas = (await sql`
+    SELECT usuario, colecao, id, dados FROM registros ORDER BY criado_em DESC
+  `) as Array<Linha & { usuario: string }>
+
+  const porUsuario = new Map<string, Linha[]>()
+  for (const linha of linhas) {
+    const lista = porUsuario.get(linha.usuario) ?? []
+    lista.push(linha)
+    porUsuario.set(linha.usuario, lista)
+  }
+
+  return usuarios.map((u) => ({
+    id: u.id,
+    email: u.email,
+    nome: u.nome,
+    foto: u.foto,
+    criadoEm: new Date(u.criado_em).toISOString(),
+    ultimoAcesso: new Date(u.ultimo_acesso).toISOString(),
+    dados: montar(porUsuario.get(u.id) ?? []),
+  }))
 }

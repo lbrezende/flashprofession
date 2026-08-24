@@ -184,7 +184,9 @@ function LinhaDoTempo() {
 
     if (jornada?.resultado) {
       lista.push({
-        data: jornada.resultado.data,
+        // Resultados antigos guardaram só o dia; os novos, o instante. O
+        // corte deixa os dois no mesmo formato de dia da linha do tempo.
+        data: jornada.resultado.data.slice(0, 10),
         icone: "nivel",
         texto: textos.historico.diagnostico.replace("{nivel}", String(jornada.resultado.nivel)),
       })

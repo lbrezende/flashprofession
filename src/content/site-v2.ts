@@ -25,7 +25,7 @@ export const v2 = {
     linha2: "DÚVIDA",
     linha3: "NA CARREIRA",
     subtitulo:
-      "O Rumo diz em que nível você está de verdade, desenha o caminho de cinco níveis e recomenda a próxima ação. Diagnóstico, mapa, prova. Sem achismo.",
+      "O FlashProfession diz em que nível você está de verdade, desenha o caminho de cinco níveis e recomenda a próxima ação. Diagnóstico, mapa, prova. Sem achismo.",
     ctaPrimario: "Descobrir meu nível",
     ctaSecundario: "Ver como funciona",
     micro: "Sem cartão · O nivelamento leva 15 minutos · Sair e voltar não perde nada",
@@ -57,7 +57,7 @@ export const v2 = {
   },
 
   cartoes: {
-    titulo: "O que o Rumo faz",
+    titulo: "O que o FlashProfession faz",
     itens: [
       {
         titulo: "DIZ SEU NÍVEL",

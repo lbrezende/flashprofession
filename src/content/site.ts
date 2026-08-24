@@ -8,7 +8,7 @@
  */
 
 export const marca = {
-  nome: "Rumo",
+  nome: "FlashProfession",
   tagline: "Da dúvida de carreira ao próximo passo certo",
   descricaoCurta:
     "Escolha a profissão, descubra em que nível você está e siga um caminho claro até chegar lá.",
@@ -78,7 +78,7 @@ export const landing = {
   mockup: {
     descricao:
       "Prévia do app: o caminho de evolução de UX Designer em cinco níveis, com o nível 2 em andamento e a próxima ação recomendada.",
-    endereco: "rumo.app",
+    endereco: "flashprofession.app",
     titulo: "Seu caminho em UX Design",
     selo: "Nível 2 de 5",
     proximaAcao: "Próxima ação",
@@ -238,7 +238,7 @@ export const sistema = {
       verDetalhe: "Ver detalhe",
     },
     novo: {
-      titulo: "Bem-vindo ao Rumo. Comece escolhendo o seu destino",
+      titulo: "Bem-vindo ao FlashProfession. Comece escolhendo o seu destino",
       texto:
         "Explore as áreas, veja a rotina real de cada profissão e escolha o seu objetivo. Depois, um nivelamento rápido mostra de onde você parte.",
       acao: "Explorar as carreiras",
@@ -826,7 +826,7 @@ export const entrada = {
         titulo: "Crie um projeto",
         texto:
           "No seletor de projetos, no topo da página, escolha “Novo projeto”. O nome é só pra você se achar depois, então pode ser o nome do seu app.",
-        codigo: "Rumo",
+        codigo: "FlashProfession",
         codigoRotulo: "Nome sugerido",
       },
       {
@@ -902,7 +902,7 @@ export const desafio = {
   refinar: {
     titulo: "O que refinar neste app",
     intro:
-      "Todo produto que nasce rápido nasce cru, e refinar é o trabalho de verdade de quem faz produto. Este é o guia pra levar o Rumo pra perto de um produto real, pronto pra uso. Começa por um ponto só, e ele está às claras aqui embaixo.",
+      "Todo produto que nasce rápido nasce cru, e refinar é o trabalho de verdade de quem faz produto. Este é o guia pra levar o FlashProfession pra perto de um produto real, pronto pra uso. Começa por um ponto só, e ele está às claras aqui embaixo.",
 
     ponto: {
       titulo: "O ponto a refinar, do jeito que ele está hoje",
@@ -998,7 +998,7 @@ export const desafio = {
  * ombro: o que já funciona, o que falta ligar e onde cada peça encaixa.
  */
 export const comoUsar = {
-  titulo: "Como usar o Rumo",
+  titulo: "Como usar o FlashProfession",
   subtitulo:
     "O que já está de pé, o que ainda falta conectar e onde cada coisa encaixa no projeto. Sem termo técnico solto: cada bloco diz o que você ganha.",
   voltar: "Voltar para o site",
