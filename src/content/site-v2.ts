@@ -126,6 +126,5 @@ export const v2 = {
   rodape: {
     aviso: "Projeto de demonstração. O conteúdo das profissões é ilustrativo.",
     comoUsar: "Como usar",
-    versao: "Você está vendo a home v2. A atual continua na branch principal.",
   },
 } as const

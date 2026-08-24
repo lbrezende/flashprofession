@@ -489,7 +489,6 @@ function Rodape() {
           </Link>
         </div>
       </div>
-      <p className="v2-micro mt-4 text-center !text-[9px] text-white/40">{v2.rodape.versao}</p>
     </footer>
   )
 }
