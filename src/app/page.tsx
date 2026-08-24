@@ -1,51 +1,20 @@
-import { Caminho } from "@/components/marketing/caminho"
-import { Beneficios } from "@/components/marketing/beneficios"
-import { CabecalhoMarketing } from "@/components/marketing/cabecalho-marketing"
-import { ComoFunciona } from "@/components/marketing/como-funciona"
-import { Divisor } from "@/components/marketing/divisor"
-import { Heroi } from "@/components/marketing/heroi"
-import { RodapeMarketing } from "@/components/marketing/rodape-marketing"
+import { PaginaV2 } from "@/components/marketing-v2/pagina-v2"
 import { Tour } from "@/components/onboarding/tour"
 
 /**
- * O site do Rumo, na raiz.
+ * NESTA BRANCH (lbrezende/new-ds), a raiz mostra a home v2: a linguagem
+ * visual da home do coolist com as nossas cores, mais gritante. A home
+ * atual continua intacta em `src/components/marketing/` e volta a valer
+ * na branch principal.
  *
- * Ele é 100% servidor: nenhuma dobra tem estado, então nada aqui carrega
- * JavaScript para o navegador além do que o Next já manda. As âncoras do
- * cabeçalho e o link "Ver como funciona" são navegação nativa. Sem hook, sem
- * listener, sem piscar. Até o cenário da dobra de abertura é CSS.
- *
- * Cada dobra vive em `src/components/marketing/`, uma por arquivo: para mexer
- * no caminho de níveis você abre `caminho.tsx` e não precisa entender o resto
- * da página.
- *
- * A separação entre dobras é o `Divisor`, e não uma borda na própria seção: o
- * fio some nas duas pontas em vez de riscar a página de lado a lado. Ele fica
- * aqui, entre as dobras, porque separar é assunto de quem monta a página, não
- * de quem escreve a dobra.
+ * A primeira parada do tour continua aqui, ancorada no botão de entrar
+ * (data-tour="entrar" mora no cabeçalho da v2).
  */
 export default function PaginaInicial() {
   return (
-    <div className="flex min-h-dvh flex-col">
-      <CabecalhoMarketing />
-
-      {/* A primeira parada do tour de boas-vindas mora aqui, ancorada no botão
-          de entrar. Da segunda em diante, quem retoma é a casca do app. */}
+    <>
       <Tour />
-
-      {/* `tabIndex={-1}` é o que faz o "Pular para o conteúdo" realmente mover
-          o foco para cá, e não só rolar a página. */}
-      <main id="conteudo" tabIndex={-1} className="flex-1">
-        <Heroi />
-        <Divisor />
-        <ComoFunciona />
-        <Divisor />
-        <Caminho />
-        <Divisor />
-        <Beneficios />
-      </main>
-
-      <RodapeMarketing />
-    </div>
+      <PaginaV2 />
+    </>
   )
 }
