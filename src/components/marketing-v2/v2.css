@@ -11,14 +11,26 @@
  */
 
 .v2 {
-  /* O fundo é a cor de ação CHAPADA, sem gradiente: é isso que grita. */
+  /* Reserva pra navegador antigo, sem OKLCH relativo: ainda fica de pé. */
   --v2-fundo: var(--ds-primary);
-  /* A sombra dura da manchete: a cor de ação afundada na tinta. */
   --v2-sombra: color-mix(in srgb, var(--ds-primary) 35%, var(--ds-ink));
-  /* O acento pop, papel do lime no coolist: lilás quase branco, saturado de leve. */
   --v2-pop: color-mix(in srgb, var(--ds-primary) 14%, white);
   /* A tinta que escreve por cima do pop. */
   --v2-pop-tinta: var(--ds-ink);
+}
+@supports (color: oklch(from red l c h)) {
+  .v2 {
+    /* O fundo é a cor de ação com o croma no talo: mesmo matiz do token,
+       saturação de cartaz. Menos pastel, mais elétrico. */
+    --v2-fundo: oklch(from var(--ds-primary) 0.52 0.3 h);
+    /* A sombra dura da manchete: o mesmo matiz, afundado. */
+    --v2-sombra: oklch(from var(--ds-primary) 0.3 0.19 h);
+    /* O acento pop, papel do lime no coolist: a COMPLEMENTAR do violeta do
+       token (matiz + 180 graus), clara e saturada. É por ser o oposto exato
+       na roda que ela estala em cima do fundo. Continua derivada do token:
+       mudou o design-system.json, ela gira junto. */
+    --v2-pop: oklch(from var(--ds-primary) 0.93 0.26 calc(h + 180));
+  }
 }
 
 /* A manchete: peso máximo, caixa alta, linhas quase encostadas. */

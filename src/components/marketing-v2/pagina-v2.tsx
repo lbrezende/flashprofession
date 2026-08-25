@@ -114,10 +114,7 @@ function Heroi() {
         <div className="relative mx-auto mt-4 mb-10 w-full max-w-6xl text-center md:mb-14">
           <h1 className="flex w-full flex-col md:gap-2">
             <span className="flex w-full justify-start pl-[4%] sm:pl-[10%] md:pl-[18%]">
-              <span
-                className="v2-display v2-sombra-dura text-[clamp(3rem,10vw,7.5rem)]"
-                style={{ color: "var(--v2-pop)" }}
-              >
+              <span className="v2-display v2-sombra-dura text-[clamp(3rem,10vw,7.5rem)] text-white">
                 {hero.linha1}
               </span>
             </span>
@@ -126,8 +123,13 @@ function Heroi() {
                 {hero.linha2}
               </span>
             </span>
+            {/* O acento vai na última linha, a palavra da promessa: é o
+                #SHARED do coolist, no nosso caso a CARREIRA. */}
             <span className="flex w-full justify-end pr-[4%] sm:pr-[10%] md:pr-[20%]">
-              <span className="v2-display v2-sombra-dura text-[clamp(2.6rem,8vw,6rem)] text-white">
+              <span
+                className="v2-display v2-sombra-dura text-[clamp(2.6rem,8vw,6rem)]"
+                style={{ color: "var(--v2-pop)" }}
+              >
                 {hero.linha3}
               </span>
             </span>
