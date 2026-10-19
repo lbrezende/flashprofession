@@ -53,7 +53,7 @@ export default function PaginaMapa() {
   const { jornada } = useDados()
   const profissao = acharProfissao(jornada?.profissaoId)
 
-  const [visao, setVisao] = useState<"mapa" | "lista">("mapa")
+  const [visao, setVisao] = useState<"mapa" | "lista">("lista")
   const [selecionado, setSelecionado] = useState<number | null>(null)
 
   const nos: NoDeNivel[] = useMemo(() => {

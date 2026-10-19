@@ -1,15 +1,15 @@
-import { cn } from "@/lib/cn"
+import { cn } from "@/lib/cn";
 
 export type BarraProgressoProps = {
   /** De 0 a 100. Valores fora da faixa são presos nela. */
-  valor: number
+  valor: number;
   /** Nome acessível da barra. Obrigatório: barra sem rótulo é um risco mudo. */
-  rotulo: string
+  rotulo: string;
   /** Mostra o percentual em texto ao lado. O número nunca é só visual. */
-  mostrarValor?: boolean
-  tamanho?: "sm" | "md"
-  className?: string
-}
+  mostrarValor?: boolean;
+  tamanho?: "sm" | "md";
+  className?: string;
+};
 
 /**
  * Barra de progresso do design system.
@@ -26,7 +26,7 @@ export function BarraProgresso({
   tamanho = "md",
   className,
 }: BarraProgressoProps) {
-  const preso = Math.max(0, Math.min(100, Math.round(valor)))
+  const preso = Math.max(0, Math.min(100, Math.round(valor)));
 
   return (
     <div className={cn("flex items-center gap-2.5", className)}>
@@ -37,19 +37,21 @@ export function BarraProgresso({
         aria-valuemax={100}
         aria-valuenow={preso}
         className={cn(
-          "min-w-0 flex-1 overflow-hidden rounded-full bg-elevated",
-          tamanho === "sm" ? "h-1" : "h-1.5"
+          "min-w-0 flex-1 overflow-hidden rounded-full bg-white/[0.08] ring-1 ring-white/[0.06]",
+          tamanho === "sm" ? "h-1" : "h-1.5",
         )}
       >
         <div
-          className="h-full rounded-full bg-primary transition-[width] duration-300"
+          className="h-full rounded-full bg-gradient-to-r from-white/55 to-white transition-[width] duration-500"
           style={{ width: `${preso}%` }}
         />
       </div>
 
       {mostrarValor && (
-        <span className="shrink-0 text-[12px] font-medium tabular-nums text-muted">{preso}%</span>
+        <span className="shrink-0 text-[12px] font-medium tabular-nums text-muted">
+          {preso}%
+        </span>
       )}
     </div>
-  )
+  );
 }

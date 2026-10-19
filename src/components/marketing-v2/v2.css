@@ -1,112 +1,142 @@
-/*
- * As receitas da home v2, a versão gritante.
- *
- * TODA cor sai dos tokens --ds-* ou de color-mix sobre eles, como manda a
- * regra da casa: trocar o design-system.json troca esta página junto. O que
- * este arquivo adiciona é a linguagem do coolist: fundo chapado na cor de
- * ação, display esmagado em caixa alta com sombra dura, grade de fundo,
- * cartões de vidro e o selo circular girando.
- *
- * Só a home v2 importa este arquivo. Nada daqui vaza pro app.
- */
-
-.v2 {
-  /* Reserva pra navegador antigo, sem OKLCH relativo: ainda fica de pé. */
-  --v2-fundo: var(--ds-primary);
-  --v2-sombra: color-mix(in srgb, var(--ds-primary) 35%, var(--ds-ink));
-  --v2-pop: color-mix(in srgb, var(--ds-primary) 14%, white);
-  /* A tinta que escreve por cima do pop. */
-  --v2-pop-tinta: var(--ds-ink);
+.dimension-page {
+  background: #08090b;
 }
-@supports (color: oklch(from red l c h)) {
-  .v2 {
-    /* O fundo é a cor de ação com o croma no talo: mesmo matiz do token,
-       saturação de cartaz. Menos pastel, mais elétrico. */
-    --v2-fundo: oklch(from var(--ds-primary) 0.52 0.3 h);
-    /* A sombra dura da manchete: o mesmo matiz, afundado. */
-    --v2-sombra: oklch(from var(--ds-primary) 0.3 0.19 h);
-    /* O acento pop, papel do lime no coolist: a COMPLEMENTAR do violeta do
-       token (matiz + 180 graus), clara e saturada. É por ser o oposto exato
-       na roda que ela estala em cima do fundo. Continua derivada do token:
-       mudou o design-system.json, ela gira junto. */
-    --v2-pop: oklch(from var(--ds-primary) 0.93 0.26 calc(h + 180));
-  }
+.hero-horizon {
+  background:
+    radial-gradient(ellipse 70% 55% at 84% 18%, rgba(42, 82, 155, 0.72), transparent 64%),
+    radial-gradient(ellipse 55% 65% at 5% 22%, rgba(142, 78, 53, 0.58), transparent 67%),
+    linear-gradient(128deg, #342019 0%, #252634 46%, #101d35 76%, #08090b 100%);
 }
-
-/* A manchete: peso máximo, caixa alta, linhas quase encostadas. */
-.v2-display {
-  font-family: var(--ds-font-display), "Arial Black", Impact, sans-serif;
-  font-weight: 900;
-  line-height: 0.85;
-  letter-spacing: -0.04em;
-  text-transform: uppercase;
+.final-horizon {
+  background:
+    radial-gradient(ellipse 70% 60% at 72% 0%, rgba(56, 76, 162, 0.58), transparent 68%),
+    linear-gradient(120deg, #3d251c, #292a38 50%, #12223e);
 }
-
-/* A sombra dura, degrau por degrau, que dá o volume de cartaz. */
-.v2-sombra-dura {
-  text-shadow:
-    1px 1px 0 var(--v2-sombra), 2px 2px 0 var(--v2-sombra), 3px 3px 0 var(--v2-sombra),
-    4px 4px 0 var(--v2-sombra), 5px 5px 0 var(--v2-sombra), 6px 6px 0 var(--v2-sombra),
-    7px 7px 0 var(--v2-sombra), 8px 8px 0 var(--v2-sombra), 9px 9px 0 var(--v2-sombra),
-    10px 10px 0 var(--v2-sombra);
+.noise {
+  display: none;
 }
-
-/* O rótulo micro: pequeno, pesado, espaçado, sempre em caixa alta. */
-.v2-micro {
-  font-size: 11px;
-  font-weight: 800;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
+.glass-nav {
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(15, 15, 17, 0.72);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(20px) saturate(130%);
 }
-
-/* A grade de fundo do herói, um fio claro a cada 4rem. */
-.v2-grade {
-  background-image:
-    linear-gradient(to right, color-mix(in srgb, white 10%, transparent) 1px, transparent 1px),
-    linear-gradient(to bottom, color-mix(in srgb, white 10%, transparent) 1px, transparent 1px);
-  background-size: 4rem 4rem;
+.nav-link {
+  border-radius: 999px;
+  padding: 0.55rem 1rem;
+  color: rgba(255, 255, 255, 0.62);
+  font-size: 0.82rem;
+  transition: 0.2s;
 }
-
-/* O painel branco que sobe por cima do herói, de cantos largos. */
-.v2-painel-topo {
-  border-top-left-radius: 2.5rem;
-  border-top-right-radius: 2.5rem;
-  box-shadow: 0 -20px 50px color-mix(in srgb, var(--ds-ink) 22%, transparent);
+.nav-link:hover {
+  color: white;
+  background: rgba(255, 255, 255, 0.07);
 }
-@media (min-width: 768px) {
-  .v2-painel-topo {
-    border-top-left-radius: 3.5rem;
-    border-top-right-radius: 3.5rem;
-  }
+.button-white,
+.button-ghost {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.55rem;
+  border-radius: 999px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  transition:
+    transform 0.2s,
+    background 0.2s;
 }
-
-/* O cartão de vidro: branco translúcido, borrado, torto até o ponteiro chegar. */
-.v2-vidro {
-  background: color-mix(in srgb, white 18%, transparent);
-  border: 1px solid color-mix(in srgb, white 40%, transparent);
+.button-white {
+  background: white;
+  color: #111;
+}
+.button-white:hover {
+  transform: translateY(-2px);
+  background: #ededed;
+}
+.button-ghost {
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.07);
+  color: white;
   backdrop-filter: blur(12px);
-  transition: transform 0.5s;
 }
-
-/* Flutuações e giro, em CSS puro: a página continua sem JavaScript próprio. */
-@keyframes v2-flutuar {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-14px); }
+.button-ghost:hover {
+  transform: translateY(-2px);
+  background: rgba(255, 255, 255, 0.12);
 }
-.v2-flutua {
-  animation: v2-flutuar 5s ease-in-out infinite;
+.eyebrow,
+.section-index {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.72rem;
+  letter-spacing: 0.17em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.54);
 }
-.v2-flutua-tarde {
-  animation: v2-flutuar 6s ease-in-out 1s infinite;
+.section-title {
+  max-width: 720px;
+  font-size: clamp(2.7rem, 6vw, 5.4rem);
+  line-height: 0.98;
+  letter-spacing: -0.055em;
+  color: white;
 }
-@keyframes v2-girar {
-  to { transform: rotate(360deg); }
+.glass-panel,
+.glass-card {
+  border: 1px solid rgba(255, 255, 255, 0.13);
+  background: linear-gradient(145deg, rgba(255,255,255,.09), rgba(255,255,255,.035));
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.09);
+  backdrop-filter: blur(24px) saturate(108%);
 }
-.v2-gira {
-  animation: v2-girar 14s linear infinite;
+.photo-frame,
+.photo-card {
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+.spotlight {
+  position: absolute;
+  top: 8%;
+  left: 42%;
+  width: 520px;
+  height: 520px;
+  border-radius: 50%;
+  background: rgba(107, 98, 242, 0.16);
+  filter: blur(120px);
+  pointer-events: none;
+}
+.step-row {
+  transition:
+    background 0.25s,
+    padding 0.25s;
+}
+.step-row:hover {
+  background: rgba(255, 255, 255, 0.025);
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+@media (max-width: 767px) {
+  .hero-horizon {
+    min-height: auto;
+    background:
+      radial-gradient(ellipse 75% 50% at 84% 30%, rgba(43, 78, 145, 0.64), transparent 65%),
+      radial-gradient(ellipse 70% 55% at 0% 18%, rgba(132, 75, 53, 0.5), transparent 68%),
+      linear-gradient(145deg, #302019, #242634 58%, #08090b);
+  }
+  .hero-visual {
+    margin-top: 1rem;
+  }
+  .glass-panel {
+    transform: scale(0.86);
+  }
+  .step-row:hover {
+    padding-left: 0;
+    padding-right: 0;
+  }
 }
 @media (prefers-reduced-motion: reduce) {
-  .v2-flutua, .v2-flutua-tarde, .v2-gira {
-    animation: none;
+  .photo-card img,
+  .button-white,
+  .button-ghost,
+  .step-row {
+    transition: none !important;
   }
 }

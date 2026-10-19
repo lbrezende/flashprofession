@@ -1,13 +1,14 @@
-import type { ComponentPropsWithRef } from "react"
-import { cn } from "@/lib/cn"
+import type { ComponentPropsWithRef } from "react";
+import { cn } from "@/lib/cn";
 
-export type VarianteBadge = "neutra" | "sucesso" | "aviso" | "perigo" | "destaque"
+export type VarianteBadge =
+  "neutra" | "sucesso" | "aviso" | "perigo" | "destaque";
 
 export type BadgeProps = ComponentPropsWithRef<"span"> & {
-  variante?: VarianteBadge
+  variante?: VarianteBadge;
   /** Bolinha antes do rótulo. Ajuda a ler status numa lista longa. */
-  ponto?: boolean
-}
+  ponto?: boolean;
+};
 
 /**
  * Fundo e borda são tintas da própria cor semântica (`/12`, `/25`).
@@ -21,25 +22,33 @@ export type BadgeProps = ComponentPropsWithRef<"span"> & {
  * escura no de baixo, o suficiente para virar objeto em vez de mancha.
  */
 const VARIANTES: Record<VarianteBadge, string> = {
-  neutra: "pilula-relevo border-hairline text-muted",
+  neutra: "border-white/10 bg-white/[0.04] text-muted",
   sucesso: "border-success/25 bg-success/12 text-success",
   aviso: "border-warning/25 bg-warning/12 text-warning",
   perigo: "border-danger/25 bg-danger/12 text-danger",
-  destaque: "border-primary/30 bg-primary/12 text-primary",
-}
+  destaque: "border-white/20 bg-white text-black",
+};
 
-export function Badge({ variante = "neutra", ponto = false, className, children, ...props }: BadgeProps) {
+export function Badge({
+  variante = "neutra",
+  ponto = false,
+  className,
+  children,
+  ...props
+}: BadgeProps) {
   return (
     <span
       className={cn(
-        "inline-flex items-center gap-1.5 rounded-full border px-2 py-0.5 text-xs font-medium whitespace-nowrap",
+        "inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-[10px] font-medium tracking-[0.08em] uppercase whitespace-nowrap backdrop-blur-md",
         VARIANTES[variante],
-        className
+        className,
       )}
       {...props}
     >
-      {ponto && <span aria-hidden="true" className="size-1.5 rounded-full bg-current" />}
+      {ponto && (
+        <span aria-hidden="true" className="size-1.5 rounded-full bg-current" />
+      )}
       {children}
     </span>
-  )
+  );
 }

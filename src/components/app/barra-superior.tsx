@@ -1,28 +1,28 @@
-"use client"
+"use client";
 
-import type { RefObject } from "react"
-import Link from "next/link"
-import { Button } from "@/components/ui/button"
-import { sistema } from "@/content/site"
-import type { Sessao } from "@/lib/types"
-import { Icone } from "./icone"
-import { Logo } from "./logo"
+import type { RefObject } from "react";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { sistema } from "@/content/site";
+import type { Sessao } from "@/lib/types";
+import { Icone } from "./icone";
+import { Logo } from "./logo";
 
 type PropsBarraSuperior = {
-  sessao: Sessao
-  menuAberto: boolean
-  aoAbrirMenu: () => void
-  aoSair: () => void
-  refBotaoMenu: RefObject<HTMLButtonElement | null>
-}
+  sessao: Sessao;
+  menuAberto: boolean;
+  aoAbrirMenu: () => void;
+  aoSair: () => void;
+  refBotaoMenu: RefObject<HTMLButtonElement | null>;
+};
 
 /** Avatar sem imagem hospedada: duas letras do nome bastam e nunca quebram. */
 function iniciaisDe(nome: string) {
-  const partes = nome.trim().split(/\s+/).filter(Boolean)
-  if (partes.length === 0) return "?"
-  const primeira = partes[0].charAt(0)
-  const ultima = partes.length > 1 ? partes[partes.length - 1].charAt(0) : ""
-  return (primeira + ultima).toUpperCase()
+  const partes = nome.trim().split(/\s+/).filter(Boolean);
+  if (partes.length === 0) return "?";
+  const primeira = partes[0].charAt(0);
+  const ultima = partes.length > 1 ? partes[partes.length - 1].charAt(0) : "";
+  return (primeira + ultima).toUpperCase();
 }
 
 export function BarraSuperior({
@@ -36,7 +36,7 @@ export function BarraSuperior({
     // `.fio-base` é o fio de luz por dentro da base mais a sombra curta por
     // fora. É o que faz o conteúdo passar POR BAIXO da barra: o `backdrop-blur`
     // sozinho embaça sem separar.
-    <header className="fio-base sticky top-0 z-30 flex h-16 items-center gap-2 border-b border-hairline bg-canvas/80 px-4 backdrop-blur-md sm:gap-3 sm:px-6 lg:px-8">
+    <header className="app-topbar sticky top-0 z-30 mx-3 mt-3 flex h-16 items-center gap-2 rounded-[20px] border border-white/10 px-4 backdrop-blur-xl sm:gap-3 sm:px-6 lg:mx-5 lg:px-6">
       <Button
         ref={refBotaoMenu}
         variante="fantasma"
@@ -49,7 +49,10 @@ export function BarraSuperior({
       />
 
       {/* A marca some junto com a coluna fixa no celular, e volta aqui. */}
-      <Link href="/app" className="flex min-w-0 items-center rounded-ds transition-opacity hover:opacity-80 pointer-coarse:min-h-11 lg:hidden">
+      <Link
+        href="/app"
+        className="flex min-w-0 items-center rounded-ds transition-opacity hover:opacity-80 pointer-coarse:min-h-11 lg:hidden"
+      >
         <Logo />
       </Link>
 
@@ -77,7 +80,10 @@ export function BarraSuperior({
           </span>
         </div>
 
-        <span aria-hidden="true" className="hidden h-6 w-px bg-hairline sm:block" />
+        <span
+          aria-hidden="true"
+          className="hidden h-6 w-px bg-hairline sm:block"
+        />
 
         <Button
           variante="secundaria"
@@ -90,5 +96,5 @@ export function BarraSuperior({
         </Button>
       </div>
     </header>
-  )
+  );
 }

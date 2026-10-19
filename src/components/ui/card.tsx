@@ -1,5 +1,5 @@
-import type { ComponentPropsWithRef } from "react"
-import { cn } from "@/lib/cn"
+import type { ComponentPropsWithRef } from "react";
+import { cn } from "@/lib/cn";
 
 /**
  * Superfície padrão do produto. O espaçamento interno é sempre 20px (`p-5`), e
@@ -12,8 +12,8 @@ import { cn } from "@/lib/cn"
 
 export type CardProps = ComponentPropsWithRef<"div"> & {
   /** Sinaliza que o card inteiro leva para algum lugar (o cartão de uma profissão, o de um desafio). */
-  interativo?: boolean
-}
+  interativo?: boolean;
+};
 
 export function Card({ interativo = false, className, ...props }: CardProps) {
   return (
@@ -22,51 +22,83 @@ export function Card({ interativo = false, className, ...props }: CardProps) {
         // `rounded-ds-surface`, e não `rounded-ds`: o navegador corta o raio na
         // metade do lado menor, então um raio de botão num cartão largo vira
         // meia-lua. A escala de três raios mora no design-system.json.
-        "superficie rounded-ds-surface border border-hairline text-ink",
+        "superficie rounded-ds-surface border border-white/10 text-ink",
         interativo &&
-          "cursor-pointer transition-colors duration-150 hover:border-primary/40 hover:bg-elevated",
-        className
+          "cursor-pointer transition-[transform,border-color,background-color] duration-200 hover:-translate-y-0.5 hover:border-white/20 hover:bg-elevated",
+        className,
       )}
       {...props}
     />
-  )
+  );
 }
 
-export function CardCabecalho({ className, ...props }: ComponentPropsWithRef<"div">) {
-  return <div className={cn("flex flex-col gap-1.5 p-5 pb-0", className)} {...props} />
+export function CardCabecalho({
+  className,
+  ...props
+}: ComponentPropsWithRef<"div">) {
+  return (
+    <div className={cn("flex flex-col gap-2 p-6 pb-0", className)} {...props} />
+  );
 }
 
 export type CardTituloProps = ComponentPropsWithRef<"h3"> & {
   /** Ajuste a hierarquia conforme a página. Nunca pule níveis de título. */
-  como?: "h2" | "h3" | "h4"
+  como?: "h2" | "h3" | "h4";
+};
+
+export function CardTitulo({
+  como: Tag = "h3",
+  className,
+  ...props
+}: CardTituloProps) {
+  return (
+    <Tag
+      className={cn(
+        "font-display text-lg tracking-[-0.03em] text-ink",
+        className,
+      )}
+      {...props}
+    />
+  );
 }
 
-export function CardTitulo({ como: Tag = "h3", className, ...props }: CardTituloProps) {
-  return <Tag className={cn("font-display text-base text-ink", className)} {...props} />
+export function CardDescricao({
+  className,
+  ...props
+}: ComponentPropsWithRef<"p">) {
+  return (
+    <p
+      className={cn("text-sm leading-relaxed text-muted", className)}
+      {...props}
+    />
+  );
 }
 
-export function CardDescricao({ className, ...props }: ComponentPropsWithRef<"p">) {
-  return <p className={cn("text-sm leading-relaxed text-muted", className)} {...props} />
-}
-
-export function CardConteudo({ className, ...props }: ComponentPropsWithRef<"div">) {
-  return <div className={cn("p-5", className)} {...props} />
+export function CardConteudo({
+  className,
+  ...props
+}: ComponentPropsWithRef<"div">) {
+  return <div className={cn("p-6", className)} {...props} />;
 }
 
 export type CardRodapeProps = ComponentPropsWithRef<"div"> & {
   /** Linha separando o rodapé do conteúdo. Útil quando o rodapé tem ações. */
-  divisor?: boolean
-}
+  divisor?: boolean;
+};
 
-export function CardRodape({ divisor = false, className, ...props }: CardRodapeProps) {
+export function CardRodape({
+  divisor = false,
+  className,
+  ...props
+}: CardRodapeProps) {
   return (
     <div
       className={cn(
-        "flex flex-wrap items-center gap-2 px-5 pb-5",
-        divisor ? "mt-1 border-t border-hairline pt-4" : "pt-0",
-        className
+        "flex flex-wrap items-center gap-2 px-6 pb-6",
+        divisor ? "mt-1 border-t border-white/10 pt-5" : "pt-0",
+        className,
       )}
       {...props}
     />
-  )
+  );
 }

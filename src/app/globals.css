@@ -12,29 +12,31 @@
   cópia do JSON atual, pra uma falha de hidratação não deixar a tela sem cor.
 */
 :root {
-  --ds-canvas: #fcfbff;
-  --ds-surface: #f8f5fe;
-  --ds-surface-elevated: #f2ebfd;
-  --ds-ink: #19112b;
-  --ds-ink-muted: #6d6779;
-  --ds-primary: #7c3aed;
-  --ds-primary-ink: #ffffff;
-  --ds-primary-hover: #6d33d1;
-  --ds-primary-accent: #7c3aed;
-  --ds-hairline: #d3d1d9;
-  --ds-success: #15803d;
-  --ds-danger: #b91c1c;
-  --ds-warning: #a16207;
+  --ds-canvas: #0a0a0a;
+  --ds-surface: #161616;
+  --ds-surface-elevated: #202020;
+  --ds-ink: #ededed;
+  --ds-ink-muted: #a8a8a8;
+  --ds-primary: #ffffff;
+  --ds-primary-ink: #0a0a0a;
+  --ds-primary-hover: #d9d9d9;
+  --ds-primary-accent: #6b62f2;
+  --ds-hairline: #343434;
+  --ds-success: #73c991;
+  --ds-danger: #ff8585;
+  --ds-warning: #e8b66a;
 
-  --ds-font-display: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
-  --ds-font-body: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
-  --ds-display-weight: 600;
-  --ds-tracking: -0.02em;
-  --ds-radius: 8px;
-  --ds-radius-surface: 8px;
-  --ds-radius-fine: 8px;
-  --ds-space: 14px;
-  --ds-line-height: 1.65;
+  --ds-font-display:
+    var(--font-geist), -apple-system, BlinkMacSystemFont, sans-serif;
+  --ds-font-body:
+    var(--font-dm-sans), -apple-system, BlinkMacSystemFont, sans-serif;
+  --ds-display-weight: 500;
+  --ds-tracking: -0.035em;
+  --ds-radius: 10px;
+  --ds-radius-surface: 24px;
+  --ds-radius-fine: 4px;
+  --ds-space: 16px;
+  --ds-line-height: 1.56;
 }
 
 @theme inline {
@@ -65,6 +67,107 @@ body {
   color: var(--ds-ink);
   font-family: var(--ds-font-body);
   -webkit-font-smoothing: antialiased;
+}
+
+/* A mesma atmosfera editorial da landing aplicada à área autenticada. */
+.app-shell {
+  position: relative;
+  isolation: isolate;
+  background:
+    radial-gradient(
+      circle at 82% -10%,
+      color-mix(in srgb, #315da8 18%, transparent),
+      transparent 34rem
+    ),
+    radial-gradient(
+      circle at 18% 110%,
+      color-mix(in srgb, #9b5f43 10%, transparent),
+      transparent 36rem
+    ),
+    var(--ds-canvas);
+}
+.app-shell::before {
+  content: none;
+}
+.app-topbar {
+  background: color-mix(in srgb, var(--ds-surface) 76%, transparent);
+  box-shadow: inset 0 1px 0 color-mix(in srgb, white 8%, transparent);
+}
+.app-hero-card {
+  background:
+    radial-gradient(
+      circle at 84% 10%,
+      rgba(64, 103, 191, 0.48),
+      transparent 42%
+    ),
+    linear-gradient(
+      125deg,
+      rgba(153, 91, 63, 0.5),
+      rgba(47, 48, 70, 0.72) 46%,
+      rgba(17, 36, 70, 0.78)
+    );
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12);
+}
+.app-content > * {
+  animation: app-entrada 450ms ease-out both;
+}
+.app-page-header {
+  padding: 1.25rem 0;
+  border-bottom: 1px solid color-mix(in srgb, white 10%, transparent);
+}
+.app-page-icon,
+.journey-empty-icon,
+.career-card-icon {
+  display: grid;
+  place-items: center;
+  flex: none;
+  border: 1px solid color-mix(in srgb, white 13%, transparent);
+  background: linear-gradient(145deg, rgba(255,255,255,.12), rgba(255,255,255,.025));
+  color: var(--ds-ink);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.12);
+}
+.app-page-icon { width: 3rem; height: 3rem; border-radius: 1rem; }
+.app-page-icon svg { width: 1.25rem; height: 1.25rem; }
+.journey-empty-icon { width: 4rem; height: 4rem; border-radius: 1.25rem; color: var(--ds-primary-accent); }
+.journey-empty-icon svg { width: 1.65rem; height: 1.65rem; }
+.career-card-icon { width: 2.75rem; height: 2.75rem; border-radius: .9rem; color: var(--ds-primary-accent); }
+.career-card { overflow: hidden; }
+.career-card::after {
+  content: ""; position: absolute; inset: auto -20% -55% 35%; height: 75%;
+  border-radius: 999px; background: var(--ds-primary-accent); opacity: .08; filter: blur(45px);
+  pointer-events: none; transition: opacity 200ms ease;
+}
+.career-card:hover::after { opacity: .18; }
+.journey-empty { background-color: color-mix(in srgb, var(--ds-surface) 86%, transparent); }
+.journey-steps { background: linear-gradient(145deg, rgba(86,96,212,.11), rgba(255,255,255,.015)); }
+.journey-step { display:flex; align-items:center; gap:.85rem; min-height:4.5rem; padding:.85rem 1rem; border:1px solid rgba(255,255,255,.08); border-radius:1rem; opacity:.48; }
+.journey-step.is-active { opacity:1; border-color:color-mix(in srgb, var(--ds-primary-accent) 55%, white 10%); background:rgba(255,255,255,.055); }
+.journey-step.is-done { opacity:.8; }
+.journey-step-icon { display:grid; place-items:center; width:2.25rem; height:2.25rem; border-radius:50%; background:rgba(255,255,255,.07); color:var(--ds-ink-muted); }
+.journey-step-icon svg { width:1rem; height:1rem; }
+.journey-step.is-active .journey-step-icon { background:var(--ds-primary); color:var(--ds-primary-ink); }
+.journey-step.is-done .journey-step-icon { color:var(--ds-success); }
+.painel-lateral nav li:nth-child(8) { margin-top: 1rem; padding-top: 1rem; border-top: 1px solid rgba(255,255,255,.08); }
+.painel-lateral nav a { min-height: 2.75rem; }
+.app-content table { border-collapse: separate; border-spacing: 0 .4rem; }
+.app-content tbody tr { background: rgba(255,255,255,.035); }
+.app-content tbody td:first-child { border-radius: .8rem 0 0 .8rem; }
+.app-content tbody td:last-child { border-radius: 0 .8rem .8rem 0; }
+.app-content input,
+.app-content select,
+.app-content textarea { transition: border-color 180ms ease, background-color 180ms ease, box-shadow 180ms ease; }
+.app-content input:focus,
+.app-content select:focus,
+.app-content textarea:focus { box-shadow: 0 0 0 4px color-mix(in srgb, var(--ds-primary-accent) 16%, transparent); }
+@media (max-width: 639px) {
+  .app-page-icon { width: 2.75rem; height: 2.75rem; border-radius: .9rem; }
+  .career-picker button { width: 100%; }
+}
+@keyframes app-entrada {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
 }
 
 h1,
@@ -162,18 +265,32 @@ h4 {
     1px por dentro. É a diferença entre "retângulo cinza" e "painel".
   */
   .superficie {
-    background-image: linear-gradient(to bottom, var(--realce-suave), transparent 60%);
-    background-color: var(--ds-surface);
-    box-shadow: inset 0 0 0 1px var(--realce-fio);
+    background-image: linear-gradient(
+      to bottom,
+      color-mix(in srgb, white 5%, transparent),
+      transparent 60%
+    );
+    background-color: color-mix(in srgb, var(--ds-surface) 82%, transparent);
+    box-shadow: inset 0 1px 0 color-mix(in srgb, white 8%, transparent);
+    backdrop-filter: blur(18px) saturate(120%);
   }
 
   .superficie-elevada {
-    background-image: linear-gradient(to bottom, var(--realce-suave), transparent 55%);
-    background-color: var(--ds-surface-elevated);
+    background-image: linear-gradient(
+      to bottom,
+      color-mix(in srgb, white 7%, transparent),
+      transparent 55%
+    );
+    background-color: color-mix(
+      in srgb,
+      var(--ds-surface-elevated) 86%,
+      transparent
+    );
     /* Só o fio por dentro. A sombra externa que morava aqui saiu: neste projeto
        a profundidade é borda + gradiente + inset, e sombra externa é justamente
        o que faz um app parecer com todos os outros. */
-    box-shadow: inset 0 0 0 1px var(--realce-fio);
+    box-shadow: inset 0 1px 0 color-mix(in srgb, white 10%, transparent);
+    backdrop-filter: blur(20px) saturate(125%);
   }
 
   /*
@@ -185,7 +302,11 @@ h4 {
   .pilula,
   .pilula-relevo {
     background-image:
-      radial-gradient(52% 252% at 25% -105%, var(--realce) 0%, transparent 100%),
+      radial-gradient(
+        52% 252% at 25% -105%,
+        var(--realce) 0%,
+        transparent 100%
+      ),
       linear-gradient(184deg, transparent 2%, var(--sombra-difusa) 112%);
     background-color: var(--ds-surface-elevated);
     box-shadow:
@@ -216,12 +337,20 @@ h4 {
   */
   .brilho-marca {
     box-shadow: 0 24px 80px -24px
-      color-mix(in srgb, var(--ds-primary) calc(var(--forca-brilho) * 100%), transparent);
+      color-mix(
+        in srgb,
+        var(--ds-primary) calc(var(--forca-brilho) * 100%),
+        transparent
+      );
   }
 
   .brilho-suave {
     box-shadow: 0 12px 40px -16px
-      color-mix(in srgb, var(--ds-primary) calc(var(--forca-brilho) * 70%), transparent);
+      color-mix(
+        in srgb,
+        var(--ds-primary) calc(var(--forca-brilho) * 70%),
+        transparent
+      );
   }
 
   /*
@@ -231,7 +360,11 @@ h4 {
     normalmente já gastou o `box-shadow` com o brilho. O desenho é o mesmo.
   */
   .realce-topo {
-    background-image: linear-gradient(to bottom, var(--realce-suave) 0 1px, transparent 1px);
+    background-image: linear-gradient(
+      to bottom,
+      var(--realce-suave) 0 1px,
+      transparent 1px
+    );
   }
 
   /*
@@ -287,13 +420,12 @@ h4 {
   */
   .preenchimento-acao {
     background-color: var(--ds-primary);
-    background-image:
-      linear-gradient(to bottom, var(--realce-suave) 0 1px, transparent 1px),
-      linear-gradient(
-        to bottom,
-        transparent 76%,
-        color-mix(in srgb, var(--ds-primary) 88%, #000) 100%
-      );
+    background-image: linear-gradient(
+      to bottom,
+      rgba(255, 255, 255, 0.96),
+      rgba(237, 237, 237, 0.92)
+    );
+    box-shadow: inset 0 1px 0 white;
   }
 
   /*
@@ -310,7 +442,7 @@ h4 {
     height: 1.75rem;
     border-radius: 9999px;
     background-color: var(--ds-canvas);
-    color: var(--ds-primary-accent);
+    color: white;
     /* Anel por DENTRO, e não sombra por fora: o chip mora dentro de um botão
        que já tem o próprio recorte, e sombra externa aqui vazaria pela borda. */
     box-shadow: inset 0 0 0 1px var(--realce-fio);
@@ -386,13 +518,23 @@ h4 {
   */
   .brilho-marca-filtro {
     filter: drop-shadow(
-      0 10px 28px color-mix(in srgb, var(--ds-primary) calc(var(--forca-brilho) * 90%), transparent)
+      0 10px 28px
+        color-mix(
+          in srgb,
+          var(--ds-primary) calc(var(--forca-brilho) * 90%),
+          transparent
+        )
     );
   }
 
   .brilho-suave-filtro {
     filter: drop-shadow(
-      0 5px 14px color-mix(in srgb, var(--ds-primary) calc(var(--forca-brilho) * 65%), transparent)
+      0 5px 14px
+        color-mix(
+          in srgb,
+          var(--ds-primary) calc(var(--forca-brilho) * 65%),
+          transparent
+        )
     );
   }
 
@@ -409,7 +551,12 @@ h4 {
   .elevar-no-ponteiro:hover,
   .elevar-no-ponteiro:has(:focus-visible) {
     filter: drop-shadow(
-      0 6px 16px color-mix(in srgb, var(--ds-primary) calc(var(--forca-brilho) * 60%), transparent)
+      0 6px 16px
+        color-mix(
+          in srgb,
+          var(--ds-primary) calc(var(--forca-brilho) * 60%),
+          transparent
+        )
     );
   }
 
@@ -422,9 +569,18 @@ h4 {
     mesma variável fazendo os dois trabalhos, porque a polaridade já vem do modo.
   */
   .painel-lateral {
-    background-image: linear-gradient(to bottom, var(--realce-suave), transparent 38%);
-    background-color: var(--ds-surface);
-    box-shadow: inset -1px 0 0 0 var(--realce-fio);
+    background-image:
+      radial-gradient(
+        circle at 20% 0%,
+        rgba(71, 104, 180, 0.18),
+        transparent 45%
+      ),
+      linear-gradient(to bottom, rgba(255, 255, 255, 0.05), transparent 38%);
+    background-color: color-mix(in srgb, var(--ds-surface) 88%, transparent);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.08),
+      0 24px 80px rgba(0, 0, 0, 0.28);
+    backdrop-filter: blur(24px) saturate(125%);
   }
 
   /*
@@ -470,6 +626,8 @@ h4 {
     quadrado luminoso atrás dele.
   */
   .realce-marca svg {
-    filter: drop-shadow(0 1px 6px color-mix(in srgb, var(--ds-primary) 45%, transparent));
+    filter: drop-shadow(
+      0 1px 6px color-mix(in srgb, var(--ds-primary) 45%, transparent)
+    );
   }
 }

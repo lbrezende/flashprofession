@@ -1,9 +1,9 @@
-import type { Preview } from "@storybook/nextjs-vite"
-import { designSystem, toCssVars } from "../src/lib/design-system"
-import { FONTE_FALLBACK, temaStorybook } from "./tema"
-import "../src/app/globals.css"
+import type { Preview } from "@storybook/nextjs-vite";
+import { designSystem, toCssVars } from "../src/lib/design-system";
+import { FONTE_DISPLAY_FALLBACK, FONTE_FALLBACK, temaStorybook } from "./tema";
+import "../src/app/globals.css";
 
-const variaveis = toCssVars(designSystem)
+const variaveis = toCssVars(designSystem);
 
 /**
  * No app quem injeta os tokens é o layout do Next (`src/app/layout.tsx`).
@@ -12,16 +12,18 @@ const variaveis = toCssVars(designSystem)
  * dessas variáveis. Trocar o `design-system.json` repinta o Storybook junto.
  */
 function aplicarTokens() {
-  const raiz = document.documentElement
+  const raiz = document.documentElement;
 
   for (const [nome, valor] of Object.entries(variaveis)) {
-    raiz.style.setProperty(nome, valor)
+    raiz.style.setProperty(nome, valor);
   }
 
-  raiz.style.setProperty("--font-inter", FONTE_FALLBACK)
+  raiz.style.setProperty("--font-inter", FONTE_FALLBACK);
+  raiz.style.setProperty("--font-dm-sans", FONTE_FALLBACK);
+  raiz.style.setProperty("--font-geist", FONTE_DISPLAY_FALLBACK);
 
-  raiz.dataset.ds = designSystem.id
-  raiz.dataset.mode = designSystem.mode
+  raiz.dataset.ds = designSystem.id;
+  raiz.dataset.mode = designSystem.mode;
 }
 
 const preview: Preview = {
@@ -30,8 +32,8 @@ const preview: Preview = {
 
   decorators: [
     (Story) => {
-      aplicarTokens()
-      return Story()
+      aplicarTokens();
+      return Story();
     },
   ],
 
@@ -41,7 +43,10 @@ const preview: Preview = {
       options: {
         canvas: { name: "Fundo da página", value: designSystem.tokens.canvas },
         surface: { name: "Superfície", value: designSystem.tokens.surface },
-        elevada: { name: "Superfície elevada", value: designSystem.tokens.surfaceElevated },
+        elevada: {
+          name: "Superfície elevada",
+          value: designSystem.tokens.surfaceElevated,
+        },
       },
     },
 
@@ -66,6 +71,6 @@ const preview: Preview = {
   initialGlobals: {
     backgrounds: { value: "canvas" },
   },
-}
+};
 
-export default preview
+export default preview;

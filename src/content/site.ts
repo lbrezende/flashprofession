@@ -254,7 +254,7 @@ export const sistema = {
 
   carreiras: {
     titulo: "Carreiras",
-    descricao: "Primeiro a área, depois a profissão. Uma decisão de cada vez.",
+    descricao: "Escolha uma área. Compare opções. Decida com clareza.",
     areasRotulo: "Escolha uma área",
     todasAsAreas: "Todas as áreas",
     buscar: "Buscar profissão por nome",
@@ -381,7 +381,7 @@ export const sistema = {
 
   mapa: {
     titulo: "Mapa",
-    descricao: "Os cinco níveis da sua profissão, com o que destrava cada um.",
+    descricao: "Veja onde você está e o próximo passo.",
     visao: { rotulo: "Modo de exibição", mapa: "Mapa", lista: "Lista" },
     proximaAcao: "Próxima ação recomendada",
     legenda: "Legenda dos estados",
@@ -402,7 +402,7 @@ export const sistema = {
 
   aprender: {
     titulo: "Aprender",
-    descricao: "Vídeos curtos, tarefas de verdade e validação no fim. Assistir não basta.",
+    descricao: "Aprenda uma habilidade por vez.",
     navegacaoRotulo: "Módulos da trilha",
     conteudosRotulo: "Aulas",
     tarefasRotulo: "Tarefas",
@@ -455,7 +455,7 @@ export const sistema = {
 
   praticar: {
     titulo: "Praticar",
-    descricao: "Desafios próximos do trabalho real. O resultado vira evidência, e evidência vira case.",
+    descricao: "Pratique, receba feedback e crie seu case.",
     abrir: "Abrir o desafio",
     cenarioRotulo: "Cenário",
     objetivoRotulo: "Objetivo",
@@ -501,7 +501,7 @@ export const sistema = {
 
   progresso: {
     titulo: "Progresso",
-    descricao: "O que você já construiu, com a origem de cada número à vista.",
+    descricao: "Seu avanço em um só olhar.",
     indicadores: {
       objetivo: "Objetivo",
       nivel: "Nível atual",
@@ -535,7 +535,7 @@ export const sistema = {
 
   ranking: {
     titulo: "Ranking",
-    descricao: "A comunidade da sua profissão, comparada por dedicação e domínio validado.",
+    descricao: "Veja sua posição e avance no seu ritmo.",
     periodoRotulo: "Período",
     periodo: "Últimos 30 dias",
     colunas: { posicao: "Posição", nome: "Nome", score: "Pontos", sequencia: "Sequência", horas: "Horas no mês", cases: "Cases" },
@@ -578,7 +578,7 @@ export const sistema = {
 
   perfil: {
     titulo: "Perfil",
-    descricao: "Seu objetivo, sua visibilidade pública e suas evidências, sob seu controle.",
+    descricao: "Seu objetivo, suas provas e o que recrutadores veem.",
     objetivo: {
       titulo: "Objetivo profissional",
       nivelAlvo: "Nível alvo: 5 de 5",

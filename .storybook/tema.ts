@@ -1,6 +1,6 @@
-import { create } from "storybook/theming/create"
-import { marca } from "../src/content/site"
-import { designSystem } from "../src/lib/design-system"
+import { create } from "storybook/theming/create";
+import { marca } from "../src/content/site";
+import { designSystem } from "../src/lib/design-system";
 
 /**
  * O `--font-inter` nasce do next/font dentro do `layout.tsx`, que não roda no
@@ -8,10 +8,12 @@ import { designSystem } from "../src/lib/design-system"
  * (`var(--font-inter), …`) não resolveria e a tipografia cairia no padrão do
  * navegador, diferente do produto.
  */
-export const FONTE_FALLBACK = "Inter, ui-sans-serif, system-ui, sans-serif"
+export const FONTE_FALLBACK = "DM Sans, ui-sans-serif, system-ui, sans-serif";
+export const FONTE_DISPLAY_FALLBACK =
+  "Geist, ui-sans-serif, system-ui, sans-serif";
 
-const tokens = designSystem.tokens
-const raio = Number.parseInt(designSystem.radius, 10) || 0
+const tokens = designSystem.tokens;
+const raio = Number.parseInt(designSystem.radius, 10) || 0;
 
 /**
  * A casca do Storybook (barra, menu lateral, painel de documentação) vestida
@@ -58,4 +60,4 @@ export const temaStorybook = create({
 
   fontBase: designSystem.type.body,
   fontCode: "ui-monospace, SFMono-Regular, Menlo, monospace",
-})
+});

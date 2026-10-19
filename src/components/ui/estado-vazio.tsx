@@ -1,17 +1,17 @@
-import { Inbox } from "lucide-react"
-import type { ReactNode } from "react"
-import { cn } from "@/lib/cn"
+import { Inbox } from "lucide-react";
+import type { ReactNode } from "react";
+import { cn } from "@/lib/cn";
 
 export type EstadoVazioProps = {
-  icone?: ReactNode
-  titulo: string
-  texto?: string
+  icone?: ReactNode;
+  titulo: string;
+  texto?: string;
   /** Normalmente um `<Button>` que cria o primeiro item. */
-  acao?: ReactNode
+  acao?: ReactNode;
   /** `sm` para vazios dentro de um card ou de um painel lateral. */
-  tamanho?: "sm" | "md"
-  className?: string
-}
+  tamanho?: "sm" | "md";
+  className?: string;
+};
 
 /**
  * Lista vazia não é erro. É a primeira tela que a pessoa vê.
@@ -30,9 +30,9 @@ export function EstadoVazio({
   return (
     <div
       className={cn(
-        "flex flex-col items-center justify-center text-center",
-        tamanho === "sm" ? "gap-2 px-4 py-8" : "gap-3 px-6 py-14",
-        className
+        "relative flex flex-col items-center justify-center overflow-hidden text-center",
+        tamanho === "sm" ? "gap-2 px-4 py-8" : "gap-4 px-6 py-14",
+        className,
       )}
     >
       {/* O ícone fica num disco com relevo, não solto sobre o fundo. Um vazio
@@ -40,23 +40,30 @@ export function EstadoVazio({
       <span
         aria-hidden="true"
         className={cn(
-          "superficie-elevada flex items-center justify-center rounded-full border border-hairline text-muted",
-          tamanho === "sm" ? "size-9 [&_svg]:size-4" : "size-12 [&_svg]:size-5"
+          "flex items-center justify-center rounded-full border border-white/10 bg-white/[0.05] text-ink backdrop-blur-md",
+          tamanho === "sm" ? "size-10 [&_svg]:size-4" : "size-16 [&_svg]:size-7",
         )}
       >
         {icone ?? <Inbox />}
       </span>
 
       <div className="flex flex-col gap-1">
-        <p className={cn("font-display text-ink", tamanho === "sm" ? "text-sm" : "text-base")}>
+        <p
+          className={cn(
+            "font-display tracking-[-0.03em] text-ink",
+            tamanho === "sm" ? "text-base" : "text-xl",
+          )}
+        >
           {titulo}
         </p>
         {texto && (
-          <p className="max-w-sm text-sm leading-relaxed text-balance text-muted">{texto}</p>
+          <p className="max-w-[42ch] text-sm leading-relaxed text-balance text-muted">
+            {texto}
+          </p>
         )}
       </div>
 
       {acao && <div className="mt-2">{acao}</div>}
     </div>
-  )
+  );
 }

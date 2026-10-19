@@ -1,14 +1,19 @@
-"use client"
+"use client";
 
-import Link from "next/link"
-import { useMemo } from "react"
-import { CabecalhoPagina } from "@/components/app/cabecalho-pagina"
-import { Icone } from "@/components/app/icone"
-import { BotaoLink } from "@/components/marketing/botao-link"
-import { BarraProgresso, Card, CardConteudo, EstadoVazio } from "@/components/ui"
-import { palavras, sistema } from "@/content/site"
-import { PROFISSOES, acharProfissao } from "@/lib/catalogo"
-import { contar } from "@/lib/formato"
+import Link from "next/link";
+import { useMemo } from "react";
+import { CabecalhoPagina } from "@/components/app/cabecalho-pagina";
+import { Icone } from "@/components/app/icone";
+import { BotaoLink } from "@/components/marketing/botao-link";
+import {
+  BarraProgresso,
+  Card,
+  CardConteudo,
+  EstadoVazio,
+} from "@/components/ui";
+import { palavras, sistema } from "@/content/site";
+import { PROFISSOES, acharProfissao } from "@/lib/catalogo";
+import { contar } from "@/lib/formato";
 import {
   formatarHoras,
   minutosNoPeriodo,
@@ -17,12 +22,12 @@ import {
   scoreDaPessoa,
   sequenciaDeDias,
   ultimaData,
-} from "@/lib/jornada"
-import { COMUNIDADE_RANKING } from "@/lib/catalogo"
-import { useDados } from "@/lib/store"
-import { useSessao } from "@/lib/store"
+} from "@/lib/jornada";
+import { COMUNIDADE_RANKING } from "@/lib/catalogo";
+import { useDados } from "@/lib/store";
+import { useSessao } from "@/lib/store";
 
-const textos = sistema.inicio
+const textos = sistema.inicio;
 
 /**
  * A primeira tela depois de entrar (ONB-01): descoberta e retomada juntas.
@@ -33,24 +38,24 @@ const textos = sistema.inicio
  * convite pra escolher a carreira (ONB-03): o estado muda, a tela é uma só.
  */
 export default function PaginaInicio() {
-  const { dados, jornada } = useDados()
-  const sessaoDeLogin = useSessao()
+  const { dados, jornada } = useDados();
+  const sessaoDeLogin = useSessao();
 
-  const profissao = acharProfissao(jornada?.profissaoId)
-  const acao = proximaAcao(jornada)
+  const profissao = acharProfissao(jornada?.profissaoId);
+  const acao = proximaAcao(jornada);
 
   const indicadores = useMemo(() => {
-    if (!jornada?.resultado || !profissao) return null
+    if (!jornada?.resultado || !profissao) return null;
 
     const percentual = percentualDoNivel(
       jornada.resultado.nivel,
       profissao.competencias,
-      jornada.competenciasConcluidas
-    )
-    const score = scoreDaPessoa(dados)
+      jornada.competenciasConcluidas,
+    );
+    const score = scoreDaPessoa(dados);
     const posicao = jornada.publico.participaRanking
       ? COMUNIDADE_RANKING.filter((linha) => linha.score > score).length + 1
-      : null
+      : null;
 
     return {
       nivel: jornada.resultado.nivel,
@@ -59,14 +64,15 @@ export default function PaginaInicio() {
       totais: profissao.competencias.length,
       minutosSemana: minutosNoPeriodo(dados.sessoes, 7),
       sequencia: sequenciaDeDias(dados.sessoes),
-      cases: dados.evidencias.filter((evidencia) => evidencia.estado === "case").length,
+      cases: dados.evidencias.filter((evidencia) => evidencia.estado === "case")
+        .length,
       posicao,
       ultimaAtividade: ultimaData(dados.sessoes),
-    }
-  }, [dados, jornada, profissao])
+    };
+  }, [dados, jornada, profissao]);
 
-  const saudacao = saudacaoDaHora()
-  const nome = sessaoDeLogin?.nome?.split(" ")[0]
+  const saudacao = saudacaoDaHora();
+  const nome = sessaoDeLogin?.nome?.split(" ")[0];
 
   // O estado de quem acabou de chegar: a escolha de carreira é a tela (ONB-03).
   if (!jornada || !jornada.profissaoId) {
@@ -77,13 +83,20 @@ export default function PaginaInicio() {
           descricao={nome ? `${saudacao}, ${nome}.` : `${saudacao}.`}
         />
 
-        <div className="superficie rounded-ds-surface border border-hairline" data-tour="continuar">
+        <div
+          className="superficie rounded-ds-surface border border-hairline"
+          data-tour="continuar"
+        >
           <EstadoVazio
             icone={<Icone nome="carreiras" />}
             titulo={sistema.vazios.inicioNovo.titulo}
             texto={sistema.vazios.inicioNovo.texto}
             acao={
-              <BotaoLink href="/app/carreiras" comChip iconeDireita={<Icone nome="seta-direita" />}>
+              <BotaoLink
+                href="/app/carreiras"
+                comChip
+                iconeDireita={<Icone nome="seta-direita" />}
+              >
                 {sistema.vazios.inicioNovo.acao}
               </BotaoLink>
             }
@@ -92,7 +105,7 @@ export default function PaginaInicio() {
 
         <AlternativasDeCarreira excetoId={null} />
       </>
-    )
+    );
   }
 
   return (
@@ -103,12 +116,18 @@ export default function PaginaInicio() {
       />
 
       {/* A peça central: retomar de onde parou, com UMA ação recomendada. */}
-      <Card className="faixa-topo overflow-hidden" data-tour="continuar">
-        <CardConteudo className="flex flex-col gap-4 p-6 sm:p-7">
+      <Card
+        className="app-hero-card relative overflow-hidden border-white/15"
+        data-tour="continuar"
+      >
+        <CardConteudo className="relative z-10 flex min-h-[320px] flex-col justify-between gap-8 p-7 sm:p-10">
           <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5 text-[13px] text-muted">
             <span className="flex items-center gap-1.5">
-              <Icone nome="carreiras" className="size-4 text-primary-accent" />
-              {textos.objetivoRotulo}: <strong className="font-medium text-ink">{profissao?.nome}</strong>
+              <Icone nome="carreiras" className="size-4 text-white" />
+              {textos.objetivoRotulo}:{" "}
+              <strong className="font-medium text-ink">
+                {profissao?.nome}
+              </strong>
             </span>
             {indicadores && (
               <>
@@ -124,14 +143,21 @@ export default function PaginaInicio() {
             <p className="text-[11px] font-medium tracking-wide text-muted uppercase">
               {textos.continuar.titulo}
             </p>
-            <h2 className="mt-1 font-display text-xl leading-snug text-balance text-ink sm:text-2xl">
+            <h2 className="mt-3 max-w-3xl font-display text-3xl leading-[1.05] tracking-[-0.045em] text-balance text-ink sm:text-5xl">
               {acao.rotulo}
             </h2>
-            <p className="mt-1.5 max-w-prose text-sm leading-relaxed text-muted">{acao.descricao}</p>
+            <p className="mt-4 max-w-xl text-sm leading-relaxed text-white/60">
+              {acao.descricao}
+            </p>
           </div>
 
           <div className="flex flex-wrap items-center gap-4">
-            <BotaoLink href={acao.href} tamanho="lg" comChip iconeDireita={<Icone nome="seta-direita" />}>
+            <BotaoLink
+              href={acao.href}
+              tamanho="lg"
+              comChip
+              iconeDireita={<Icone nome="seta-direita" />}
+            >
               {textos.continuar.rotulo}
             </BotaoLink>
 
@@ -142,7 +168,9 @@ export default function PaginaInicio() {
                   rotulo={`${indicadores.percentual}% ${textos.ateProximoNivel}`}
                   mostrarValor
                 />
-                <p className="mt-1 text-[12px] text-muted">{textos.ateProximoNivel}</p>
+                <p className="mt-1 text-[12px] text-muted">
+                  {textos.ateProximoNivel}
+                </p>
               </div>
             )}
           </div>
@@ -151,12 +179,9 @@ export default function PaginaInicio() {
 
       {/* Os indicadores consolidados (ONB-02), cada um levando ao detalhe. */}
       {indicadores && (
-        <section aria-label={textos.indicadores.titulo} className="mt-6">
+        <section aria-label={textos.indicadores.titulo} className="mt-5">
           <h2 className="sr-only">{textos.indicadores.titulo}</h2>
-          <dl
-            className="grid gap-3"
-            style={{ gridTemplateColumns: "repeat(auto-fit, minmax(150px, 1fr))" }}
-          >
+          <dl className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
             <Indicador
               icone="nivel"
               rotulo={textos.indicadores.nivel}
@@ -178,7 +203,11 @@ export default function PaginaInicio() {
             <Indicador
               icone="sequencia"
               rotulo={textos.indicadores.sequencia}
-              valor={contar(indicadores.sequencia, palavras.dia.singular, palavras.dia.plural)}
+              valor={contar(
+                indicadores.sequencia,
+                palavras.dia.singular,
+                palavras.dia.plural,
+              )}
               href="/app/progresso"
             />
             <Indicador
@@ -201,7 +230,7 @@ export default function PaginaInicio() {
 
       <AlternativasDeCarreira excetoId={jornada.profissaoId} />
     </>
-  )
+  );
 }
 
 /** Um indicador clicável: o número leva pro detalhamento dele (ONB-02). */
@@ -211,24 +240,26 @@ function Indicador({
   valor,
   href,
 }: {
-  icone: string
-  rotulo: string
-  valor: string
-  href: string
+  icone: string;
+  rotulo: string;
+  valor: string;
+  href: string;
 }) {
   return (
-    <div className="superficie relative rounded-ds-surface border border-hairline p-4 transition-colors hover:border-primary/40">
-      <dt className="flex items-center gap-1.5 text-[11px] tracking-wide text-muted uppercase">
-        <Icone nome={icone} className="size-3.5 text-primary-accent" />
+    <div className="superficie group relative min-h-32 rounded-ds-surface border border-white/10 p-5 transition-[transform,border-color] hover:-translate-y-0.5 hover:border-white/20">
+      <dt className="flex items-center gap-2 text-[10px] tracking-[0.12em] text-muted uppercase">
+        <span className="flex size-8 items-center justify-center rounded-full border border-white/10 bg-white/[0.05]">
+          <Icone nome={icone} className="size-3.5 text-white" />
+        </span>
         {rotulo}
       </dt>
-      <dd className="mt-1.5 font-display text-lg text-ink tabular-nums">
+      <dd className="mt-5 font-display text-3xl tracking-[-0.04em] text-ink tabular-nums">
         <Link href={href} className="after:absolute after:inset-0">
           {valor}
         </Link>
       </dd>
     </div>
-  )
+  );
 }
 
 /**
@@ -236,10 +267,15 @@ function Indicador({
  * linhas discretas no pé da tela, e trocar não apaga nada.
  */
 function AlternativasDeCarreira({ excetoId }: { excetoId: string | null }) {
-  const alternativas = PROFISSOES.filter((profissao) => profissao.id !== excetoId).slice(0, 3)
+  const alternativas = PROFISSOES.filter(
+    (profissao) => profissao.id !== excetoId,
+  ).slice(0, 3);
 
   return (
-    <section aria-labelledby="alternativas-titulo" className="mt-8 border-t border-hairline pt-5">
+    <section
+      aria-labelledby="alternativas-titulo"
+      className="mt-10 border-t border-white/10 pt-7"
+    >
       <div className="flex flex-wrap items-baseline justify-between gap-2">
         <h2 id="alternativas-titulo" className="font-display text-sm text-ink">
           {textos.alternativas.titulo}
@@ -252,7 +288,7 @@ function AlternativasDeCarreira({ excetoId }: { excetoId: string | null }) {
           <li key={profissao.id}>
             <Link
               href={`/app/carreiras/${profissao.id}`}
-              className="superficie inline-flex items-center gap-2 rounded-ds border border-hairline px-3 py-2 text-[13px] text-ink transition-colors hover:border-primary/40 hover:bg-elevated pointer-coarse:min-h-11"
+              className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.035] px-4 py-2 text-[13px] text-ink backdrop-blur-md transition-colors hover:border-white/20 hover:bg-white/[0.07] pointer-coarse:min-h-11"
             >
               {profissao.nome}
               <Icone nome="seta-direita" className="size-3.5 text-muted" />
@@ -261,12 +297,12 @@ function AlternativasDeCarreira({ excetoId }: { excetoId: string | null }) {
         ))}
       </ul>
     </section>
-  )
+  );
 }
 
 function saudacaoDaHora() {
-  const hora = new Date().getHours()
-  if (hora < 12) return textos.saudacao.manha
-  if (hora < 18) return textos.saudacao.tarde
-  return textos.saudacao.noite
+  const hora = new Date().getHours();
+  if (hora < 12) return textos.saudacao.manha;
+  if (hora < 18) return textos.saudacao.tarde;
+  return textos.saudacao.noite;
 }

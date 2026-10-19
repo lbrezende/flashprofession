@@ -1,33 +1,33 @@
-"use client"
+"use client";
 
-import { X } from "lucide-react"
-import { useId, type ReactNode, type RefObject } from "react"
-import { cn } from "@/lib/cn"
-import { sistema } from "@/content/site"
-import { Button } from "./button"
-import { PortalDialogo, useDialogoAcessivel } from "./dialogo"
+import { X } from "lucide-react";
+import { useId, type ReactNode, type RefObject } from "react";
+import { cn } from "@/lib/cn";
+import { sistema } from "@/content/site";
+import { Button } from "./button";
+import { PortalDialogo, useDialogoAcessivel } from "./dialogo";
 
-export type LarguraDrawer = "sm" | "md" | "lg"
+export type LarguraDrawer = "sm" | "md" | "lg";
 
 export type DrawerProps = {
-  aberto: boolean
-  aoFechar: () => void
-  titulo: string
-  descricao?: string
-  children?: ReactNode
-  rodape?: ReactNode
-  largura?: LarguraDrawer
-  fecharNoOverlay?: boolean
-  mostrarFechar?: boolean
-  refFocoInicial?: RefObject<HTMLElement | null>
-  className?: string
-}
+  aberto: boolean;
+  aoFechar: () => void;
+  titulo: string;
+  descricao?: string;
+  children?: ReactNode;
+  rodape?: ReactNode;
+  largura?: LarguraDrawer;
+  fecharNoOverlay?: boolean;
+  mostrarFechar?: boolean;
+  refFocoInicial?: RefObject<HTMLElement | null>;
+  className?: string;
+};
 
 const LARGURAS: Record<LarguraDrawer, string> = {
   sm: "sm:max-w-sm",
   md: "sm:max-w-md",
   lg: "sm:max-w-xl",
-}
+};
 
 /**
  * Painel lateral para edição sem perder a lista de vista.
@@ -49,14 +49,14 @@ export function Drawer({
   refFocoInicial,
   className,
 }: DrawerProps) {
-  const idBase = useId()
+  const idBase = useId();
   const { painelRef, ativo, visivel } = useDialogoAcessivel({
     aberto,
     aoFechar,
     focoInicial: refFocoInicial,
-  })
+  });
 
-  if (!ativo) return null
+  if (!ativo) return null;
 
   return (
     <PortalDialogo>
@@ -66,7 +66,7 @@ export function Drawer({
           onMouseDown={fecharNoOverlay ? aoFechar : undefined}
           className={cn(
             "absolute inset-0 bg-canvas/75 backdrop-blur-sm transition-opacity duration-200",
-            visivel ? "opacity-100" : "opacity-0"
+            visivel ? "opacity-100" : "opacity-0",
           )}
         />
 
@@ -78,20 +78,26 @@ export function Drawer({
           aria-describedby={descricao ? `${idBase}-descricao` : undefined}
           tabIndex={-1}
           className={cn(
-            "superficie-elevada fio-luz relative flex h-dvh w-full flex-col border-l border-hairline outline-none",
+            "superficie-elevada fio-luz relative my-3 mr-3 flex h-[calc(100dvh-1.5rem)] w-[calc(100%-0.75rem)] flex-col overflow-hidden rounded-[28px] border border-white/12 outline-none",
             "transition-transform duration-200 ease-out",
             visivel ? "translate-x-0" : "translate-x-full",
             LARGURAS[largura],
-            className
+            className,
           )}
         >
-          <div className="flex shrink-0 items-start gap-3 border-b border-hairline p-5">
+          <div className="flex shrink-0 items-start gap-3 border-b border-white/10 p-6">
             <div className="flex min-w-0 flex-col gap-1">
-              <h2 id={`${idBase}-titulo`} className="font-display text-base text-ink">
+              <h2
+                id={`${idBase}-titulo`}
+                className="font-display text-xl tracking-[-0.03em] text-ink"
+              >
                 {titulo}
               </h2>
               {descricao && (
-                <p id={`${idBase}-descricao`} className="text-sm leading-relaxed text-muted">
+                <p
+                  id={`${idBase}-descricao`}
+                  className="text-sm leading-relaxed text-muted"
+                >
                   {descricao}
                 </p>
               )}
@@ -109,15 +115,15 @@ export function Drawer({
             )}
           </div>
 
-          <div className="min-h-0 flex-1 overflow-y-auto p-5">{children}</div>
+          <div className="min-h-0 flex-1 overflow-y-auto p-6">{children}</div>
 
           {rodape && (
-            <div className="flex shrink-0 flex-col-reverse gap-2 border-t border-hairline px-5 py-4 pb-[max(1rem,env(safe-area-inset-bottom))] sm:flex-row sm:items-center sm:justify-end">
+            <div className="flex shrink-0 flex-col-reverse gap-2 border-t border-white/10 px-6 py-5 pb-[max(1.25rem,env(safe-area-inset-bottom))] sm:flex-row sm:items-center sm:justify-end">
               {rodape}
             </div>
           )}
         </div>
       </div>
     </PortalDialogo>
-  )
+  );
 }
